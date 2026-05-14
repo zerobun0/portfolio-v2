@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Tarek Ahmed Umar</title>
+  <meta name="description" content="Get in touch with Tarek Ahmed Umar — web developer and CS student." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <!--
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║  EMAIL SETUP — EmailJS (free tier, no server needed)            ║
+    ║  1. Go to https://www.emailjs.com and create a free account     ║
+    ║  2. Add an Email Service (Gmail works — connect your Gmail)     ║
+    ║  3. Create an Email Template — map these variables:             ║
+    ║       {{from_name}}  {{reply_to}}  {{subject}}  {{message}}     ║
+    ║  4. Replace the three placeholders below with your real IDs:   ║
+    ║       YOUR_PUBLIC_KEY   →  Account → API Keys                  ║
+    ║       YOUR_SERVICE_ID   →  Email Services → Service ID         ║
+    ║       YOUR_TEMPLATE_ID  →  Email Templates → Template ID       ║
+    ╚══════════════════════════════════════════════════════════════════╝
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="page-overlay"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/icons/ta-logo.svg" alt="TA logo" />
+      <span>Tarek<span class="nav-logo-accent">.</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-mobile">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="contact-wrap">
+
+    <!-- ── Left: Form ── -->
+    <div data-aos="fade-right">
+      <div class="contact-header">
+        <span class="section-eyebrow">Get In Touch</span>
+        <h1 class="section-title">Say Hello</h1>
+        <p class="section-sub">
+          Whether you want to discuss a project, ask about my work, or just say hi —
+          my inbox is always open. I'll get back to you as soon as I can.
+        </p>
+      </div>
+
+      <form id="contact-form" novalidate>
+
+        <!-- Honeypot field — hidden from real users, traps bots -->
+        <div style="display:none;visibility:hidden;position:absolute;left:-9999px;" aria-hidden="true">
+          <label for="website">Leave this blank</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="form-group" id="fg-name">
+          <label class="form-label" for="inp-name">Your Name</label>
+          <input
+            class="form-input"
+            type="text"
+            id="inp-name"
+            name="from_name"
+            placeholder="e.g. Jane Smith"
+            autocomplete="name"
+          />
+          <p class="form-err" id="err-name">Please enter your name.</p>
+        </div>
+
+        <div class="form-group" id="fg-email">
+          <label class="form-label" for="inp-email">Email Address</label>
+          <input
+            class="form-input"
+            type="email"
+            id="inp-email"
+            name="reply_to"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <p class="form-err" id="err-email">Please enter a valid email address.</p>
+        </div>
+
+        <div class="form-group" id="fg-subject">
+          <label class="form-label" for="inp-subject">Subject</label>
+          <input
+            class="form-input"
+            type="text"
+            id="inp-subject"
+            name="subject"
+            placeholder="e.g. Project enquiry"
+          />
+          <p class="form-err" id="err-subject">Please enter a subject.</p>
+        </div>
+
+        <div class="form-group" id="fg-message">
+          <label class="form-label" for="inp-message">Message</label>
+          <textarea
+            class="form-textarea"
+            id="inp-message"
+            name="message"
+            placeholder="Tell me what you're thinking…"
+          ></textarea>
+          <p class="form-err" id="err-message">Please enter a message (at least 10 characters).</p>
+        </div>
+
+        <button type="submit" class="form-submit" id="form-submit-btn">Send Message →</button>
+
+      </form>
+    </div>
+
+    <!-- ── Right: Info Panel ── -->
+    <div class="contact-info" data-aos="fade-left" data-aos-delay="100">
+
+      <!-- Availability indicator -->
+      <div class="contact-avail">
+        <div class="avail-dot"></div>
+        <span class="avail-text">Currently available for opportunities</span>
+      </div>
+
+      <!-- Social links HTML table -->
+      <div class="social-table-wrap">
+        <table class="social-table">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Handle / Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="social-platform">
+                  <div class="s-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  GitHub
+                </div>
+              </td>
+              <td><a href="https://github.com/zerobun0" target="_blank" rel="noopener">github.com/zerobun0</a></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="social-platform">
+                  <div class="s-icon">✉️</div>
+                  Email
+                </div>
+              </td>
+              <td><a href="mailto:tareku2003@gmail.com">tareku2003@gmail.com</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- QR Code -->
+      <div class="qr-card">
+        <img src="assets/images/qr-code.png" alt="QR code for GitHub profile" />
+        <p class="qr-label">Scan to visit my GitHub → zerobun0</p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Toast notification -->
+<div id="toast" role="alert">
+  <span class="toast-icon" id="toast-icon">✓</span>
+  <span id="toast-msg">Message sent — I'll be in touch!</span>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Tarek<span>.</span>dev</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 Tarek Ahmed Umar</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 560, once: true, easing: 'ease-out-cubic' });</script>
+<script src="js/main.js"></script>
+<script>
+/* ── EmailJS Config — replace with your real IDs ── */
+const EMAILJS_PUBLIC_KEY  = 'ZrrsIW_N3vhYOWO9N'; /* Account > API Keys — set ✓ */
+const EMAILJS_SERVICE_ID  = 'service_nd8cjto';   /* Email Services > ID — set ✓ */
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  /* Email Templates > ID — create template then fill in */
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* ── Contact Form with Spam Protection ── */
+(function () {
+  const form      = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('form-submit-btn');
+  const toast     = document.getElementById('toast');
+  const toastMsg  = document.getElementById('toast-msg');
+  const toastIcon = document.getElementById('toast-icon');
+
+  const RATE_KEY   = 'ta_contact_submissions';
+  const MAX_PER_HR = 3;
+  const formLoadTime = Date.now();
+
+  /* Show toast */
+  function showToast(msg, isError) {
+    toastMsg.textContent   = msg;
+    toastIcon.textContent  = isError ? '✕' : '✓';
+    toast.style.background = isError ? '#c0392b' : '';
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); toast.style.background = ''; }, 4500);
+  }
+
+  /* Rate limiting via localStorage */
+  function isRateLimited() {
+    const now  = Date.now();
+    const data = JSON.parse(localStorage.getItem(RATE_KEY) || '[]');
+    const recent = data.filter(t => now - t < 3600000); /* last hour */
+    localStorage.setItem(RATE_KEY, JSON.stringify(recent));
+    if (recent.length >= MAX_PER_HR) return true;
+    recent.push(now);
+    localStorage.setItem(RATE_KEY, JSON.stringify(recent));
+    return false;
+  }
+
+  /* Field-level error helpers */
+  function setError(groupId, inputId, show) {
+    const grp = document.getElementById(groupId);
+    const inp = document.getElementById(inputId);
+    if (!grp || !inp) return;
+    grp.classList.toggle('has-error', show);
+    inp.classList.toggle('error', show);
+  }
+
+  function validate() {
+    let ok = true;
+    const name    = document.getElementById('inp-name').value.trim();
+    const email   = document.getElementById('inp-email').value.trim();
+    const subject = document.getElementById('inp-subject').value.trim();
+    const message = document.getElementById('inp-message').value.trim();
+
+    setError('fg-name',    'inp-name',    name === '');
+    if (name === '') ok = false;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setError('fg-email', 'inp-email', !emailOk);
+    if (!emailOk) ok = false;
+
+    setError('fg-subject', 'inp-subject', subject === '');
+    if (subject === '') ok = false;
+
+    setError('fg-message', 'inp-message', message.length < 10);
+    if (message.length < 10) ok = false;
+
+    return ok;
+  }
+
+  /* Live clear errors */
+  ['inp-name','inp-email','inp-subject','inp-message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+      const grp = id.replace('inp-', 'fg-');
+      document.getElementById(grp)?.classList.remove('has-error');
+      el.classList.remove('error');
+    });
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    /* Honeypot check — bot filled the hidden field */
+    const honeypot = document.getElementById('website');
+    if (honeypot && honeypot.value.trim() !== '') return;
+
+    /* Too-fast submission (bot behaviour — sub-500ms) */
+    if (Date.now() - formLoadTime < 500) {
+      showToast('Submission too fast — please try again.', true);
+      return;
+    }
+
+    /* Rate limit */
+    if (isRateLimited()) {
+      showToast('Too many messages sent — please wait an hour before trying again.', true);
+      return;
+    }
+
+    /* Send via EmailJS */
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    /* If EmailJS keys are still placeholder, fall back gracefully */
+    if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+      setTimeout(() => {
+        showToast('Message sent — I\'ll be in touch! (configure EmailJS to enable real delivery)', false);
+        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message →';
+      }, 600);
+      return;
+    }
+
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
+      showToast('Message sent — I\'ll be in touch!', false);
+      form.reset();
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      showToast('Oops! Something went wrong. Please email me directly at tareku2003@gmail.com', true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message →';
+    }
+  });
+})();
+</script>
+</body>
+</html>

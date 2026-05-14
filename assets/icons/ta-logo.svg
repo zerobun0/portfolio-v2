@@ -1,0 +1,14 @@
+<svg width="100" height="100" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- T — separated from A, light stroke for visibility on any background -->
+  <path d="M4 12 H46 V27 H29 V84 H21 V27 H4 Z"
+        fill="#292524"
+        stroke="#EDE9E2"
+        stroke-width="2"
+        stroke-linejoin="round"
+        paint-order="stroke fill"/>
+  <!-- A — geometry fixed so leftmost edge (x=50) clears T's right edge (x=46) -->
+  <path fill-rule="evenodd"
+        d="M72 12 L93 84 H82 L78 64 H65 L61 84 H50 L72 12 Z
+           M72 28 L67 56 H77 Z"
+        fill="#D86C3D"/>
+</svg>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarek Ahmed Umar — Portfolio</title>
+  <meta name="description" content="Personal portfolio of Tarek Ahmed Umar — CS student, web developer, and Cisco-certified technician." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="page-overlay"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/icons/ta-logo.svg" alt="TA logo" />
+      <span>Tarek<span class="nav-logo-accent">.</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-mobile">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ MAIN ══════════ -->
+<main>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="hero">
+
+    <!-- Central text -->
+    <div class="hero-content">
+      <span class="hero-greeting">Hey there, I'm</span>
+      <h1 class="hero-name">Tarek Ahmed<br><span class="accent">Umar</span></h1>
+      <div class="hero-typed-wrap">
+        <span class="typed-prefix">$</span>
+        <span id="typed-text"></span>
+      </div>
+      <a href="portfolio.html" class="hero-cta">View My Work →</a>
+
+      <!-- Stats row -->
+      <div class="hero-stats">
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="0">
+          <span class="stat-num">9</span>
+          <span class="stat-label">Cisco Certs</span>
+        </div>
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="80">
+          <span class="stat-num">6</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="160">
+          <span class="stat-num">L3</span>
+          <span class="stat-label">Access HE</span>
+        </div>
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="240">
+          <span class="stat-num">A*</span>
+          <span class="stat-label">Target</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scattered: ID Badge ── -->
+    <div class="scatter-item scatter-badge">
+      <div class="badge-scene">
+        <div class="lanyard-clip"></div>
+        <div class="lanyard-string"></div>
+        <div class="badge-container" title="Hover to flip">
+          <div class="badge-inner">
+
+            <!-- Front -->
+            <div class="badge-face badge-front">
+              <div class="bstripe"></div>
+              <div class="bheader">
+                <div class="bdot"></div>
+                <div>
+                  <div class="blogo-sm">Barking &amp; Dagenham College</div>
+                  <div class="blogo-lg">ACCESS TO HE</div>
+                </div>
+              </div>
+              <div class="bphoto"><div class="bphoto-init">TA</div></div>
+              <div class="bname">Tarek Ahmed Umar</div>
+              <div class="brole">Computer Science · Level 3</div>
+              <div class="bdiv"></div>
+              <div class="brow"><span class="blabel">Student ID</span><span class="bval">BDC-CS-2026</span></div>
+              <div class="brow"><span class="blabel">Programme</span><span class="bval">Level 3</span></div>
+              <div class="brow"><span class="blabel">Session</span><span class="bval">2025 / 2026</span></div>
+              <div class="bbarcode"></div>
+              <div class="bflip-hint">↺ flip</div>
+              <div class="bfoot"></div>
+            </div>
+
+            <!-- Back -->
+            <div class="badge-face badge-back">
+              <div class="bstripe"></div>
+              <div class="bback-h">
+                <div class="bback-ph">TA</div>
+                <div>
+                  <div class="bback-name">Tarek Ahmed Umar</div>
+                  <div class="bback-id">ID: BDC-CS-2026</div>
+                </div>
+              </div>
+              <div class="bcerts">
+                <div class="bcerts-num">9</div>
+                <div class="bcerts-txt">Cisco<br>Certifications</div>
+              </div>
+              <div style="font-size:9px;color:#444;letter-spacing:.22em;text-transform:uppercase;padding:4px 16px 6px">Technical Skills</div>
+              <div class="bskills">
+                <div class="bpill hi">HTML</div>
+                <div class="bpill hi">CSS</div>
+                <div class="bpill hi">JavaScript</div>
+                <div class="bpill hi">Python</div>
+                <div class="bpill">Java</div>
+                <div class="bpill">Android</div>
+              </div>
+              <div class="bprog">
+                Access to HE Diploma (Computer Science)<br>
+                Barking &amp; Dagenham College · 2025–2026
+              </div>
+              <div class="bfoot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scattered: Terminal ── -->
+    <div class="scatter-item scatter-terminal">
+      <div style="background:#1a1a1a;border-radius:12px;padding:20px;font-family:'IBM Plex Mono',monospace;box-shadow:0 8px 36px rgba(0,0,0,.36)">
+        <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+          <div style="width:12px;height:12px;border-radius:50%;background:#ff5f56"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#ffbd2e"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#27c93f"></div>
+          <span style="font-size:10px;color:#555;margin-left:6px;letter-spacing:.12em">zsh — tarek@dev</span>
+        </div>
+        <div style="color:#a3e635;font-size:12px;line-height:2">
+          <div><span style="color:#666">$</span> whoami</div>
+          <div style="margin-bottom:8px;color:#F5F0E8">tarek · cs student · developer</div>
+          <div><span style="color:#666">$</span> ls ~/projects</div>
+          <div style="color:#60a5fa">space-bun/</div>
+          <div style="color:#60a5fa">vaultly/</div>
+          <div style="color:#60a5fa">tailortech/</div>
+          <div style="color:#60a5fa">visit-jordan/</div>
+          <div style="color:#60a5fa">dog-hotel/</div>
+          <div style="color:#60a5fa">calculator/</div>
+          <div style="margin-top:10px;color:#a3e635"><span style="color:#666">$</span>&nbsp;<span style="animation:blink 1s step-start infinite;display:inline-block">▊</span></div>
+        </div>
+      </div>
+      <style>@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}</style>
+    </div>
+
+    <!-- ── Scattered: Ripped Paper Note ── -->
+    <div class="scatter-item scatter-note">
+      <svg width="280" height="210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="ps"><feDropShadow dx="2" dy="4" stdDeviation="2.5" flood-opacity=".15"/></filter>
+        </defs>
+        <path d="M15 10 L265 12 L263 182 Q261 186 258 189 L250 194 L240 197 L25 193 Q22 190 20 186 L17 180 Q15 175 15 170 Z"
+              fill="#FEF9C3" stroke="#E5E0B8" stroke-width=".5" filter="url(#ps)"/>
+        <text x="140" y="52"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">Hey, check out my</text>
+        <text x="140" y="80"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">portfolio projects! 🚀</text>
+        <text x="140" y="118" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Built with HTML, CSS, JS,</text>
+        <text x="140" y="140" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Python, Java &amp; Android</text>
+        <text x="140" y="168" font-family="Caveat,cursive" font-size="13" fill="#D86C3D" text-anchor="middle">→ 6 projects on GitHub</text>
+        <path d="M50 183 Q70 193 92 196" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M88 191 L92 196 L89 201" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- ── Scattered: Event Ticket ── -->
+    <div class="scatter-item scatter-ticket">
+      <svg width="360" height="185" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="ts"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-opacity=".18"/></filter>
+          <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#EDE9E2"/>
+            <stop offset="100%" style="stop-color:#F5F0E8"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="340" height="165" rx="12" fill="url(#tg)" stroke="#C8BDBA" stroke-width="1" filter="url(#ts)"/>
+        <rect x="10" y="10" width="340" height="30" rx="12" fill="#D86C3D" opacity=".12"/>
+        <line x1="255" y1="10" x2="255" y2="175" stroke="#C8BDBA" stroke-width="1" stroke-dasharray="5 5"/>
+        <text x="34" y="50" font-family="'IBM Plex Mono',monospace" font-size="22" fill="#292524" font-weight="700" letter-spacing="-1">TECH EXPO</text>
+        <text x="34" y="72" font-family="'Noto Sans',sans-serif" font-size="12" fill="#78716C">Portfolio Showcase · 2026</text>
+        <rect x="34" y="86" width="50" height="2" rx="1" fill="#D86C3D" opacity=".5"/>
+        <text x="34" y="108" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">DATE &amp; VENUE</text>
+        <text x="34" y="124" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="500">22 May 2026 · BDC</text>
+        <text x="34" y="152" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">ADMIT</text>
+        <text x="34" y="168" font-family="'IBM Plex Mono',monospace" font-size="13" fill="#D86C3D" font-weight="600">TAREK A. UMAR</text>
+        <text x="282" y="58" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="600" text-anchor="middle">ADMIT ONE</text>
+        <text x="282" y="76" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#78716C" text-anchor="middle">TICKET #0522</text>
+        <g transform="translate(266,104)">
+          <rect x="0"  y="0" width="3"  height="40" fill="#292524"/><rect x="5"  y="0" width="2"  height="40" fill="#292524"/>
+          <rect x="9"  y="0" width="4"  height="40" fill="#292524"/><rect x="15" y="0" width="2"  height="40" fill="#292524"/>
+          <rect x="19" y="0" width="5"  height="40" fill="#292524"/><rect x="26" y="0" width="2"  height="40" fill="#292524"/>
+          <rect x="30" y="0" width="3"  height="40" fill="#292524"/><rect x="35" y="0" width="4"  height="40" fill="#292524"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- ── Tech Stickers (10) ── -->
+    <img src="assets/icons/html5.svg"      class="sticker sticker-html5"   alt="HTML5" />
+    <img src="assets/icons/css3.svg"       class="sticker sticker-css3"    alt="CSS3" />
+    <img src="assets/icons/javascript.svg" class="sticker sticker-js"      alt="JavaScript" />
+    <img src="assets/icons/python.svg"     class="sticker sticker-python"  alt="Python" />
+    <img src="assets/icons/java.svg"       class="sticker sticker-java"    alt="Java" />
+    <img src="assets/icons/flutter.svg"    class="sticker sticker-flutter" alt="Flutter" />
+    <img src="assets/icons/git.svg"        class="sticker sticker-git"     alt="Git" />
+    <img src="assets/icons/github.svg"     class="sticker sticker-github"  alt="GitHub" />
+    <img src="assets/icons/android.svg"    class="sticker sticker-android" alt="Android" />
+    <img src="assets/icons/dart.svg"       class="sticker sticker-dart"    alt="Dart" />
+
+  </section><!-- /hero -->
+
+  <!-- ─── BULLETIN BOARD ─── -->
+  <section class="board-section" id="board">
+    <p class="board-eyebrow">Pinned Updates</p>
+    <h2 class="board-title">What's on the board?</h2>
+
+    <div class="bulletin-board">
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="0">
+        <p class="pin-item-label">Status</p>
+        <p class="pin-item-title">Open to Opportunities</p>
+        <span class="pin-tag">Available June 2026</span>
+      </div>
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="80">
+        <p class="pin-item-label">GitHub</p>
+        <p class="pin-item-title">github.com/zerobun0</p>
+        <span class="pin-tag">6 Projects</span>
+      </div>
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="160">
+        <p class="pin-item-label">Certifications</p>
+        <p class="pin-item-title">Cisco Certified × 9</p>
+        <span class="pin-tag">Networking Academy</span>
+      </div>
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="60">
+        <p class="pin-item-label">Core Stack</p>
+        <p class="pin-item-title">HTML · CSS · JavaScript</p>
+        <span class="pin-tag">Web Dev</span>
+      </div>
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="120">
+        <p class="pin-item-label">Education</p>
+        <p class="pin-item-title">Level 3 Access to HE</p>
+        <span class="pin-tag">Computer Science</span>
+      </div>
+
+      <div class="pin-item" data-aos="fade-up" data-aos-delay="200">
+        <p class="pin-item-label">Graduation</p>
+        <p class="pin-item-title">May 2026 · BDC</p>
+        <span class="pin-tag">Barking &amp; Dagenham</span>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Hidden YouTube player — audio only, never visible -->
+<div id="yt-player-hidden" style="position:fixed;top:-200px;left:-200px;width:1px;height:1px;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
+
+<!-- ══════════ LO-FI MUSIC PLAYER ══════════ -->
+<div class="music-widget" id="music-widget">
+  <div class="music-panel" id="music-panel">
+    <p class="music-panel-label">Now Playing</p>
+    <p class="music-panel-title" id="music-track-name">Lofi Hip Hop Radio</p>
+    <div class="music-bars">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="music-controls">
+      <button class="music-ctrl-btn" id="music-prev" aria-label="Previous track">⏮</button>
+      <button class="music-ctrl-btn music-ctrl-main" id="music-play-pause" aria-label="Play/Pause">▶</button>
+      <button class="music-ctrl-btn" id="music-next" aria-label="Next track">⏭</button>
+      <button class="music-ctrl-btn" id="music-mute" aria-label="Mute">🔊</button>
+    </div>
+  </div>
+  <button class="music-btn" id="music-btn" aria-label="Toggle lo-fi music">🎵</button>
+</div>
+
+<!-- ══════════ TERMINAL MODAL ══════════ -->
+<div class="terminal-overlay" id="terminal-overlay" aria-hidden="true">
+  <div class="terminal-modal" role="dialog" aria-modal="true" aria-label="Interactive Terminal">
+    <div class="terminal-titlebar">
+      <div class="terminal-tl-dots">
+        <button class="tl-dot tl-red"    id="terminal-close" title="Close"></button>
+        <button class="tl-dot tl-yellow" title="Minimise"></button>
+        <button class="tl-dot tl-green"  title="Maximise"></button>
+      </div>
+      <span class="terminal-title-txt">zsh — tarek@dev</span>
+    </div>
+    <div class="terminal-body" id="terminal-body"></div>
+    <div class="terminal-input-row">
+      <span class="terminal-cwd" id="terminal-cwd">~/projects</span>
+      <span class="terminal-ps1"> $ </span>
+      <input class="terminal-inp" id="terminal-inp" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input" />
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Tarek<span>.</span>dev</div>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 Tarek Ahmed Umar</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 580, once: true, easing: 'ease-out-cubic' });</script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script>
+  new Typed('#typed-text', {
+    strings: [
+      'Web Developer',
+      'CS Student @ BDC',
+      'Cisco Certified × 9',
+      'Building cool things',
+      'Open to Opportunities',
+    ],
+    typeSpeed: 50,
+    backSpeed: 28,
+    backDelay: 2200,
+    loop: true,
+  });
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

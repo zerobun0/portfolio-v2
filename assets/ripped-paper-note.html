@@ -1,0 +1,40 @@
+<div style="max-width: 500px; margin: 0 auto;">
+  <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="paper-shadow">
+        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.15"/>
+      </filter>
+    </defs>
+    
+    <!-- Ripped paper shape -->
+    <path d="M 20 10 L 480 15 L 478 270 Q 475 273 472 275 L 470 277 Q 468 280 465 282 L 462 284 Q 459 286 457 287 L 454 289 Q 450 291 447 293 L 443 295 Q 440 296 436 297 L 432 299 Q 428 300 424 301 L 30 295 Q 28 293 26 290 L 24 287 Q 23 284 22 281 L 21 278 Q 20 275 20 272 Z" 
+          fill="#FEF9C3" 
+          stroke="#E5E0B8" 
+          stroke-width="0.5"
+          filter="url(#paper-shadow)"/>
+    
+    <!-- Handwritten-style text -->
+    <text x="250" y="80" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="22" fill="#292524" text-anchor="middle" font-weight="400">
+      Hey, check out my
+    </text>
+    <text x="250" y="115" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="22" fill="#292524" text-anchor="middle" font-weight="400">
+      portfolio projects!
+    </text>
+    
+    <text x="250" y="170" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="18" fill="#78716C" text-anchor="middle">
+      Built with HTML, CSS, JS,
+    </text>
+    <text x="250" y="198" font-family="'Segoe Print', 'Comic Sans MS', cursive" font-size="18" fill="#78716C" text-anchor="middle">
+      Python, Java & Android
+    </text>
+    
+    <!-- Doodle arrow -->
+    <path d="M 100 230 Q 120 245 150 250" stroke="#D86C3D" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 145 245 L 150 250 L 148 255" stroke="#D86C3D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Small doodle star -->
+    <g transform="translate(400, 230)">
+      <path d="M 0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z" fill="#D86C3D"/>
+    </g>
+  </svg>
+</div>

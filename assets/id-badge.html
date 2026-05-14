@@ -1,0 +1,395 @@
+
+<style>
+  .badge-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0 2.5rem;
+    gap: 0;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .lanyard-clip {
+    width: 32px;
+    height: 16px;
+    border: 3px solid #8a7f6e;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(135deg, #b5a99a, #c8a96e);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .lanyard-string {
+    width: 3px;
+    height: 65px;
+    background: linear-gradient(180deg, #c8a96e 0%, #f0d896 50%, #c8a96e 100%);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    border-radius: 2px;
+  }
+  .badge-container {
+    perspective: 1200px;
+    cursor: pointer;
+    width: 250px;
+    transition: transform 0.1s ease;
+  }
+  .badge-container:hover {
+    transform: translateY(-2px);
+  }
+  .badge-inner {
+    width: 250px;
+    height: 350px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-origin: center top;
+  }
+  .badge-container:hover .badge-inner {
+    transform: rotateY(180deg);
+  }
+  .badge-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.25);
+    border: 1px solid #333;
+  }
+  .badge-front {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+  }
+  .badge-back {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+    transform: rotateY(180deg);
+  }
+  .badge-stripe {
+    height: 8px;
+    background: linear-gradient(90deg, #c8a96e, #f0d896, #e8c47a, #f0d896, #c8a96e);
+    width: 100%;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .badge-header {
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.1));
+  }
+  .badge-logo-text {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: #c8a96e;
+    text-transform: uppercase;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .badge-logo-main {
+    font-size: 12px;
+    font-weight: 700;
+    color: #F5F0E8;
+    letter-spacing: 0.1em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  }
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f0d896, #c8a96e);
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  .photo-frame {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #c8a96e;
+    overflow: hidden;
+    margin: 16px auto 12px;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f0d896, #c8a96e, #8a7f6e);
+    z-index: -1;
+  }
+  .student-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .badge-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #F5F0E8;
+    text-align: center;
+    letter-spacing: 0.05em;
+    padding: 0 18px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  }
+  .badge-role {
+    font-size: 10px;
+    color: #c8a96e;
+    text-align: center;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    padding: 0 18px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  }
+  .badge-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #333, transparent);
+    margin: 14px 18px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .badge-id-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px;
+    margin-bottom: 10px;
+  }
+  .badge-id-label {
+    font-size: 9px;
+    color: #666;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .badge-id-value {
+    font-size: 11px;
+    color: #c8a96e;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .badge-barcode {
+    margin: 10px 18px 14px;
+    height: 32px;
+    background: repeating-linear-gradient(
+      90deg,
+      #F5F0E8 0px, #F5F0E8 1px,
+      #1a1a1a 1px, #1a1a1a 3px,
+      #F5F0E8 3px, #F5F0E8 4px,
+      #1a1a1a 4px, #1a1a1a 7px,
+      #F5F0E8 7px, #F5F0E8 8px,
+      #1a1a1a 8px, #1a1a1a 9px,
+      #F5F0E8 9px, #F5F0E8 11px,
+      #1a1a1a 11px, #1a1a1a 14px,
+      #F5F0E8 14px, #F5F0E8 15px,
+      #1a1a1a 15px, #1a1a1a 17px,
+      #F5F0E8 17px, #F5F0E8 19px,
+      #1a1a1a 19px, #1a1a1a 22px,
+      #F5F0E8 22px, #F5F0E8 23px,
+      #1a1a1a 23px, #1a1a1a 25px
+    );
+    border-radius: 3px;
+    opacity: 0.8;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .badge-footer {
+    height: 8px;
+    background: linear-gradient(90deg, #c8a96e, #f0d896, #e8c47a, #f0d896, #c8a96e);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .back-photo {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid #c8a96e;
+    overflow: hidden;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .back-student-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .back-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid #333;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.1));
+  }
+  .back-name-block {
+    flex: 1;
+  }
+  .back-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #F5F0E8;
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  }
+  .back-id {
+    font-size: 10px;
+    color: #c8a96e;
+    letter-spacing: 0.12em;
+    margin-top: 3px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 14px 18px;
+  }
+  .skill-pill {
+    background: linear-gradient(135deg, #252525, #2a2a2a);
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 6px 10px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8a96e;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.2s ease;
+  }
+  .skill-pill.accent {
+    border-color: #c8a96e;
+    background: linear-gradient(135deg, #1e1a0e, #252015);
+    box-shadow: 0 1px 3px rgba(200,169,110,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .back-section-label {
+    font-size: 9px;
+    color: #555;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 10px 18px 6px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .back-programme {
+    font-size: 9px;
+    color: #888;
+    letter-spacing: 0.1em;
+    padding: 6px 18px 12px;
+    line-height: 1.7;
+    border-top: 1px solid #333;
+    margin-top: 6px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .hover-hint {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.1em;
+    margin-top: 18px;
+    text-align: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  .badge-container:hover + .hover-hint {
+    opacity: 0.5;
+  }
+</style>
+
+<div class="badge-scene">
+  <div class="lanyard-clip"></div>
+  <div class="lanyard-string"></div>
+
+  <div class="badge-container" title="Hover to flip">
+    <div class="badge-inner">
+
+      <div class="badge-face badge-front">
+        <div class="badge-stripe"></div>
+        <div class="badge-header">
+          <div class="badge-dot"></div>
+          <div>
+            <div class="badge-logo-text">Barking &amp; Dagenham College</div>
+            <div class="badge-logo-main">ACCESS TO HE</div>
+          </div>
+        </div>
+
+        <div class="photo-frame">
+          <img src="https://claude.ai/api/1a05475b-6e37-4a64-8642-4fc05dfd8d75/files/daef3749-c5e5-4a7b-8106-b9cf23cd0478/preview" 
+               alt="Tarek Umar" 
+               class="student-photo" />
+        </div>
+
+        <div class="badge-name">Tarek Ahmed Umar</div>
+        <div class="badge-role">Computer Science</div>
+
+        <div class="badge-divider"></div>
+
+        <div class="badge-id-row">
+          <span class="badge-id-label">Student ID</span>
+          <span class="badge-id-value">BDC-CS-2026</span>
+        </div>
+        <div class="badge-id-row">
+          <span class="badge-id-label">Programme</span>
+          <span class="badge-id-value">Level 3</span>
+        </div>
+        <div class="badge-id-row">
+          <span class="badge-id-label">Session</span>
+          <span class="badge-id-value">2025 / 2026</span>
+        </div>
+
+        <div class="badge-barcode"></div>
+        <div class="badge-footer"></div>
+      </div>
+
+      <div class="badge-face badge-back">
+        <div class="badge-stripe"></div>
+        <div class="back-header">
+          <div class="back-photo">
+            <img src="/mnt/user-data/uploads/1778492150932_image.png" 
+                 alt="Tarek Ahmed Umar" 
+                 class="back-student-photo" />
+          </div>
+          <div class="back-name-block">
+            <div class="back-name">Tarek Ahmed Umar</div>
+            <div class="back-id">ID: BDC-CS-2026</div>
+          </div>
+        </div>
+
+        <div class="back-section-label">Technical Skills</div>
+        <div class="skills-grid">
+          <div class="skill-pill accent">HTML</div>
+          <div class="skill-pill accent">CSS</div>
+          <div class="skill-pill accent">JavaScript</div>
+          <div class="skill-pill">Python</div>
+          <div class="skill-pill">Java</div>
+          <div class="skill-pill">Android</div>
+        </div>
+
+        <div class="back-programme">
+          Access to HE Diploma (Computer Science)<br>
+          Barking &amp; Dagenham College · 2025–2026
+        </div>
+
+        <div class="badge-footer"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hover-hint">hover to flip ↺</p>
+</div>

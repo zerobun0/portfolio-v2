@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Tarek Ahmed Umar</title>
+  <meta name="description" content="Portfolio of Tarek Ahmed Umar — Cisco certifications and GitHub projects." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="page-overlay"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/icons/ta-logo.svg" alt="TA logo" />
+      <span>Tarek<span class="nav-logo-accent">.</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-mobile">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ─── HEADER & FILTER TABS ─── -->
+  <div class="portfolio-header">
+    <span class="section-eyebrow">My Work</span>
+    <h1 class="section-title">Portfolio</h1>
+    <p class="section-sub">
+      Nine Cisco Networking Academy certifications and a growing collection of GitHub projects —
+      each one a step forward in my journey as a developer.
+    </p>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs" role="tablist">
+      <button class="filter-tab active" data-filter="all" role="tab">
+        All <span class="tab-count">15</span>
+      </button>
+      <button class="filter-tab" data-filter="certs" role="tab">
+        Cisco Certifications <span class="tab-count">9</span>
+      </button>
+      <button class="filter-tab" data-filter="projects" role="tab">
+        GitHub Projects <span class="tab-count">6</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── SECTION: ALL INTRO ─── -->
+  <div class="portfolio-section" id="section-all"></div>
+
+  <!-- ─── SECTION: CISCO CERTIFICATIONS ─── -->
+  <div class="portfolio-section" id="section-certs">
+    <p class="section-subtitle">Cisco Networking Academy — Certifications</p>
+
+    <div class="folders-grid">
+
+      <!-- 1 -->
+      <div class="folder-card" data-cert="it-essentials" style="--fc:#4A90D9" data-aos="zoom-in" data-aos-delay="0">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/it-essentials.png" alt="IT Essentials badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">IT Essentials</div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="folder-card" data-cert="hardware-upgrade" style="--fc:#7B5EA7" data-aos="zoom-in" data-aos-delay="50">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/hardware-upgrade.png" alt="Hardware & Upgrade Support badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Hardware &amp; Upgrade Support</div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="folder-card" data-cert="os-support" style="--fc:#2E9E6B" data-aos="zoom-in" data-aos-delay="100">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/os-support.png" alt="Operating Systems Support badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Operating Systems Support</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="folder-card" data-cert="security-connectivity" style="--fc:#D97B4A" data-aos="zoom-in" data-aos-delay="150">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/security-connectivity.png" alt="Security & Connectivity Support badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Security &amp; Connectivity Support</div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="folder-card" data-cert="customer-support" style="--fc:#D4547A" data-aos="zoom-in" data-aos-delay="200">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/customer-support.png" alt="IT Customer Support Basics badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">IT Customer Support Basics</div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="folder-card" data-cert="js-essentials" style="--fc:#C9A227" data-dk data-aos="zoom-in" data-aos-delay="250">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/js-essentials.png" alt="JavaScript Essentials 1 badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">JavaScript Essentials 1</div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="folder-card" data-cert="iot-intro" style="--fc:#3BAA8A" data-aos="zoom-in" data-aos-delay="300">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/iot-intro.png" alt="Introduction to IoT badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Introduction to IoT</div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="folder-card" data-cert="network-tech" style="--fc:#3476C0" data-aos="zoom-in" data-aos-delay="350">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/network-tech.png" alt="Network Technician Career Path badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Network Technician Career Path</div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="folder-card" data-cert="cybersecurity" style="--fc:#5B3FA0" data-aos="zoom-in" data-aos-delay="400">
+        <div class="folder-tab"></div>
+        <div class="folder-body">
+          <div class="folder-icon-wrap">
+            <img src="assets/images/cisco/cybersecurity.png" alt="Junior Cybersecurity Analyst badge" class="cert-badge-thumb" />
+          </div>
+          <div class="folder-name">Junior Cybersecurity Analyst</div>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:22px;font-family:var(--f-mono);font-size:12px;color:var(--subtle)">
+      ← Click any folder to view certification details
+    </p>
+  </div>
+
+  <!-- ─── SECTION: GITHUB PROJECTS ─── -->
+  <div class="portfolio-section" id="section-projects">
+    <p class="section-subtitle">GitHub — Personal Projects</p>
+
+    <div class="projects-grid">
+
+      <!-- Space-Bun -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="project-img-wrap" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="assets/images/projects/space-bun-1.png" alt="Space-Bun menu" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/space-bun-2.png" alt="Space-Bun gameplay" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/space-bun-3.png" alt="Space-Bun gameplay 2" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/space-bun-4.png" alt="Space-Bun upgrades" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/space-bun-5.png" alt="Space-Bun modes" /></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+          <div class="carousel-dots"></div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">🐰</span>
+          <a href="https://github.com/zerobun0/space-bun" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">Space-Bun</h3>
+        <p class="project-desc">
+          A Python-powered game featuring a full menu system, multiple distinct game modes,
+          and a level &amp; ranking system with upgrades and an account-based progression engine.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">Python</span>
+          <span class="project-tech">Pygame</span>
+          <span class="project-tech">Game Dev</span>
+        </div>
+        <a href="https://github.com/zerobun0/space-bun" class="project-open-btn" target="_blank" rel="noopener">
+          🎮 Open Game on GitHub
+        </a>
+      </div>
+
+      <!-- Vaultly -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="project-img-wrap" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-1.png" alt="Vaultly home" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-2.png" alt="Vaultly transactions" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-3.png" alt="Vaultly investments" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-4.png" alt="Vaultly savings" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-5.png" alt="Vaultly tax" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/vaultly-6.png" alt="Vaultly settings" /></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+          <div class="carousel-dots"></div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">💰</span>
+          <a href="https://github.com/zerobun0/vaultly" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">Vaultly</h3>
+        <p class="project-desc">
+          A personal finance management web app with dashboards for transactions, investment
+          portfolio tracking, savings goals, and tax insights — all in a clean, minimal UI.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+          <span class="project-tech">Finance</span>
+        </div>
+      </div>
+
+      <!-- TailorTech -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="project-img-wrap" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-1.png" alt="TailorTech home" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-2.png" alt="TailorTech AI fit check" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-3.png" alt="TailorTech studio" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-4.png" alt="TailorTech studio 2" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-5.png" alt="TailorTech size insights" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/tailortech-6.png" alt="TailorTech settings" /></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+          <div class="carousel-dots"></div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">✂️</span>
+          <a href="https://github.com/zerobun0/tailortech" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">TailorTech</h3>
+        <p class="project-desc">
+          An AI-powered fashion app with a fit-check feature, studio section for body
+          measurements, size insights dashboard, and a settings page for personalisation.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+          <span class="project-tech">AI / Fashion</span>
+        </div>
+      </div>
+
+      <!-- Visit Jordan -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="180">
+        <div class="project-img-wrap" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-1.png" alt="Visit Jordan home" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-2.png" alt="Visit Jordan home 2" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-3.png" alt="Visit Jordan attractions" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-4.png" alt="Visit Jordan attractions 2" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-5.png" alt="Visit Jordan attractions 3" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-6.png" alt="Visit Jordan AI assistant" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-7.png" alt="Visit Jordan quiz" /></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+          <div class="carousel-dots"></div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">🌍</span>
+          <a href="https://github.com/zerobun0/visit-jordan" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">Visit Jordan</h3>
+        <p class="project-desc">
+          A multi-page tourism website for Jordan featuring destinations, an AI travel assistant,
+          interactive quizzes, and gallery sections — built with responsive HTML and CSS.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+          <span class="project-tech">Tourism</span>
+        </div>
+      </div>
+
+      <!-- Dog Hotel -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="240">
+        <div class="project-img-wrap" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-1.png" alt="Dog Hotel home" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-2.png" alt="Dog Hotel services" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-3.png" alt="Dog Hotel packages" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-4.png" alt="Dog Hotel gallery" /></div>
+            <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-5.png" alt="Dog Hotel contact" /></div>
+          </div>
+          <button class="carousel-btn prev" aria-label="Previous">‹</button>
+          <button class="carousel-btn next" aria-label="Next">›</button>
+          <div class="carousel-dots"></div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">🐶</span>
+          <a href="https://github.com/zerobun0/dog-hotel" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">Dog Hotel</h3>
+        <p class="project-desc">
+          A pet hotel booking website with a services overview, tiered packages, photo gallery,
+          and contact form — fully responsive and designed for a warm, friendly user experience.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+        </div>
+      </div>
+
+      <!-- Calculator -->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="project-img-wrap">
+          <div class="carousel-track" style="transform:translateX(0)">
+            <div class="carousel-slide"><img src="assets/images/projects/calculator-1.png" alt="Calculator screenshot" /></div>
+          </div>
+        </div>
+        <div class="project-card-top">
+          <span class="project-icon">🧮</span>
+          <a href="https://github.com/zerobun0/calculator" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+        </div>
+        <h3 class="project-name">Calculator</h3>
+        <p class="project-desc">
+          A fully functional JavaScript calculator with all standard arithmetic operations,
+          keyboard input support, and a clean minimal design — a foundational web dev project.
+        </p>
+        <div class="project-tech-list">
+          <span class="project-tech">HTML</span>
+          <span class="project-tech">CSS</span>
+          <span class="project-tech">JavaScript</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ══════════ DETAIL PANEL ══════════ -->
+<div class="detail-overlay" id="detail-overlay"></div>
+
+<aside class="detail-panel" id="detail-panel" role="dialog" aria-modal="true" aria-label="Certification details">
+  <div class="detail-panel-header">
+    <span class="detail-panel-title">Certification Details</span>
+    <button class="detail-close-btn" id="detail-close" aria-label="Close panel">✕</button>
+  </div>
+  <div class="detail-panel-body">
+
+    <!-- Cisco badge image -->
+    <img id="dp-badge-img" class="detail-badge-img" src="" alt="Cisco badge" />
+
+    <!-- Mini folder preview -->
+    <div class="folder-card detail-folder-mini" style="--fc:#4A90D9">
+      <div class="folder-tab" id="dp-folder-tab"></div>
+      <div class="folder-body" id="dp-folder-body">
+        <div class="folder-icon-wrap" id="dp-folder-icon">💻</div>
+      </div>
+    </div>
+
+    <h2 class="detail-cert-name" id="dp-cert-name">IT Essentials</h2>
+    <p class="detail-issuer" id="dp-cert-issuer">Cisco Networking Academy</p>
+
+    <!-- HTML Table for cert details — required for WNI534 grading -->
+    <table class="detail-table">
+      <tbody>
+        <tr>
+          <th>Issuer</th>
+          <td id="dp-cert-issuer-td">Cisco Networking Academy</td>
+        </tr>
+        <tr>
+          <th>Category</th>
+          <td id="dp-cert-cat">—</td>
+        </tr>
+        <tr>
+          <th>Level</th>
+          <td id="dp-cert-level">—</td>
+        </tr>
+        <tr>
+          <th>Platform</th>
+          <td>Cisco NetAcad</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="detail-desc" id="dp-cert-desc">
+      Select a certification to view details.
+    </p>
+
+    <p class="detail-skills-label">Skills Covered</p>
+    <div class="detail-skills" id="dp-skills"></div>
+
+  </div>
+</aside>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Tarek<span>.</span>dev</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 Tarek Ahmed Umar</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 560, once: true, easing: 'ease-out-cubic' });</script>
+<script src="js/main.js"></script>
+<script src="js/portfolio.js"></script>
+</body>
+</html>
