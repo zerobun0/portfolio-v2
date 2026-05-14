@@ -186,10 +186,18 @@ window.addEventListener('load', () => {
 (function () {
   const el = document.getElementById('view-count');
   if (!el) return;
-  fetch('https://api.countapi.xyz/hit/zerobun0.github.io/visits')
-    .then(r => r.json())
-    .then(d => { if (d && d.value) el.textContent = d.value.toLocaleString(); })
-    .catch(() => { el.textContent = '—'; });
+
+  /* Increment local visit count (persists in this browser) */
+  const KEY = 'ta_site_visits';
+  let count = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
+  localStorage.setItem(KEY, count);
+  el.textContent = count.toLocaleString();
+
+  /* Try to get the global count from a free counter API */
+  fetch('https://api.counterapi.dev/v1/zerobun0-portfolio/visits/up')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d && d.count) el.textContent = d.count.toLocaleString(); })
+    .catch(() => {});
 })();
 
 // ── Ripped Note → Portfolio ───────────────────────────

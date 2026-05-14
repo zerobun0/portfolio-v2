@@ -247,14 +247,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel()
 
   function openLightbox(slides, idx) {
     currentSlides = slides;
-    lbIdx = idx;
+    lbIdx = ((idx % slides.length) + slides.length) % slides.length;
     lbImg.src = slides[lbIdx];
     lbImg.alt = '';
     lb.classList.add('open');
     lb.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    lbPrev.style.display = slides.length > 1 ? '' : 'none';
-    lbNext.style.display = slides.length > 1 ? '' : 'none';
+    if (lbPrev) lbPrev.style.display = slides.length > 1 ? '' : 'none';
+    if (lbNext) lbNext.style.display = slides.length > 1 ? '' : 'none';
   }
 
   function closeLightbox() {
@@ -269,13 +269,25 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel()
     lbImg.src = currentSlides[lbIdx];
   }
 
+  /* Wire each carousel wrap — clicking any img opens lightbox at active slide */
   document.querySelectorAll('.project-img-wrap').forEach(wrap => {
-    const slides = Array.from(wrap.querySelectorAll('.carousel-slide img')).map(img => img.src);
-    if (!slides.length) return;
-    wrap.querySelectorAll('.carousel-slide img').forEach((img, i) => {
+    const imgs = Array.from(wrap.querySelectorAll('.carousel-slide img'));
+    if (!imgs.length) return;
+    const slides = imgs.map(img => img.src);
+
+    /* Get the current active carousel index from translateX */
+    function activeIdx() {
+      const track = wrap.querySelector('.carousel-track');
+      if (!track) return 0;
+      const tx = track.style.transform;
+      const match = tx.match(/translateX\(-(\d+)%\)/);
+      return match ? parseInt(match[1], 10) / 100 : 0;
+    }
+
+    imgs.forEach(img => {
       img.addEventListener('click', e => {
         e.stopPropagation();
-        openLightbox(slides, i);
+        openLightbox(slides, activeIdx());
       });
     });
   });
