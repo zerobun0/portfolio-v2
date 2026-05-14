@@ -99,6 +99,7 @@ window.addEventListener('load', () => {
   let isMuted   = false;
   let ytPlayer  = null;
   let ytReady   = false;
+  let apiLoaded = false;
 
   function setActive(state) {
     isPlaying = state;
@@ -111,20 +112,21 @@ window.addEventListener('load', () => {
     if (trackName) trackName.textContent = TRACKS[idx].name;
   }
 
-  function buildPlayer() {
+  /* Create player with autoplay:1 — must be called in or after a user gesture */
+  function createPlayer() {
     if (ytPlayer) return;
     const el = document.getElementById('yt-player-hidden');
-    if (!el) return;
+    if (!el || !window.YT || !window.YT.Player) return;
     ytPlayer = new YT.Player(el, {
       height: '1', width: '1',
-      videoId: TRACKS[0].id,
-      playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1 },
+      videoId: TRACKS[idx].id,
+      playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1 },
       events: {
-        onReady()       { ytReady = true; },
+        onReady()        { ytReady = true; },
         onStateChange(e) {
-          if (e.data === YT.PlayerState.PLAYING) setActive(true);
-          if (e.data === YT.PlayerState.PAUSED)  setActive(false);
-          if (e.data === YT.PlayerState.ENDED) {
+          if (e.data === 1) setActive(true);   // PLAYING
+          if (e.data === 2) setActive(false);  // PAUSED
+          if (e.data === 0) {                  // ENDED — advance
             idx = (idx + 1) % TRACKS.length;
             updateName();
             ytPlayer.loadVideoById(TRACKS[idx].id);
@@ -134,46 +136,59 @@ window.addEventListener('load', () => {
     });
   }
 
-  /* Load API eagerly so player is ready before user clicks */
-  if (window.YT && window.YT.Player) {
-    buildPlayer();
-  } else {
-    window.onYouTubeIframeAPIReady = buildPlayer;
+  /* Inject YT API script once — player is created on first click, not here */
+  function loadYTScript() {
+    if (apiLoaded) return;
+    apiLoaded = true;
+    if (window.YT && window.YT.Player) return;
     const s = document.createElement('script');
     s.src = 'https://www.youtube.com/iframe_api';
     document.head.appendChild(s);
+  }
+  loadYTScript();
+
+  /* Retry helper — keeps calling fn every 100ms until YT.Player is available */
+  function whenReady(fn) {
+    if (window.YT && window.YT.Player) { fn(); return; }
+    const t = setInterval(() => {
+      if (window.YT && window.YT.Player) { clearInterval(t); fn(); }
+    }, 100);
   }
 
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     panel.classList.toggle('open', isOpen);
-    if (isOpen && !isPlaying && ytReady) {
+    if (!isOpen) return;
+    /* Create and auto-play on first open; resume on subsequent opens */
+    if (!ytPlayer) {
+      whenReady(createPlayer); /* createPlayer has autoplay:1 */
+    } else if (ytReady && !isPlaying) {
       ytPlayer.loadVideoById(TRACKS[idx].id);
     }
   });
 
   if (playPause) playPause.addEventListener('click', () => {
-    if (!ytReady) return;
+    if (!ytPlayer || !ytReady) return;
     if (isPlaying) ytPlayer.pauseVideo();
     else           ytPlayer.loadVideoById(TRACKS[idx].id);
   });
 
   if (nextBtn) nextBtn.addEventListener('click', () => {
-    if (!ytReady) return;
+    if (!ytPlayer || !ytReady) return;
     idx = (idx + 1) % TRACKS.length;
     updateName();
     ytPlayer.loadVideoById(TRACKS[idx].id);
   });
 
   if (prevBtn) prevBtn.addEventListener('click', () => {
-    if (!ytReady) return;
+    if (!ytPlayer || !ytReady) return;
     idx = (idx - 1 + TRACKS.length) % TRACKS.length;
     updateName();
     ytPlayer.loadVideoById(TRACKS[idx].id);
   });
 
   if (muteBtn) muteBtn.addEventListener('click', () => {
-    if (!ytReady) return;
+    if (!ytPlayer || !ytReady) return;
     isMuted = !isMuted;
     if (isMuted) { ytPlayer.mute();   muteBtn.textContent = '🔇'; }
     else         { ytPlayer.unMute(); muteBtn.textContent = '🔊'; }
