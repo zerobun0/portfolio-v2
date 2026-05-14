@@ -99,11 +99,10 @@ window.addEventListener('load', () => {
   let isMuted   = false;
   let ytPlayer  = null;
   let ytReady   = false;
-  let pending   = false;
 
   function setActive(state) {
     isPlaying = state;
-    widget.classList.toggle('active', state);
+    if (widget) widget.classList.toggle('active', state);
     openBtn.classList.toggle('playing', state);
     if (playPause) playPause.textContent = state ? '⏸' : '▶';
   }
@@ -114,17 +113,18 @@ window.addEventListener('load', () => {
 
   function buildPlayer() {
     if (ytPlayer) return;
-    ytPlayer = new YT.Player('yt-player-hidden', {
+    const el = document.getElementById('yt-player-hidden');
+    if (!el) return;
+    ytPlayer = new YT.Player(el, {
       height: '1', width: '1',
       videoId: TRACKS[0].id,
       playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1 },
       events: {
-        onReady(e) {
-          ytReady = true;
-          if (pending) { e.target.playVideo(); pending = false; setActive(true); }
-        },
+        onReady()       { ytReady = true; },
         onStateChange(e) {
-          if (e.data === 0) {
+          if (e.data === YT.PlayerState.PLAYING) setActive(true);
+          if (e.data === YT.PlayerState.PAUSED)  setActive(false);
+          if (e.data === YT.PlayerState.ENDED) {
             idx = (idx + 1) % TRACKS.length;
             updateName();
             ytPlayer.loadVideoById(TRACKS[idx].id);
@@ -134,45 +134,62 @@ window.addEventListener('load', () => {
     });
   }
 
-  function loadYT() {
-    if (window.YT && window.YT.Player) { buildPlayer(); return; }
+  /* Load API eagerly so player is ready before user clicks */
+  if (window.YT && window.YT.Player) {
+    buildPlayer();
+  } else {
     window.onYouTubeIframeAPIReady = buildPlayer;
     const s = document.createElement('script');
     s.src = 'https://www.youtube.com/iframe_api';
     document.head.appendChild(s);
   }
 
-  function play(trackIndex) {
-    idx = trackIndex;
-    updateName();
-    if (!ytPlayer) { loadYT(); pending = true; return; }
-    if (ytReady)   { ytPlayer.loadVideoById(TRACKS[idx].id); ytPlayer.playVideo(); setActive(true); }
-    else           { pending = true; }
-  }
-
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     panel.classList.toggle('open', isOpen);
-    if (isOpen && !isPlaying) play(idx);
+    if (isOpen && !isPlaying && ytReady) {
+      ytPlayer.loadVideoById(TRACKS[idx].id);
+    }
   });
 
   if (playPause) playPause.addEventListener('click', () => {
     if (!ytReady) return;
-    if (isPlaying) { ytPlayer.pauseVideo(); setActive(false); }
-    else           { ytPlayer.playVideo();  setActive(true);  }
+    if (isPlaying) ytPlayer.pauseVideo();
+    else           ytPlayer.loadVideoById(TRACKS[idx].id);
   });
 
-  if (nextBtn) nextBtn.addEventListener('click', () => play((idx + 1) % TRACKS.length));
-  if (prevBtn) prevBtn.addEventListener('click', () => play((idx - 1 + TRACKS.length) % TRACKS.length));
+  if (nextBtn) nextBtn.addEventListener('click', () => {
+    if (!ytReady) return;
+    idx = (idx + 1) % TRACKS.length;
+    updateName();
+    ytPlayer.loadVideoById(TRACKS[idx].id);
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', () => {
+    if (!ytReady) return;
+    idx = (idx - 1 + TRACKS.length) % TRACKS.length;
+    updateName();
+    ytPlayer.loadVideoById(TRACKS[idx].id);
+  });
 
   if (muteBtn) muteBtn.addEventListener('click', () => {
     if (!ytReady) return;
     isMuted = !isMuted;
     if (isMuted) { ytPlayer.mute();   muteBtn.textContent = '🔇'; }
-    else          { ytPlayer.unMute(); muteBtn.textContent = '🔊'; }
+    else         { ytPlayer.unMute(); muteBtn.textContent = '🔊'; }
   });
 
   updateName();
+})();
+
+// ── Page View Counter ─────────────────────────────────
+(function () {
+  const el = document.getElementById('view-count');
+  if (!el) return;
+  fetch('https://api.countapi.xyz/hit/zerobun0.github.io/visits')
+    .then(r => r.json())
+    .then(d => { if (d && d.value) el.textContent = d.value.toLocaleString(); })
+    .catch(() => { el.textContent = '—'; });
 })();
 
 // ── Ripped Note → Portfolio ───────────────────────────

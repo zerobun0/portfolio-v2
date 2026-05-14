@@ -232,3 +232,62 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel()
     resetTimer();
   });
 })();
+
+// ── Image Lightbox ───────────────────────────────────
+(function initLightbox() {
+  const lb      = document.getElementById('img-lightbox');
+  const lbImg   = document.getElementById('lightbox-img');
+  const lbClose = document.getElementById('lightbox-close');
+  const lbPrev  = document.getElementById('lightbox-prev');
+  const lbNext  = document.getElementById('lightbox-next');
+  if (!lb || !lbImg) return;
+
+  let currentSlides = [];
+  let lbIdx = 0;
+
+  function openLightbox(slides, idx) {
+    currentSlides = slides;
+    lbIdx = idx;
+    lbImg.src = slides[lbIdx];
+    lbImg.alt = '';
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lbPrev.style.display = slides.length > 1 ? '' : 'none';
+    lbNext.style.display = slides.length > 1 ? '' : 'none';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { lbImg.src = ''; }, 260);
+  }
+
+  function navLightbox(dir) {
+    lbIdx = ((lbIdx + dir) + currentSlides.length) % currentSlides.length;
+    lbImg.src = currentSlides[lbIdx];
+  }
+
+  document.querySelectorAll('.project-img-wrap').forEach(wrap => {
+    const slides = Array.from(wrap.querySelectorAll('.carousel-slide img')).map(img => img.src);
+    if (!slides.length) return;
+    wrap.querySelectorAll('.carousel-slide img').forEach((img, i) => {
+      img.addEventListener('click', e => {
+        e.stopPropagation();
+        openLightbox(slides, i);
+      });
+    });
+  });
+
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  if (lbPrev) lbPrev.addEventListener('click', () => navLightbox(-1));
+  if (lbNext) lbNext.addEventListener('click', () => navLightbox(1));
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  navLightbox(-1);
+    if (e.key === 'ArrowRight') navLightbox(1);
+  });
+})();
