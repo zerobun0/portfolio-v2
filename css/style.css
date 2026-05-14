@@ -28,7 +28,7 @@
 
 /* ==================== RESET ==================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: var(--nav-h); }
 body {
   font-family: var(--f-sans);
   background: var(--bg);
@@ -996,13 +996,16 @@ main { padding-top: var(--nav-h); }
 .project-link-btn {
   font-family: var(--f-mono);
   font-size: 11px;
-  color: var(--muted);
-  border: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
   border-radius: 6px;
-  padding: 4px 10px;
-  transition: color 0.2s, border-color 0.2s;
+  padding: 5px 12px;
+  background: rgba(216,108,61,0.08);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  letter-spacing: 0.02em;
 }
-.project-link-btn:hover { color: var(--accent); border-color: var(--accent); }
+.project-link-btn:hover { background: rgba(216,108,61,0.16); border-color: var(--accent-h); color: var(--accent-h); }
 .project-name {
   font-family: var(--f-mono);
   font-size: 16px;
@@ -1711,6 +1714,27 @@ footer {
   .bulletin-board { grid-template-columns: 1fr; }
   .folders-grid { grid-template-columns: repeat(2, 1fr); }
   html { font-size: 15px; }
+  .about-hero { padding: 40px 20px 32px; }
+  .skills-section { padding: 40px 20px; }
+  .cork-section { padding: 40px 20px; }
+  .timeline-section { padding: 40px 20px; }
+  .portfolio-header { padding: 40px 20px 0; }
+  .contact-wrap { padding: 40px 20px 60px; }
+  .section-title { font-size: clamp(1.6rem, 6vw, 2rem); }
+}
+
+/* ==================== TOUCH / MOBILE DEVICE FIXES ==================== */
+@media (hover: none), (pointer: coarse) {
+  /* Hide custom cursor — touch devices don't have a pointer */
+  #cursor-dot, #cursor-ring { display: none !important; }
+  body, button, a, .badge-container { cursor: auto !important; }
+
+  /* Always show carousel nav buttons (no hover on touch) */
+  .carousel-btn { opacity: 1 !important; cursor: auto; }
+  .carousel-dot { cursor: auto; }
+
+  /* Bigger tap targets for carousel buttons */
+  .carousel-btn { width: 34px; height: 34px; font-size: 16px; }
 }
 
 /* ==================== ID BADGE (moved from inline) ==================== */

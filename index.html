@@ -7,6 +7,7 @@
   <meta name="description" content="Personal portfolio of Tarek Ahmed Umar — CS student, web developer, and Cisco-certified technician." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -17,24 +18,24 @@
 <!-- ══════════ NAV ══════════ -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
+    <a href="#home" class="nav-logo">
       <img src="assets/icons/ta-logo.svg" alt="TA logo" />
       <span>Tarek<span class="nav-logo-accent">.</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="nav-hamburger" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-mobile">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="contact.html">Contact</a>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
     </div>
   </div>
 </nav>
@@ -42,259 +43,934 @@
 <!-- ══════════ MAIN ══════════ -->
 <main>
 
-  <!-- ─── HERO ─── -->
-  <section class="hero" id="hero">
+  <!-- ════════════════════════════════════════════
+       HOME
+  ════════════════════════════════════════════ -->
+  <section id="home">
 
-    <!-- Central text -->
-    <div class="hero-content">
-      <span class="hero-greeting">Hey there, I'm</span>
-      <h1 class="hero-name">Tarek<span class="accent">.</span></h1>
-      <div class="hero-typed-wrap">
-        <span class="typed-prefix">$</span>
-        <span id="typed-text"></span>
+    <!-- ─── HERO ─── -->
+    <div class="hero">
+
+      <!-- Central text -->
+      <div class="hero-content">
+        <span class="hero-greeting">Hey there, I'm</span>
+        <h1 class="hero-name">Tarek<span class="accent">.</span></h1>
+        <div class="hero-typed-wrap">
+          <span class="typed-prefix">$</span>
+          <span id="typed-text"></span>
+        </div>
+        <a href="#portfolio" class="hero-cta">View My Work →</a>
+
+        <!-- Stats row -->
+        <div class="hero-stats">
+          <div class="stat-box" data-aos="fade-up" data-aos-delay="0">
+            <span class="stat-num">9</span>
+            <span class="stat-label">Cisco Certs</span>
+          </div>
+          <div class="stat-box" data-aos="fade-up" data-aos-delay="80">
+            <span class="stat-num">6</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-box" data-aos="fade-up" data-aos-delay="160">
+            <span class="stat-num">L3</span>
+            <span class="stat-label">Access HE</span>
+          </div>
+          <div class="stat-box" data-aos="fade-up" data-aos-delay="240">
+            <span class="stat-num">A*</span>
+            <span class="stat-label">Target</span>
+          </div>
+        </div>
       </div>
-      <a href="portfolio.html" class="hero-cta">View My Work →</a>
 
-      <!-- Stats row -->
-      <div class="hero-stats">
-        <div class="stat-box" data-aos="fade-up" data-aos-delay="0">
-          <span class="stat-num">9</span>
-          <span class="stat-label">Cisco Certs</span>
-        </div>
-        <div class="stat-box" data-aos="fade-up" data-aos-delay="80">
-          <span class="stat-num">6</span>
-          <span class="stat-label">Projects</span>
-        </div>
-        <div class="stat-box" data-aos="fade-up" data-aos-delay="160">
-          <span class="stat-num">L3</span>
-          <span class="stat-label">Access HE</span>
-        </div>
-        <div class="stat-box" data-aos="fade-up" data-aos-delay="240">
-          <span class="stat-num">A*</span>
-          <span class="stat-label">Target</span>
-        </div>
-      </div>
-    </div>
+      <!-- ── Scattered: ID Badge ── -->
+      <div class="scatter-item scatter-badge">
+        <div class="badge-scene">
+          <div class="lanyard-clip"></div>
+          <div class="lanyard-string"></div>
+          <div class="badge-container" title="Hover to flip">
+            <div class="badge-inner">
 
-    <!-- ── Scattered: ID Badge ── -->
-    <div class="scatter-item scatter-badge">
-      <div class="badge-scene">
-        <div class="lanyard-clip"></div>
-        <div class="lanyard-string"></div>
-        <div class="badge-container" title="Hover to flip">
-          <div class="badge-inner">
-
-            <!-- Front -->
-            <div class="badge-face badge-front">
-              <div class="bstripe"></div>
-              <div class="bheader">
-                <div class="bdot"></div>
-                <div>
-                  <div class="blogo-sm">Barking &amp; Dagenham College</div>
-                  <div class="blogo-lg">ACCESS TO HE</div>
+              <!-- Front -->
+              <div class="badge-face badge-front">
+                <div class="bstripe"></div>
+                <div class="bheader">
+                  <div class="bdot"></div>
+                  <div>
+                    <div class="blogo-sm">Barking &amp; Dagenham College</div>
+                    <div class="blogo-lg">ACCESS TO HE</div>
+                  </div>
                 </div>
+                <div class="bphoto"><div class="bphoto-init">TA</div></div>
+                <div class="bname">Tarek</div>
+                <div class="brole">Computer Science · Level 3</div>
+                <div class="bdiv"></div>
+                <div class="brow"><span class="blabel">Student ID</span><span class="bval">BDC-CS-2026</span></div>
+                <div class="brow"><span class="blabel">Programme</span><span class="bval">Level 3</span></div>
+                <div class="brow"><span class="blabel">Session</span><span class="bval">2025 / 2026</span></div>
+                <div class="bbarcode"></div>
+                <div class="bflip-hint">↺ flip</div>
+                <div class="bfoot"></div>
               </div>
-              <div class="bphoto"><div class="bphoto-init">TA</div></div>
-              <div class="bname">Tarek</div>
-              <div class="brole">Computer Science · Level 3</div>
-              <div class="bdiv"></div>
-              <div class="brow"><span class="blabel">Student ID</span><span class="bval">BDC-CS-2026</span></div>
-              <div class="brow"><span class="blabel">Programme</span><span class="bval">Level 3</span></div>
-              <div class="brow"><span class="blabel">Session</span><span class="bval">2025 / 2026</span></div>
-              <div class="bbarcode"></div>
-              <div class="bflip-hint">↺ flip</div>
-              <div class="bfoot"></div>
-            </div>
 
-            <!-- Back -->
-            <div class="badge-face badge-back">
-              <div class="bstripe"></div>
-              <div class="bback-h">
-                <div class="bback-ph">TA</div>
-                <div>
-                  <div class="bback-name">Tarek</div>
-                  <div class="bback-id">ID: BDC-CS-2026</div>
+              <!-- Back -->
+              <div class="badge-face badge-back">
+                <div class="bstripe"></div>
+                <div class="bback-h">
+                  <div class="bback-ph">TA</div>
+                  <div>
+                    <div class="bback-name">Tarek</div>
+                    <div class="bback-id">ID: BDC-CS-2026</div>
+                  </div>
                 </div>
+                <div class="bcerts">
+                  <div class="bcerts-num">9</div>
+                  <div class="bcerts-txt">Cisco<br>Certifications</div>
+                </div>
+                <div style="font-size:9px;color:#444;letter-spacing:.22em;text-transform:uppercase;padding:4px 16px 6px">Technical Skills</div>
+                <div class="bskills">
+                  <div class="bpill hi">HTML</div>
+                  <div class="bpill hi">CSS</div>
+                  <div class="bpill hi">JavaScript</div>
+                  <div class="bpill hi">Python</div>
+                  <div class="bpill">Java</div>
+                  <div class="bpill">Android</div>
+                </div>
+                <div class="bprog">
+                  Access to HE Diploma (Computer Science)<br>
+                  Barking &amp; Dagenham College · 2025–2026
+                </div>
+                <div class="bfoot"></div>
               </div>
-              <div class="bcerts">
-                <div class="bcerts-num">9</div>
-                <div class="bcerts-txt">Cisco<br>Certifications</div>
-              </div>
-              <div style="font-size:9px;color:#444;letter-spacing:.22em;text-transform:uppercase;padding:4px 16px 6px">Technical Skills</div>
-              <div class="bskills">
-                <div class="bpill hi">HTML</div>
-                <div class="bpill hi">CSS</div>
-                <div class="bpill hi">JavaScript</div>
-                <div class="bpill hi">Python</div>
-                <div class="bpill">Java</div>
-                <div class="bpill">Android</div>
-              </div>
-              <div class="bprog">
-                Access to HE Diploma (Computer Science)<br>
-                Barking &amp; Dagenham College · 2025–2026
-              </div>
-              <div class="bfoot"></div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ── Scattered: Terminal ── -->
-    <div class="scatter-item scatter-terminal">
-      <div style="background:#1a1a1a;border-radius:12px;padding:20px;font-family:'IBM Plex Mono',monospace;box-shadow:0 8px 36px rgba(0,0,0,.36)">
-        <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
-          <div style="width:12px;height:12px;border-radius:50%;background:#ff5f56"></div>
-          <div style="width:12px;height:12px;border-radius:50%;background:#ffbd2e"></div>
-          <div style="width:12px;height:12px;border-radius:50%;background:#27c93f"></div>
-          <span style="font-size:10px;color:#555;margin-left:6px;letter-spacing:.12em">zsh — tarek@dev</span>
+      <!-- ── Scattered: Terminal ── -->
+      <div class="scatter-item scatter-terminal">
+        <div style="background:#1a1a1a;border-radius:12px;padding:20px;font-family:'IBM Plex Mono',monospace;box-shadow:0 8px 36px rgba(0,0,0,.36)">
+          <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center">
+            <div style="width:12px;height:12px;border-radius:50%;background:#ff5f56"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#ffbd2e"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#27c93f"></div>
+            <span style="font-size:10px;color:#555;margin-left:6px;letter-spacing:.12em">zsh — tarek@dev</span>
+          </div>
+          <div style="color:#a3e635;font-size:12px;line-height:2">
+            <div><span style="color:#666">$</span> whoami</div>
+            <div style="margin-bottom:8px;color:#F5F0E8">tarek · cs student · developer</div>
+            <div><span style="color:#666">$</span> ls ~/projects</div>
+            <div style="color:#60a5fa">space-bun/</div>
+            <div style="color:#60a5fa">vaultly/</div>
+            <div style="color:#60a5fa">tailortech/</div>
+            <div style="color:#60a5fa">visit-jordan/</div>
+            <div style="color:#60a5fa">dog-hotel/</div>
+            <div style="color:#60a5fa">calculator/</div>
+            <div style="margin-top:10px;color:#a3e635"><span style="color:#666">$</span>&nbsp;<span style="animation:blink 1s step-start infinite;display:inline-block">▊</span></div>
+          </div>
         </div>
-        <div style="color:#a3e635;font-size:12px;line-height:2">
-          <div><span style="color:#666">$</span> whoami</div>
-          <div style="margin-bottom:8px;color:#F5F0E8">tarek · cs student · developer</div>
-          <div><span style="color:#666">$</span> ls ~/projects</div>
-          <div style="color:#60a5fa">space-bun/</div>
-          <div style="color:#60a5fa">vaultly/</div>
-          <div style="color:#60a5fa">tailortech/</div>
-          <div style="color:#60a5fa">visit-jordan/</div>
-          <div style="color:#60a5fa">dog-hotel/</div>
-          <div style="color:#60a5fa">calculator/</div>
-          <div style="margin-top:10px;color:#a3e635"><span style="color:#666">$</span>&nbsp;<span style="animation:blink 1s step-start infinite;display:inline-block">▊</span></div>
+        <style>@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}</style>
+      </div>
+
+      <!-- ── Scattered: Ripped Paper Note ── -->
+      <div class="scatter-item scatter-note">
+        <svg width="280" height="210" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="ps"><feDropShadow dx="2" dy="4" stdDeviation="2.5" flood-opacity=".15"/></filter>
+          </defs>
+          <path d="M15 10 L265 12 L263 182 Q261 186 258 189 L250 194 L240 197 L25 193 Q22 190 20 186 L17 180 Q15 175 15 170 Z"
+                fill="#FEF9C3" stroke="#E5E0B8" stroke-width=".5" filter="url(#ps)"/>
+          <text x="140" y="52"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">Hey, check out my</text>
+          <text x="140" y="80"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">portfolio projects! 🚀</text>
+          <text x="140" y="118" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Built with HTML, CSS, JS,</text>
+          <text x="140" y="140" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Python, Java &amp; Android</text>
+          <text x="140" y="168" font-family="Caveat,cursive" font-size="13" fill="#D86C3D" text-anchor="middle">→ 6 projects on GitHub</text>
+          <path d="M50 183 Q70 193 92 196" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M88 191 L92 196 L89 201" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- ── Scattered: Event Ticket ── -->
+      <div class="scatter-item scatter-ticket">
+        <svg width="360" height="185" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="ts"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-opacity=".18"/></filter>
+            <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#EDE9E2"/>
+              <stop offset="100%" style="stop-color:#F5F0E8"/>
+            </linearGradient>
+          </defs>
+          <rect x="10" y="10" width="340" height="165" rx="12" fill="url(#tg)" stroke="#C8BDBA" stroke-width="1" filter="url(#ts)"/>
+          <rect x="10" y="10" width="340" height="30" rx="12" fill="#D86C3D" opacity=".12"/>
+          <line x1="255" y1="10" x2="255" y2="175" stroke="#C8BDBA" stroke-width="1" stroke-dasharray="5 5"/>
+          <text x="34" y="50" font-family="'IBM Plex Mono',monospace" font-size="22" fill="#292524" font-weight="700" letter-spacing="-1">TECH EXPO</text>
+          <text x="34" y="72" font-family="'Noto Sans',sans-serif" font-size="12" fill="#78716C">Portfolio Showcase · 2026</text>
+          <rect x="34" y="86" width="50" height="2" rx="1" fill="#D86C3D" opacity=".5"/>
+          <text x="34" y="108" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">DATE &amp; VENUE</text>
+          <text x="34" y="124" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="500">22 May 2026 · BDC</text>
+          <text x="34" y="152" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">ADMIT</text>
+          <text x="34" y="168" font-family="'IBM Plex Mono',monospace" font-size="13" fill="#D86C3D" font-weight="600">TAREK A. UMAR</text>
+          <text x="282" y="58" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="600" text-anchor="middle">ADMIT ONE</text>
+          <text x="282" y="76" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#78716C" text-anchor="middle">TICKET #0522</text>
+          <g transform="translate(266,104)">
+            <rect x="0"  y="0" width="3"  height="40" fill="#292524"/><rect x="5"  y="0" width="2"  height="40" fill="#292524"/>
+            <rect x="9"  y="0" width="4"  height="40" fill="#292524"/><rect x="15" y="0" width="2"  height="40" fill="#292524"/>
+            <rect x="19" y="0" width="5"  height="40" fill="#292524"/><rect x="26" y="0" width="2"  height="40" fill="#292524"/>
+            <rect x="30" y="0" width="3"  height="40" fill="#292524"/><rect x="35" y="0" width="4"  height="40" fill="#292524"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- ── Tech Stickers ── -->
+      <img src="assets/icons/html5.svg"      class="sticker sticker-html5"   alt="HTML5" />
+      <img src="assets/icons/css3.svg"       class="sticker sticker-css3"    alt="CSS3" />
+      <img src="assets/icons/javascript.svg" class="sticker sticker-js"      alt="JavaScript" />
+      <img src="assets/icons/python.svg"     class="sticker sticker-python"  alt="Python" />
+      <img src="assets/icons/java.svg"       class="sticker sticker-java"    alt="Java" />
+      <img src="assets/icons/flutter.svg"    class="sticker sticker-flutter" alt="Flutter" />
+      <img src="assets/icons/git.svg"        class="sticker sticker-git"     alt="Git" />
+      <img src="assets/icons/github.svg"     class="sticker sticker-github"  alt="GitHub" />
+      <img src="assets/icons/android.svg"    class="sticker sticker-android" alt="Android" />
+      <img src="assets/icons/dart.svg"       class="sticker sticker-dart"    alt="Dart" />
+
+    </div><!-- /hero -->
+
+    <!-- ─── BULLETIN BOARD ─── -->
+    <section class="board-section" id="board">
+      <p class="board-eyebrow">Pinned Updates</p>
+      <h2 class="board-title">What's on the board?</h2>
+
+      <div class="bulletin-board">
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="0">
+          <p class="pin-item-label">Status</p>
+          <p class="pin-item-title">Open to Opportunities</p>
+          <span class="pin-tag">Available June 2026</span>
+        </div>
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="80">
+          <p class="pin-item-label">GitHub</p>
+          <p class="pin-item-title">github.com/zerobun0</p>
+          <span class="pin-tag">6 Projects</span>
+        </div>
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="160">
+          <p class="pin-item-label">Certifications</p>
+          <p class="pin-item-title">Cisco Certified × 9</p>
+          <span class="pin-tag">Networking Academy</span>
+        </div>
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="60">
+          <p class="pin-item-label">Core Stack</p>
+          <p class="pin-item-title">HTML · CSS · JavaScript</p>
+          <span class="pin-tag">Web Dev</span>
+        </div>
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="120">
+          <p class="pin-item-label">Education</p>
+          <p class="pin-item-title">Level 3 Access to HE</p>
+          <span class="pin-tag">Computer Science</span>
+        </div>
+
+        <div class="pin-item" data-aos="fade-up" data-aos-delay="200">
+          <p class="pin-item-label">Graduation</p>
+          <p class="pin-item-title">May 2026 · BDC</p>
+          <span class="pin-tag">Barking &amp; Dagenham</span>
+        </div>
+
+      </div>
+    </section>
+
+  </section><!-- /#home -->
+
+
+  <!-- ════════════════════════════════════════════
+       ABOUT
+  ════════════════════════════════════════════ -->
+  <section id="about">
+
+    <!-- ─── ABOUT HERO ─── -->
+    <section class="about-hero">
+
+      <!-- Photo column -->
+      <div class="about-photo-col" data-aos="fade-right">
+        <div class="about-photo">🧑‍💻</div>
+        <div class="about-photo-deco"></div>
+        <span class="about-name-tag">CS Student · 2026</span>
+      </div>
+
+      <!-- Text column -->
+      <div data-aos="fade-left">
+        <span class="section-eyebrow">About Me</span>
+        <h2 class="section-title">Tarek</h2>
+
+        <p class="about-bio">
+          I'm a <strong>Level 3 Access to HE Computer Science</strong> student at Barking and Dagenham College,
+          passionate about building clean, functional web experiences. My interest in tech started with
+          curiosity about how websites work — and quickly grew into building my own.
+        </p>
+        <p class="about-bio">
+          Alongside my studies I've earned <strong>nine Cisco Networking Academy certifications</strong>,
+          covering everything from IT hardware and operating systems to cybersecurity and IoT. On the
+          development side I enjoy working with <strong>HTML, CSS, and JavaScript</strong> for the web,
+          and <strong>Python, Java, and Android</strong> for software and mobile apps.
+        </p>
+        <p class="about-bio">
+          When I'm not coding I'm exploring new frameworks, contributing to personal projects on GitHub,
+          and preparing for the next stage of my journey in higher education.
+        </p>
+
+        <div class="about-chips">
+          <span class="about-chip hi">Open to opportunities</span>
+          <span class="about-chip hi">Available June 2026</span>
+          <span class="about-chip">East London</span>
+          <span class="about-chip">tareku2003@gmail.com</span>
+          <span class="about-chip">github.com/zerobun0</span>
         </div>
       </div>
-      <style>@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}</style>
+
+    </section>
+
+    <!-- ─── SKILLS ─── -->
+    <section class="skills-section" id="skills">
+      <span class="section-eyebrow" style="display:block;text-align:center">Technical Toolkit</span>
+      <h2 class="section-title" style="text-align:center">Technologies I Work With</h2>
+      <p class="section-sub" style="text-align:center;margin:0 auto">
+        A mix of web, software, and mobile technologies I've picked up through coursework, projects, and Cisco certifications.
+      </p>
+
+      <div class="skills-grid">
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="0">
+          <img src="assets/icons/html5.svg" alt="HTML5" />
+          <span class="skill-chip-name">HTML5</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="50">
+          <img src="assets/icons/css3.svg" alt="CSS3" />
+          <span class="skill-chip-name">CSS3</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="100">
+          <img src="assets/icons/javascript.svg" alt="JavaScript" />
+          <span class="skill-chip-name">JavaScript</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="150">
+          <img src="assets/icons/python.svg" alt="Python" />
+          <span class="skill-chip-name">Python</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="200">
+          <img src="assets/icons/java.svg" alt="Java" />
+          <span class="skill-chip-name">Java</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="250">
+          <img src="assets/icons/android.svg" alt="Android" />
+          <span class="skill-chip-name">Android</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="300">
+          <img src="assets/icons/flutter.svg" alt="Flutter" />
+          <span class="skill-chip-name">Flutter</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="350">
+          <img src="assets/icons/dart.svg" alt="Dart" />
+          <span class="skill-chip-name">Dart</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="400">
+          <img src="assets/icons/git.svg" alt="Git" />
+          <span class="skill-chip-name">Git</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="450">
+          <img src="assets/icons/github.svg" alt="GitHub" />
+          <span class="skill-chip-name">GitHub</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="500">
+          <img src="assets/icons/sql.svg" alt="SQL" />
+          <span class="skill-chip-name">SQL</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="550">
+          <img src="assets/icons/linux.svg" alt="Linux" />
+          <span class="skill-chip-name">Linux</span>
+        </div>
+        <div class="skill-chip" data-aos="fade-up" data-aos-delay="600">
+          <img src="assets/icons/figma.svg" alt="Figma" />
+          <span class="skill-chip-name">Figma</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CORK BOARD ─── -->
+    <section class="cork-section" id="notes">
+      <span class="section-eyebrow">Quick Notes</span>
+      <h2 class="section-title">A Few Things About Me</h2>
+
+      <div class="cork-board-sm">
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="0">
+          <p class="cork-note-text">Love building things that work beautifully on any screen 📱💻</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="80">
+          <p class="cork-note-text">9 Cisco certs &amp; counting! Networking + Cybersecurity fanatic 🛡️</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="160">
+          <p class="cork-note-text">Always learning — currently exploring Flutter &amp; Dart 📱</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="60">
+          <p class="cork-note-text">Based in East London. BDC student 2025–2026 🎓</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="120">
+          <p class="cork-note-text">GitHub: zerobun0 — 5 projects &amp; growing 🚀</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="200">
+          <p class="cork-note-text">Favourite project: Visit Jordan tourism site 🌍</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="40">
+          <p class="cork-note-text">Dark mode &gt; light mode, always 🌙</p>
+        </div>
+        <div class="cork-note" data-aos="zoom-in" data-aos-delay="180">
+          <p class="cork-note-text">Coffee ☕ + code = productivity. No debate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── TIMELINE ─── -->
+    <section class="timeline-section" id="journey">
+      <div style="max-width:1100px;margin:0 auto;text-align:center">
+        <span class="section-eyebrow">Journey</span>
+        <h2 class="section-title">My Education &amp; Milestones</h2>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="0">
+          <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+          <div class="timeline-body">
+            <div class="timeline-date">2025 – 2026</div>
+            <div class="timeline-event">Access to HE Diploma — Computer Science</div>
+            <p class="timeline-desc">Studying at Barking and Dagenham College. Covering web design, digital portfolios, programming, and networking. Target: university entry.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="80">
+          <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+          <div class="timeline-body">
+            <div class="timeline-date">2025 – 2026</div>
+            <div class="timeline-event">Cisco Networking Academy — 9 Certifications</div>
+            <p class="timeline-desc">Completed a full suite of Cisco certifications spanning IT Essentials, Cybersecurity, Networking, IoT, and JavaScript Essentials.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="160">
+          <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+          <div class="timeline-body">
+            <div class="timeline-date">2025</div>
+            <div class="timeline-event">GitHub Portfolio — zerobun0</div>
+            <p class="timeline-desc">Launched a GitHub profile with multiple projects: Space-Bun, Vaultly, TailorTech, Visit Jordan, and Calculator. Ongoing development.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="240">
+          <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+          <div class="timeline-body">
+            <div class="timeline-date">2026</div>
+            <div class="timeline-event">Portfolio Website — This Site</div>
+            <p class="timeline-desc">Designed and built this 4-page personal portfolio using HTML5, CSS3, and JavaScript — submitted as Task 4 for WNI534 Website Design.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-up" data-aos-delay="320">
+          <div class="timeline-dot-col"><div class="timeline-dot" style="background:var(--subtle);box-shadow:0 0 0 3px rgba(168,162,158,0.2)"></div></div>
+          <div class="timeline-body" style="border-style:dashed">
+            <div class="timeline-date">Upcoming</div>
+            <div class="timeline-event">Higher Education — Computer Science Degree</div>
+            <p class="timeline-desc">Preparing to apply for university to continue studies in Computer Science. Aiming for a BSc with a focus on software development.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </section><!-- /#about -->
+
+
+  <!-- ════════════════════════════════════════════
+       PORTFOLIO
+  ════════════════════════════════════════════ -->
+  <section id="portfolio">
+
+    <!-- ─── HEADER & FILTER TABS ─── -->
+    <div class="portfolio-header">
+      <span class="section-eyebrow">My Work</span>
+      <h2 class="section-title">Portfolio</h2>
+      <p class="section-sub">
+        Nine Cisco Networking Academy certifications and a growing collection of GitHub projects —
+        each one a step forward in my journey as a developer.
+      </p>
+
+      <div class="filter-tabs" role="tablist">
+        <button class="filter-tab active" data-filter="all" role="tab">
+          All <span class="tab-count">15</span>
+        </button>
+        <button class="filter-tab" data-filter="certs" role="tab">
+          Cisco Certifications <span class="tab-count">9</span>
+        </button>
+        <button class="filter-tab" data-filter="projects" role="tab">
+          GitHub Projects <span class="tab-count">6</span>
+        </button>
+      </div>
     </div>
 
-    <!-- ── Scattered: Ripped Paper Note ── -->
-    <div class="scatter-item scatter-note">
-      <svg width="280" height="210" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="ps"><feDropShadow dx="2" dy="4" stdDeviation="2.5" flood-opacity=".15"/></filter>
-        </defs>
-        <path d="M15 10 L265 12 L263 182 Q261 186 258 189 L250 194 L240 197 L25 193 Q22 190 20 186 L17 180 Q15 175 15 170 Z"
-              fill="#FEF9C3" stroke="#E5E0B8" stroke-width=".5" filter="url(#ps)"/>
-        <text x="140" y="52"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">Hey, check out my</text>
-        <text x="140" y="80"  font-family="Caveat,cursive" font-size="20" fill="#292524" text-anchor="middle" font-weight="700">portfolio projects! 🚀</text>
-        <text x="140" y="118" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Built with HTML, CSS, JS,</text>
-        <text x="140" y="140" font-family="Caveat,cursive" font-size="14" fill="#78716C" text-anchor="middle">Python, Java &amp; Android</text>
-        <text x="140" y="168" font-family="Caveat,cursive" font-size="13" fill="#D86C3D" text-anchor="middle">→ 6 projects on GitHub</text>
-        <path d="M50 183 Q70 193 92 196" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M88 191 L92 196 L89 201" stroke="#D86C3D" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+    <!-- ─── SECTION: ALL INTRO ─── -->
+    <div class="portfolio-section" id="section-all"></div>
+
+    <!-- ─── SECTION: CISCO CERTIFICATIONS ─── -->
+    <div class="portfolio-section" id="section-certs">
+      <p class="section-subtitle">Cisco Networking Academy — Certifications</p>
+
+      <div class="folders-grid">
+
+        <div class="folder-card" data-cert="it-essentials" style="--fc:#4A90D9" data-aos="zoom-in" data-aos-delay="0">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/it-essentials.png" alt="IT Essentials badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">IT Essentials</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="hardware-upgrade" style="--fc:#7B5EA7" data-aos="zoom-in" data-aos-delay="50">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/hardware-upgrade.png" alt="Hardware &amp; Upgrade Support badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Hardware &amp; Upgrade Support</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="os-support" style="--fc:#2E9E6B" data-aos="zoom-in" data-aos-delay="100">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/os-support.png" alt="Operating Systems Support badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Operating Systems Support</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="security-connectivity" style="--fc:#D97B4A" data-aos="zoom-in" data-aos-delay="150">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/security-connectivity.png" alt="Security &amp; Connectivity Support badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Security &amp; Connectivity Support</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="customer-support" style="--fc:#D4547A" data-aos="zoom-in" data-aos-delay="200">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/customer-support.png" alt="IT Customer Support Basics badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">IT Customer Support Basics</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="js-essentials" style="--fc:#C9A227" data-dk data-aos="zoom-in" data-aos-delay="250">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/js-essentials.png" alt="JavaScript Essentials 1 badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">JavaScript Essentials 1</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="iot-intro" style="--fc:#3BAA8A" data-aos="zoom-in" data-aos-delay="300">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/iot-intro.png" alt="Introduction to IoT badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Introduction to IoT</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="network-tech" style="--fc:#3476C0" data-aos="zoom-in" data-aos-delay="350">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/network-tech.png" alt="Network Technician Career Path badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Network Technician Career Path</div>
+          </div>
+        </div>
+
+        <div class="folder-card" data-cert="cybersecurity" style="--fc:#5B3FA0" data-aos="zoom-in" data-aos-delay="400">
+          <div class="folder-tab"></div>
+          <div class="folder-body">
+            <div class="folder-icon-wrap">
+              <img src="assets/images/cisco/cybersecurity.png" alt="Junior Cybersecurity Analyst badge" class="cert-badge-thumb" />
+            </div>
+            <div class="folder-name">Junior Cybersecurity Analyst</div>
+          </div>
+        </div>
+
+      </div>
+
+      <p style="margin-top:22px;font-family:var(--f-mono);font-size:12px;color:var(--subtle)">
+        ← Click any folder to view certification details
+      </p>
     </div>
 
-    <!-- ── Scattered: Event Ticket ── -->
-    <div class="scatter-item scatter-ticket">
-      <svg width="360" height="185" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="ts"><feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-opacity=".18"/></filter>
-          <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#EDE9E2"/>
-            <stop offset="100%" style="stop-color:#F5F0E8"/>
-          </linearGradient>
-        </defs>
-        <rect x="10" y="10" width="340" height="165" rx="12" fill="url(#tg)" stroke="#C8BDBA" stroke-width="1" filter="url(#ts)"/>
-        <rect x="10" y="10" width="340" height="30" rx="12" fill="#D86C3D" opacity=".12"/>
-        <line x1="255" y1="10" x2="255" y2="175" stroke="#C8BDBA" stroke-width="1" stroke-dasharray="5 5"/>
-        <text x="34" y="50" font-family="'IBM Plex Mono',monospace" font-size="22" fill="#292524" font-weight="700" letter-spacing="-1">TECH EXPO</text>
-        <text x="34" y="72" font-family="'Noto Sans',sans-serif" font-size="12" fill="#78716C">Portfolio Showcase · 2026</text>
-        <rect x="34" y="86" width="50" height="2" rx="1" fill="#D86C3D" opacity=".5"/>
-        <text x="34" y="108" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">DATE &amp; VENUE</text>
-        <text x="34" y="124" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="500">22 May 2026 · BDC</text>
-        <text x="34" y="152" font-family="'Noto Sans',sans-serif" font-size="10" fill="#a8a29e" letter-spacing=".08em">ADMIT</text>
-        <text x="34" y="168" font-family="'IBM Plex Mono',monospace" font-size="13" fill="#D86C3D" font-weight="600">TAREK A. UMAR</text>
-        <text x="282" y="58" font-family="'IBM Plex Mono',monospace" font-size="12" fill="#292524" font-weight="600" text-anchor="middle">ADMIT ONE</text>
-        <text x="282" y="76" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#78716C" text-anchor="middle">TICKET #0522</text>
-        <g transform="translate(266,104)">
-          <rect x="0"  y="0" width="3"  height="40" fill="#292524"/><rect x="5"  y="0" width="2"  height="40" fill="#292524"/>
-          <rect x="9"  y="0" width="4"  height="40" fill="#292524"/><rect x="15" y="0" width="2"  height="40" fill="#292524"/>
-          <rect x="19" y="0" width="5"  height="40" fill="#292524"/><rect x="26" y="0" width="2"  height="40" fill="#292524"/>
-          <rect x="30" y="0" width="3"  height="40" fill="#292524"/><rect x="35" y="0" width="4"  height="40" fill="#292524"/>
-        </g>
-      </svg>
+    <!-- ─── SECTION: GITHUB PROJECTS ─── -->
+    <div class="portfolio-section" id="section-projects">
+      <p class="section-subtitle">GitHub — Personal Projects</p>
+
+      <div class="projects-grid">
+
+        <!-- Space-Bun -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="project-img-wrap" data-carousel>
+            <div class="carousel-track">
+              <div class="carousel-slide"><img src="assets/images/projects/space-bun-1.png" alt="Space-Bun menu" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/space-bun-2.png" alt="Space-Bun gameplay" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/space-bun-3.png" alt="Space-Bun gameplay 2" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/space-bun-4.png" alt="Space-Bun upgrades" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/space-bun-5.png" alt="Space-Bun modes" /></div>
+            </div>
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">🐰</span>
+            <a href="https://github.com/zerobun0/space-bun" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">Space-Bun</h3>
+          <p class="project-desc">
+            A Python-powered game featuring a full menu system, multiple distinct game modes,
+            and a level &amp; ranking system with upgrades and an account-based progression engine.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">Python</span>
+            <span class="project-tech">Pygame</span>
+            <span class="project-tech">Game Dev</span>
+          </div>
+          <a href="https://github.com/zerobun0/space-bun" class="project-open-btn" target="_blank" rel="noopener">
+            🎮 Open Game on GitHub
+          </a>
+        </div>
+
+        <!-- Vaultly -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="60">
+          <div class="project-img-wrap" data-carousel>
+            <div class="carousel-track">
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-1.png" alt="Vaultly home" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-2.png" alt="Vaultly transactions" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-3.png" alt="Vaultly investments" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-4.png" alt="Vaultly savings" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-5.png" alt="Vaultly tax" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/vaultly-6.png" alt="Vaultly settings" /></div>
+            </div>
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">💰</span>
+            <a href="https://github.com/zerobun0/vaultly" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">Vaultly</h3>
+          <p class="project-desc">
+            A personal finance management web app with dashboards for transactions, investment
+            portfolio tracking, savings goals, and tax insights — all in a clean, minimal UI.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">HTML</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">Finance</span>
+          </div>
+        </div>
+
+        <!-- TailorTech -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="120">
+          <div class="project-img-wrap" data-carousel>
+            <div class="carousel-track">
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-1.png" alt="TailorTech home" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-2.png" alt="TailorTech AI fit check" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-3.png" alt="TailorTech studio" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-4.png" alt="TailorTech studio 2" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-5.png" alt="TailorTech size insights" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/tailortech-6.png" alt="TailorTech settings" /></div>
+            </div>
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">✂️</span>
+            <a href="https://github.com/zerobun0/tailortech" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">TailorTech</h3>
+          <p class="project-desc">
+            An AI-powered fashion app with a fit-check feature, studio section for body
+            measurements, size insights dashboard, and a settings page for personalisation.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">HTML</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">AI / Fashion</span>
+          </div>
+        </div>
+
+        <!-- Visit Jordan -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="180">
+          <div class="project-img-wrap" data-carousel>
+            <div class="carousel-track">
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-1.png" alt="Visit Jordan home" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-2.png" alt="Visit Jordan home 2" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-3.png" alt="Visit Jordan attractions" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-4.png" alt="Visit Jordan attractions 2" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-5.png" alt="Visit Jordan attractions 3" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-6.png" alt="Visit Jordan AI assistant" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/visit-jordan-7.png" alt="Visit Jordan quiz" /></div>
+            </div>
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">🌍</span>
+            <a href="https://github.com/zerobun0/visit-jordan" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">Visit Jordan</h3>
+          <p class="project-desc">
+            A multi-page tourism website for Jordan featuring destinations, an AI travel assistant,
+            interactive quizzes, and gallery sections — built with responsive HTML and CSS.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">HTML</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">JavaScript</span>
+            <span class="project-tech">Tourism</span>
+          </div>
+        </div>
+
+        <!-- Dog Hotel -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="240">
+          <div class="project-img-wrap" data-carousel>
+            <div class="carousel-track">
+              <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-1.png" alt="Dog Hotel home" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-2.png" alt="Dog Hotel services" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-3.png" alt="Dog Hotel packages" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-4.png" alt="Dog Hotel gallery" /></div>
+              <div class="carousel-slide"><img src="assets/images/projects/dog-hotel-5.png" alt="Dog Hotel contact" /></div>
+            </div>
+            <button class="carousel-btn prev" aria-label="Previous">‹</button>
+            <button class="carousel-btn next" aria-label="Next">›</button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">🐶</span>
+            <a href="https://github.com/zerobun0/dog-hotel" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">Dog Hotel</h3>
+          <p class="project-desc">
+            A pet hotel booking website with a services overview, tiered packages, photo gallery,
+            and contact form — fully responsive and designed for a warm, friendly user experience.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">HTML</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">JavaScript</span>
+          </div>
+        </div>
+
+        <!-- Calculator -->
+        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-img-wrap">
+            <div class="carousel-track" style="transform:translateX(0)">
+              <div class="carousel-slide"><img src="assets/images/projects/calculator-1.png" alt="Calculator screenshot" /></div>
+            </div>
+          </div>
+          <div class="project-card-top">
+            <span class="project-icon">🧮</span>
+            <a href="https://github.com/zerobun0/calculator" class="project-link-btn" target="_blank" rel="noopener">↗ GitHub</a>
+          </div>
+          <h3 class="project-name">Calculator</h3>
+          <p class="project-desc">
+            A fully functional JavaScript calculator with all standard arithmetic operations,
+            keyboard input support, and a clean minimal design — a foundational web dev project.
+          </p>
+          <div class="project-tech-list">
+            <span class="project-tech">HTML</span>
+            <span class="project-tech">CSS</span>
+            <span class="project-tech">JavaScript</span>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- ── Tech Stickers (10) ── -->
-    <img src="assets/icons/html5.svg"      class="sticker sticker-html5"   alt="HTML5" />
-    <img src="assets/icons/css3.svg"       class="sticker sticker-css3"    alt="CSS3" />
-    <img src="assets/icons/javascript.svg" class="sticker sticker-js"      alt="JavaScript" />
-    <img src="assets/icons/python.svg"     class="sticker sticker-python"  alt="Python" />
-    <img src="assets/icons/java.svg"       class="sticker sticker-java"    alt="Java" />
-    <img src="assets/icons/flutter.svg"    class="sticker sticker-flutter" alt="Flutter" />
-    <img src="assets/icons/git.svg"        class="sticker sticker-git"     alt="Git" />
-    <img src="assets/icons/github.svg"     class="sticker sticker-github"  alt="GitHub" />
-    <img src="assets/icons/android.svg"    class="sticker sticker-android" alt="Android" />
-    <img src="assets/icons/dart.svg"       class="sticker sticker-dart"    alt="Dart" />
+  </section><!-- /#portfolio -->
 
-  </section><!-- /hero -->
 
-  <!-- ─── BULLETIN BOARD ─── -->
-  <section class="board-section" id="board">
-    <p class="board-eyebrow">Pinned Updates</p>
-    <h2 class="board-title">What's on the board?</h2>
+  <!-- ════════════════════════════════════════════
+       CONTACT
+  ════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="contact-wrap">
 
-    <div class="bulletin-board">
+      <!-- ── Left: Form ── -->
+      <div data-aos="fade-right">
+        <div class="contact-header">
+          <span class="section-eyebrow">Get In Touch</span>
+          <h2 class="section-title">Say Hello</h2>
+          <p class="section-sub">
+            Whether you want to discuss a project, ask about my work, or just say hi —
+            my inbox is always open. I'll get back to you as soon as I can.
+          </p>
+        </div>
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="0">
-        <p class="pin-item-label">Status</p>
-        <p class="pin-item-title">Open to Opportunities</p>
-        <span class="pin-tag">Available June 2026</span>
+        <form id="contact-form" novalidate>
+
+          <!-- Honeypot field -->
+          <div style="display:none;visibility:hidden;position:absolute;left:-9999px;" aria-hidden="true">
+            <label for="website">Leave this blank</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-group" id="fg-name">
+            <label class="form-label" for="inp-name">Your Name</label>
+            <input class="form-input" type="text" id="inp-name" name="name"
+              placeholder="e.g. Jane Smith" autocomplete="name" />
+            <p class="form-err" id="err-name">Please enter your name.</p>
+          </div>
+
+          <div class="form-group" id="fg-email">
+            <label class="form-label" for="inp-email">Email Address</label>
+            <input class="form-input" type="email" id="inp-email" name="reply_to"
+              placeholder="you@example.com" autocomplete="email" />
+            <p class="form-err" id="err-email">Please enter a valid email address.</p>
+          </div>
+
+          <div class="form-group" id="fg-subject">
+            <label class="form-label" for="inp-subject">Subject</label>
+            <input class="form-input" type="text" id="inp-subject" name="subject"
+              placeholder="e.g. Project enquiry" />
+            <p class="form-err" id="err-subject">Please enter a subject.</p>
+          </div>
+
+          <div class="form-group" id="fg-message">
+            <label class="form-label" for="inp-message">Message</label>
+            <textarea class="form-textarea" id="inp-message" name="message"
+              placeholder="Tell me what you're thinking…"></textarea>
+            <p class="form-err" id="err-message">Please enter a message (at least 10 characters).</p>
+          </div>
+
+          <input type="hidden" id="inp-time" name="time" />
+          <button type="submit" class="form-submit" id="form-submit-btn">Send Message →</button>
+
+        </form>
       </div>
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="80">
-        <p class="pin-item-label">GitHub</p>
-        <p class="pin-item-title">github.com/zerobun0</p>
-        <span class="pin-tag">6 Projects</span>
-      </div>
+      <!-- ── Right: Info Panel ── -->
+      <div class="contact-info" data-aos="fade-left" data-aos-delay="100">
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="160">
-        <p class="pin-item-label">Certifications</p>
-        <p class="pin-item-title">Cisco Certified × 9</p>
-        <span class="pin-tag">Networking Academy</span>
-      </div>
+        <div class="contact-avail">
+          <div class="avail-dot"></div>
+          <span class="avail-text">Currently available for opportunities</span>
+        </div>
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="60">
-        <p class="pin-item-label">Core Stack</p>
-        <p class="pin-item-title">HTML · CSS · JavaScript</p>
-        <span class="pin-tag">Web Dev</span>
-      </div>
+        <div class="social-table-wrap">
+          <table class="social-table">
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Handle / Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="social-platform">
+                    <div class="s-icon">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                    GitHub
+                  </div>
+                </td>
+                <td><a href="https://github.com/zerobun0" target="_blank" rel="noopener">github.com/zerobun0</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="social-platform">
+                    <div class="s-icon">✉️</div>
+                    Email
+                  </div>
+                </td>
+                <td><a href="mailto:tareku2003@gmail.com">tareku2003@gmail.com</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="120">
-        <p class="pin-item-label">Education</p>
-        <p class="pin-item-title">Level 3 Access to HE</p>
-        <span class="pin-tag">Computer Science</span>
-      </div>
+        <div class="qr-card">
+          <img src="assets/images/qr-code.png" alt="QR code for GitHub profile" />
+          <p class="qr-label">Scan to visit my GitHub → zerobun0</p>
+        </div>
 
-      <div class="pin-item" data-aos="fade-up" data-aos-delay="200">
-        <p class="pin-item-label">Graduation</p>
-        <p class="pin-item-title">May 2026 · BDC</p>
-        <span class="pin-tag">Barking &amp; Dagenham</span>
       </div>
-
     </div>
-  </section>
+  </section><!-- /#contact -->
 
 </main>
 
-<!-- Hidden YouTube player — audio only, never visible -->
-<div id="yt-player-hidden" style="position:fixed;top:-200px;left:-200px;width:1px;height:1px;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
-
-<!-- ══════════ LO-FI MUSIC PLAYER ══════════ -->
-<div class="music-widget" id="music-widget">
-  <div class="music-panel" id="music-panel">
-    <p class="music-panel-label">Now Playing</p>
-    <p class="music-panel-title" id="music-track-name">Lofi Hip Hop Radio</p>
-    <div class="music-bars">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <div class="music-controls">
-      <button class="music-ctrl-btn" id="music-prev" aria-label="Previous track">⏮</button>
-      <button class="music-ctrl-btn music-ctrl-main" id="music-play-pause" aria-label="Play/Pause">▶</button>
-      <button class="music-ctrl-btn" id="music-next" aria-label="Next track">⏭</button>
-      <button class="music-ctrl-btn" id="music-mute" aria-label="Mute">🔊</button>
-    </div>
+<!-- ══════════ DETAIL PANEL (portfolio overlay) ══════════ -->
+<div class="detail-overlay" id="detail-overlay"></div>
+<aside class="detail-panel" id="detail-panel" role="dialog" aria-modal="true" aria-label="Certification details">
+  <div class="detail-panel-header">
+    <span class="detail-panel-title">Certification Details</span>
+    <button class="detail-close-btn" id="detail-close" aria-label="Close panel">✕</button>
   </div>
-  <button class="music-btn" id="music-btn" aria-label="Toggle lo-fi music">🎵</button>
+  <div class="detail-panel-body">
+    <img id="dp-badge-img" class="detail-badge-img" src="" alt="Cisco badge" />
+    <div class="folder-card detail-folder-mini" style="--fc:#4A90D9">
+      <div class="folder-tab" id="dp-folder-tab"></div>
+      <div class="folder-body" id="dp-folder-body">
+        <div class="folder-icon-wrap" id="dp-folder-icon">💻</div>
+      </div>
+    </div>
+    <h2 class="detail-cert-name" id="dp-cert-name">IT Essentials</h2>
+    <p class="detail-issuer" id="dp-cert-issuer">Cisco Networking Academy</p>
+    <table class="detail-table">
+      <tbody>
+        <tr><th>Issuer</th><td id="dp-cert-issuer-td">Cisco Networking Academy</td></tr>
+        <tr><th>Category</th><td id="dp-cert-cat">—</td></tr>
+        <tr><th>Level</th><td id="dp-cert-level">—</td></tr>
+        <tr><th>Platform</th><td>Cisco NetAcad</td></tr>
+      </tbody>
+    </table>
+    <p class="detail-desc" id="dp-cert-desc">Select a certification to view details.</p>
+    <p class="detail-skills-label">Skills Covered</p>
+    <div class="detail-skills" id="dp-skills"></div>
+  </div>
+</aside>
+
+<!-- ══════════ IMAGE LIGHTBOX ══════════ -->
+<div class="img-lightbox" id="img-lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+  <button class="lightbox-nav lb-prev" id="lightbox-prev" aria-label="Previous">‹</button>
+  <img id="lightbox-img" src="" alt="" />
+  <button class="lightbox-nav lb-next" id="lightbox-next" aria-label="Next">›</button>
+</div>
+
+<!-- ══════════ TOAST (contact form) ══════════ -->
+<div id="toast" role="alert">
+  <span class="toast-icon" id="toast-icon">✓</span>
+  <span id="toast-msg">Message sent — I'll be in touch!</span>
 </div>
 
 <!-- ══════════ TERMINAL MODAL ══════════ -->
@@ -322,16 +998,36 @@
   <div class="footer-inner">
     <div class="footer-brand">Tarek<span>.</span>dev</div>
     <ul class="footer-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <p class="footer-copy">&copy; 2026 Tarek Ahmed Umar</p>
     <p class="footer-counter"><span id="view-count">—</span> visitors</p>
   </div>
 </footer>
 
-<!-- Scripts -->
+<!-- Hidden YouTube player -->
+<div id="yt-player-hidden" style="position:fixed;top:-200px;left:-200px;width:1px;height:1px;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
+
+<!-- ══════════ MUSIC WIDGET ══════════ -->
+<div class="music-widget" id="music-widget">
+  <div class="music-panel" id="music-panel">
+    <p class="music-panel-label">Now Playing</p>
+    <p class="music-panel-title" id="music-track-name">Lofi Hip Hop Radio</p>
+    <div class="music-bars"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="music-controls">
+      <button class="music-ctrl-btn" id="music-prev" aria-label="Previous track">⏮</button>
+      <button class="music-ctrl-btn music-ctrl-main" id="music-play-pause" aria-label="Play/Pause">▶</button>
+      <button class="music-ctrl-btn" id="music-next" aria-label="Next track">⏭</button>
+      <button class="music-ctrl-btn" id="music-mute" aria-label="Mute">🔊</button>
+    </div>
+  </div>
+  <button class="music-btn" id="music-btn" aria-label="Toggle lo-fi music">🎵</button>
+</div>
+
+<!-- ══════════ SCRIPTS ══════════ -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>AOS.init({ duration: 580, once: true, easing: 'ease-out-cubic' });</script>
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
@@ -351,5 +1047,126 @@
   });
 </script>
 <script src="js/main.js"></script>
+<script src="js/portfolio.js"></script>
+<script>
+/* ── EmailJS Config ── */
+const EMAILJS_PUBLIC_KEY  = 'ZrrsIW_N3vhYOWO9N';
+const EMAILJS_SERVICE_ID  = 'service_nd8cjto';
+const EMAILJS_TEMPLATE_ID = 'template_q2p9mdy';
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* ── Contact Form ── */
+(function () {
+  const form      = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('form-submit-btn');
+  const toast     = document.getElementById('toast');
+  const toastMsg  = document.getElementById('toast-msg');
+  const toastIcon = document.getElementById('toast-icon');
+  if (!form) return;
+
+  const RATE_KEY   = 'ta_contact_submissions';
+  const MAX_PER_HR = 3;
+  const formLoadTime = Date.now();
+
+  function showToast(msg, isError) {
+    toastMsg.textContent   = msg;
+    toastIcon.textContent  = isError ? '✕' : '✓';
+    toast.style.background = isError ? '#c0392b' : '';
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); toast.style.background = ''; }, 4500);
+  }
+
+  function isRateLimited() {
+    const now  = Date.now();
+    const data = JSON.parse(localStorage.getItem(RATE_KEY) || '[]');
+    const recent = data.filter(t => now - t < 3600000);
+    localStorage.setItem(RATE_KEY, JSON.stringify(recent));
+    if (recent.length >= MAX_PER_HR) return true;
+    recent.push(now);
+    localStorage.setItem(RATE_KEY, JSON.stringify(recent));
+    return false;
+  }
+
+  function setError(groupId, inputId, show) {
+    const grp = document.getElementById(groupId);
+    const inp = document.getElementById(inputId);
+    if (!grp || !inp) return;
+    grp.classList.toggle('has-error', show);
+    inp.classList.toggle('error', show);
+  }
+
+  function validate() {
+    let ok = true;
+    const name    = document.getElementById('inp-name').value.trim();
+    const email   = document.getElementById('inp-email').value.trim();
+    const subject = document.getElementById('inp-subject').value.trim();
+    const message = document.getElementById('inp-message').value.trim();
+
+    setError('fg-name',    'inp-name',    name === '');
+    if (name === '') ok = false;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setError('fg-email', 'inp-email', !emailOk);
+    if (!emailOk) ok = false;
+
+    setError('fg-subject', 'inp-subject', subject === '');
+    if (subject === '') ok = false;
+
+    setError('fg-message', 'inp-message', message.length < 10);
+    if (message.length < 10) ok = false;
+
+    return ok;
+  }
+
+  ['inp-name','inp-email','inp-subject','inp-message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+      const grp = id.replace('inp-', 'fg-');
+      document.getElementById(grp)?.classList.remove('has-error');
+      el.classList.remove('error');
+    });
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const honeypot = document.getElementById('website');
+    if (honeypot && honeypot.value.trim() !== '') return;
+
+    if (Date.now() - formLoadTime < 500) {
+      showToast('Submission too fast — please try again.', true);
+      return;
+    }
+
+    if (isRateLimited()) {
+      showToast('Too many messages sent — please wait an hour before trying again.', true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    document.getElementById('inp-time').value = new Date().toLocaleString('en-GB', {
+      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
+      showToast("Message sent — I'll be in touch!", false);
+      form.reset();
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      showToast('Oops! Something went wrong. Please email me directly at tareku2003@gmail.com', true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message →';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

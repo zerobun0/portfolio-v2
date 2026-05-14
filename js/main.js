@@ -1,5 +1,5 @@
 /* ======================================================
-   main.js — custom cursor, nav, page transitions, AOS
+   main.js — custom cursor, nav, smooth scroll, music
 ====================================================== */
 
 // ── Custom Cursor ─────────────────────────────────────
@@ -29,117 +29,57 @@ document.querySelectorAll('a, button, .folder-card, .filter-tab, [role="button"]
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
 
-// ── Nav helpers ───────────────────────────────────────
-function updateNavActive(page) {
-  page = page || window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === page);
-  });
-}
-updateNavActive();
-
+// ── Nav ───────────────────────────────────────────────
 const nav  = document.querySelector('.nav');
 const burg = document.querySelector('.nav-hamburger');
-if (burg) burg.addEventListener('click', () => nav.classList.toggle('menu-open'));
+if (burg) burg.addEventListener('click', () => nav && nav.classList.toggle('menu-open'));
 
-// ── SPA Router ────────────────────────────────────────
-let _navigating = false;
-
-function bindLinks() {
-  document.querySelectorAll('a[href]').forEach(a => {
-    const h = a.getAttribute('href');
-    if (!h || h.startsWith('#') || h.startsWith('http') ||
-        h.startsWith('mailto') || h.startsWith('tel')) return;
-    if (a._spabound) return;
-    a._spabound = true;
-    a.addEventListener('click', e => { e.preventDefault(); goTo(h); });
+// ── Smooth-scroll anchor links ────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+    if (nav) nav.classList.remove('menu-open');
   });
-  /* Close mobile nav on any link click */
-  document.querySelectorAll('.nav-mobile a').forEach(a => {
-    a.addEventListener('click', () => nav && nav.classList.remove('menu-open'));
-  });
-}
-
-async function goTo(url) {
-  if (_navigating) return;
-  _navigating = true;
-
-  const ov = document.getElementById('page-overlay');
-  if (ov) ov.classList.add('entering');
-  await new Promise(r => setTimeout(r, 480));
-
-  try {
-    const res  = await fetch(url);
-    const html = await res.text();
-    const doc  = new DOMParser().parseFromString(html, 'text/html');
-
-    /* Swap <main> only — nav, footer, music widget stay alive */
-    const newMain = doc.querySelector('main');
-    const curMain = document.querySelector('main');
-    if (newMain && curMain) curMain.replaceWith(newMain);
-
-    document.title = doc.title;
-    history.pushState({ url }, '', url);
-    window.scrollTo(0, 0);
-
-    /* Re-bind cursor hover on new elements */
-    document.querySelectorAll('a, button, .folder-card, .filter-tab, [role="button"]').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-
-    /* Re-bind internal links */
-    bindLinks();
-    updateNavActive(url.split('/').pop() || 'index.html');
-
-    /* Re-init AOS on new content */
-    if (typeof AOS !== 'undefined') AOS.refreshHard();
-
-    /* Portfolio-specific init */
-    const pg = url.split('/').pop() || 'index.html';
-    if (pg === 'portfolio.html' && typeof window.initPortfolio === 'function') {
-      window.initPortfolio();
-    }
-
-    /* Update view counter */
-    const vc = document.getElementById('view-count');
-    if (vc) {
-      try {
-        const KEY = 'ta_site_visits';
-        let c = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
-        localStorage.setItem(KEY, c);
-        vc.textContent = c.toLocaleString();
-        fetch('https://api.counterapi.dev/v1/zerobun0-portfolio/visits/up')
-          .then(r => r.ok ? r.json() : null)
-          .then(d => { if (d && d.count) vc.textContent = d.count.toLocaleString(); })
-          .catch(() => {});
-      } catch (e) {}
-    }
-
-  } catch (err) {
-    /* Fallback to hard nav if fetch fails */
-    window.location.href = url;
-    return;
-  }
-
-  if (ov) ov.classList.remove('entering');
-  _navigating = false;
-}
-
-/* Handle browser back/forward */
-window.addEventListener('popstate', e => {
-  if (e.state && e.state.url) goTo(e.state.url);
-  else goTo(window.location.pathname.split('/').pop() || 'index.html');
 });
 
-bindLinks();
+// ── Scroll-spy: active nav link on scroll ────────────
+(function initScrollSpy() {
+  const ids = ['home', 'about', 'portfolio', 'contact'];
+  const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
+  const navLinks = document.querySelectorAll('.nav-links a, .nav-mobile a');
 
+  function setActive(id) {
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  }
+
+  /* On scroll, activate whichever section's top is nearest-above the 40% mark */
+  function onScroll() {
+    const threshold = window.scrollY + window.innerHeight * 0.4;
+    let active = ids[0];
+    sections.forEach(s => { if (s.offsetTop <= threshold) active = s.id; });
+    setActive(active);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Set initial state from hash or by running onScroll */
+  const initHash = window.location.hash.slice(1);
+  if (initHash && ids.includes(initHash)) setActive(initHash);
+  else onScroll();
+})();
+
+// ── Page overlay: fade out on load ───────────────────
 window.addEventListener('load', () => {
   const ov = document.getElementById('page-overlay');
   if (ov) ov.classList.remove('entering');
 });
 
-// ── Simple AOS (Animate On Scroll) fallback ───────────
+// ── Simple AOS fallback ───────────────────────────────
 (function initAOS() {
   if (typeof AOS !== 'undefined') return;
   const io = new IntersectionObserver(entries => {
@@ -168,7 +108,6 @@ window.addEventListener('load', () => {
 
   const MS_KEY = 'ta_music_state';
 
-  /* Restore last track index from localStorage */
   let savedState = {};
   try { savedState = JSON.parse(localStorage.getItem(MS_KEY) || '{}'); } catch (e) {}
 
@@ -197,7 +136,6 @@ window.addEventListener('load', () => {
     if (trackName) trackName.textContent = TRACKS[idx].name;
   }
 
-  /* Create player with autoplay:1 — must be called in or after a user gesture */
   function createPlayer() {
     if (ytPlayer) return;
     const el = document.getElementById('yt-player-hidden');
@@ -209,9 +147,9 @@ window.addEventListener('load', () => {
       events: {
         onReady()        { ytReady = true; },
         onStateChange(e) {
-          if (e.data === 1) setActive(true);   // PLAYING
-          if (e.data === 2) setActive(false);  // PAUSED
-          if (e.data === 0) {                  // ENDED — advance
+          if (e.data === 1) setActive(true);
+          if (e.data === 2) setActive(false);
+          if (e.data === 0) {
             idx = (idx + 1) % TRACKS.length;
             updateName();
             ytPlayer.loadVideoById(TRACKS[idx].id);
@@ -221,7 +159,6 @@ window.addEventListener('load', () => {
     });
   }
 
-  /* Inject YT API script once — player is created on first click, not here */
   function loadYTScript() {
     if (apiLoaded) return;
     apiLoaded = true;
@@ -232,7 +169,6 @@ window.addEventListener('load', () => {
   }
   loadYTScript();
 
-  /* Retry helper — keeps calling fn every 100ms until YT.Player is available */
   function whenReady(fn) {
     if (window.YT && window.YT.Player) { fn(); return; }
     const t = setInterval(() => {
@@ -240,22 +176,19 @@ window.addEventListener('load', () => {
     }, 100);
   }
 
-  /* Auto-resume if music was playing on the previous page */
   if (wasPlaying) {
     updateName();
-    /* Show panel open + active state visually right away */
     isOpen = true;
     panel.classList.add('open');
-    whenReady(createPlayer); /* autoplay:1 handles the sound */
+    whenReady(createPlayer);
   }
 
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     panel.classList.toggle('open', isOpen);
     if (!isOpen) return;
-    /* Create and auto-play on first open; resume on subsequent opens */
     if (!ytPlayer) {
-      whenReady(createPlayer); /* createPlayer has autoplay:1 */
+      whenReady(createPlayer);
     } else if (ytReady && !isPlaying) {
       ytPlayer.loadVideoById(TRACKS[idx].id);
     }
@@ -296,24 +229,25 @@ window.addEventListener('load', () => {
   const el = document.getElementById('view-count');
   if (!el) return;
 
-  /* Increment local visit count (persists in this browser) */
   const KEY = 'ta_site_visits';
   let count = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
   localStorage.setItem(KEY, count);
   el.textContent = count.toLocaleString();
 
-  /* Try to get the global count from a free counter API */
   fetch('https://api.counterapi.dev/v1/zerobun0-portfolio/visits/up')
     .then(r => r.ok ? r.json() : null)
     .then(d => { if (d && d.count) el.textContent = d.count.toLocaleString(); })
     .catch(() => {});
 })();
 
-// ── Ripped Note → Portfolio ───────────────────────────
+// ── Ripped Note → Portfolio section ──────────────────
 (function () {
   const note = document.querySelector('.scatter-note');
   if (!note) return;
-  note.addEventListener('click', () => goTo('portfolio.html'));
+  note.addEventListener('click', () => {
+    const p = document.getElementById('portfolio');
+    if (p) p.scrollIntoView({ behavior: 'smooth' });
+  });
   note.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
   note.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 })();

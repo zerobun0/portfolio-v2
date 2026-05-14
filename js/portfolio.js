@@ -130,7 +130,7 @@ document.querySelectorAll('.folder-card[data-cert]').forEach(card => {
 if (btnClose) btnClose.addEventListener('click', closePanel);
 if (overlay)  overlay.addEventListener('click', closePanel);
 
-// ── Image Carousels (pixel-based translation) ─────────
+// ── Image Carousels ────────────────────────────────────
 document.querySelectorAll('.project-img-wrap[data-carousel]').forEach(wrap => {
   const track    = wrap.querySelector('.carousel-track');
   const slides   = wrap.querySelectorAll('.carousel-slide');
@@ -153,10 +153,17 @@ document.querySelectorAll('.project-img-wrap[data-carousel]').forEach(wrap => {
     dotsWrap.appendChild(dot);
   });
 
+  /* Measure wrap and pin every slide to that exact pixel width */
+  function applyWidths() {
+    const w = wrap.getBoundingClientRect().width || wrap.offsetWidth || 272;
+    slides.forEach(s => { s.style.width = w + 'px'; s.style.minWidth = w + 'px'; });
+    track.style.width = (count * w) + 'px';
+    return w;
+  }
+
   function go(idx) {
     current = ((idx % count) + count) % count;
-    /* Use pixel translation — avoids % ambiguity with flex overflow */
-    const w = wrap.offsetWidth || wrap.getBoundingClientRect().width || 272;
+    const w = wrap.getBoundingClientRect().width || wrap.offsetWidth || 272;
     track.style.transform = 'translateX(-' + (current * w) + 'px)';
     dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) =>
       d.classList.toggle('active', i === current)
@@ -177,9 +184,24 @@ document.querySelectorAll('.project-img-wrap[data-carousel]').forEach(wrap => {
     card.addEventListener('mouseleave', () => resetTimer());
   }
 
-  /* Initial go(0) with a small delay so offsetWidth is measured after layout */
-  setTimeout(() => go(0), 50);
-  resetTimer();
+  /* Re-pin widths on window resize */
+  window.addEventListener('resize', () => { applyWidths(); go(current); }, { passive: true });
+
+  /* Touch swipe support */
+  let touchStartX = 0;
+  wrap.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(timer); }, { passive: true });
+  wrap.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { go(dx < 0 ? current + 1 : current - 1); }
+    resetTimer();
+  }, { passive: true });
+
+  /* Init: wait for layout paint then pin widths and go to slide 0 */
+  requestAnimationFrame(() => {
+    applyWidths();
+    go(0);
+    resetTimer();
+  });
 });
 
 // ── Image Lightbox ────────────────────────────────────
