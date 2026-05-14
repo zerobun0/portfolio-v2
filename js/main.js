@@ -29,42 +29,110 @@ document.querySelectorAll('a, button, .folder-card, .filter-tab, [role="button"]
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
 
-// ── Active Nav Link ───────────────────────────────────
-const page = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
-  if (a.getAttribute('href') === page) a.classList.add('active');
-});
+// ── Nav helpers ───────────────────────────────────────
+function updateNavActive(page) {
+  page = page || window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === page);
+  });
+}
+updateNavActive();
 
-// ── Mobile Nav Toggle ─────────────────────────────────
 const nav  = document.querySelector('.nav');
 const burg = document.querySelector('.nav-hamburger');
-if (burg) {
-  burg.addEventListener('click', () => nav.classList.toggle('menu-open'));
-}
-document.querySelectorAll('.nav-mobile a').forEach(a => {
-  a.addEventListener('click', () => nav.classList.remove('menu-open'));
-});
+if (burg) burg.addEventListener('click', () => nav.classList.toggle('menu-open'));
 
-// ── Page Transitions ──────────────────────────────────
-function goTo(url) {
-  /* Persist music state before navigating */
-  try {
-    const ms = JSON.parse(localStorage.getItem('ta_music_state') || '{}');
-    localStorage.setItem('ta_music_state', JSON.stringify(ms));
-  } catch (e) {}
-  const ov = document.getElementById('page-overlay');
-  if (!ov) { window.location.href = url; return; }
-  ov.classList.add('entering');
-  setTimeout(() => { window.location.href = url; }, 480);
-}
+// ── SPA Router ────────────────────────────────────────
+let _navigating = false;
 
-document.querySelectorAll('a[href]').forEach(a => {
-  const h = a.getAttribute('href');
-  if (!h.startsWith('#') && !h.startsWith('http') &&
-      !h.startsWith('mailto') && !h.startsWith('tel')) {
+function bindLinks() {
+  document.querySelectorAll('a[href]').forEach(a => {
+    const h = a.getAttribute('href');
+    if (!h || h.startsWith('#') || h.startsWith('http') ||
+        h.startsWith('mailto') || h.startsWith('tel')) return;
+    if (a._spabound) return;
+    a._spabound = true;
     a.addEventListener('click', e => { e.preventDefault(); goTo(h); });
+  });
+  /* Close mobile nav on any link click */
+  document.querySelectorAll('.nav-mobile a').forEach(a => {
+    a.addEventListener('click', () => nav && nav.classList.remove('menu-open'));
+  });
+}
+
+async function goTo(url) {
+  if (_navigating) return;
+  _navigating = true;
+
+  const ov = document.getElementById('page-overlay');
+  if (ov) ov.classList.add('entering');
+  await new Promise(r => setTimeout(r, 480));
+
+  try {
+    const res  = await fetch(url);
+    const html = await res.text();
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+
+    /* Swap <main> only — nav, footer, music widget stay alive */
+    const newMain = doc.querySelector('main');
+    const curMain = document.querySelector('main');
+    if (newMain && curMain) curMain.replaceWith(newMain);
+
+    document.title = doc.title;
+    history.pushState({ url }, '', url);
+    window.scrollTo(0, 0);
+
+    /* Re-bind cursor hover on new elements */
+    document.querySelectorAll('a, button, .folder-card, .filter-tab, [role="button"]').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    /* Re-bind internal links */
+    bindLinks();
+    updateNavActive(url.split('/').pop() || 'index.html');
+
+    /* Re-init AOS on new content */
+    if (typeof AOS !== 'undefined') AOS.refreshHard();
+
+    /* Portfolio-specific init */
+    const pg = url.split('/').pop() || 'index.html';
+    if (pg === 'portfolio.html' && typeof window.initPortfolio === 'function') {
+      window.initPortfolio();
+    }
+
+    /* Update view counter */
+    const vc = document.getElementById('view-count');
+    if (vc) {
+      try {
+        const KEY = 'ta_site_visits';
+        let c = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
+        localStorage.setItem(KEY, c);
+        vc.textContent = c.toLocaleString();
+        fetch('https://api.counterapi.dev/v1/zerobun0-portfolio/visits/up')
+          .then(r => r.ok ? r.json() : null)
+          .then(d => { if (d && d.count) vc.textContent = d.count.toLocaleString(); })
+          .catch(() => {});
+      } catch (e) {}
+    }
+
+  } catch (err) {
+    /* Fallback to hard nav if fetch fails */
+    window.location.href = url;
+    return;
   }
+
+  if (ov) ov.classList.remove('entering');
+  _navigating = false;
+}
+
+/* Handle browser back/forward */
+window.addEventListener('popstate', e => {
+  if (e.state && e.state.url) goTo(e.state.url);
+  else goTo(window.location.pathname.split('/').pop() || 'index.html');
 });
+
+bindLinks();
 
 window.addEventListener('load', () => {
   const ov = document.getElementById('page-overlay');

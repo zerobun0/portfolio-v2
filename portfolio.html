@@ -371,71 +371,47 @@
     </div>
   </div>
 
-</main>
+  <!-- ══════════ DETAIL PANEL ══════════ -->
+  <div class="detail-overlay" id="detail-overlay"></div>
 
-<!-- ══════════ DETAIL PANEL ══════════ -->
-<div class="detail-overlay" id="detail-overlay"></div>
-
-<aside class="detail-panel" id="detail-panel" role="dialog" aria-modal="true" aria-label="Certification details">
-  <div class="detail-panel-header">
-    <span class="detail-panel-title">Certification Details</span>
-    <button class="detail-close-btn" id="detail-close" aria-label="Close panel">✕</button>
-  </div>
-  <div class="detail-panel-body">
-
-    <!-- Cisco badge image -->
-    <img id="dp-badge-img" class="detail-badge-img" src="" alt="Cisco badge" />
-
-    <!-- Mini folder preview -->
-    <div class="folder-card detail-folder-mini" style="--fc:#4A90D9">
-      <div class="folder-tab" id="dp-folder-tab"></div>
-      <div class="folder-body" id="dp-folder-body">
-        <div class="folder-icon-wrap" id="dp-folder-icon">💻</div>
-      </div>
+  <aside class="detail-panel" id="detail-panel" role="dialog" aria-modal="true" aria-label="Certification details">
+    <div class="detail-panel-header">
+      <span class="detail-panel-title">Certification Details</span>
+      <button class="detail-close-btn" id="detail-close" aria-label="Close panel">✕</button>
     </div>
+    <div class="detail-panel-body">
+      <img id="dp-badge-img" class="detail-badge-img" src="" alt="Cisco badge" />
+      <div class="folder-card detail-folder-mini" style="--fc:#4A90D9">
+        <div class="folder-tab" id="dp-folder-tab"></div>
+        <div class="folder-body" id="dp-folder-body">
+          <div class="folder-icon-wrap" id="dp-folder-icon">💻</div>
+        </div>
+      </div>
+      <h2 class="detail-cert-name" id="dp-cert-name">IT Essentials</h2>
+      <p class="detail-issuer" id="dp-cert-issuer">Cisco Networking Academy</p>
+      <table class="detail-table">
+        <tbody>
+          <tr><th>Issuer</th><td id="dp-cert-issuer-td">Cisco Networking Academy</td></tr>
+          <tr><th>Category</th><td id="dp-cert-cat">—</td></tr>
+          <tr><th>Level</th><td id="dp-cert-level">—</td></tr>
+          <tr><th>Platform</th><td>Cisco NetAcad</td></tr>
+        </tbody>
+      </table>
+      <p class="detail-desc" id="dp-cert-desc">Select a certification to view details.</p>
+      <p class="detail-skills-label">Skills Covered</p>
+      <div class="detail-skills" id="dp-skills"></div>
+    </div>
+  </aside>
 
-    <h2 class="detail-cert-name" id="dp-cert-name">IT Essentials</h2>
-    <p class="detail-issuer" id="dp-cert-issuer">Cisco Networking Academy</p>
-
-    <!-- HTML Table for cert details — required for WNI534 grading -->
-    <table class="detail-table">
-      <tbody>
-        <tr>
-          <th>Issuer</th>
-          <td id="dp-cert-issuer-td">Cisco Networking Academy</td>
-        </tr>
-        <tr>
-          <th>Category</th>
-          <td id="dp-cert-cat">—</td>
-        </tr>
-        <tr>
-          <th>Level</th>
-          <td id="dp-cert-level">—</td>
-        </tr>
-        <tr>
-          <th>Platform</th>
-          <td>Cisco NetAcad</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p class="detail-desc" id="dp-cert-desc">
-      Select a certification to view details.
-    </p>
-
-    <p class="detail-skills-label">Skills Covered</p>
-    <div class="detail-skills" id="dp-skills"></div>
-
+  <!-- Image Lightbox -->
+  <div class="img-lightbox" id="img-lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+    <button class="lightbox-nav lb-prev" id="lightbox-prev" aria-label="Previous">‹</button>
+    <img id="lightbox-img" src="" alt="" />
+    <button class="lightbox-nav lb-next" id="lightbox-next" aria-label="Next">›</button>
   </div>
-</aside>
 
-<!-- Image Lightbox -->
-<div class="img-lightbox" id="img-lightbox" aria-hidden="true">
-  <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
-  <button class="lightbox-nav lb-prev" id="lightbox-prev" aria-label="Previous">‹</button>
-  <img id="lightbox-img" src="" alt="" />
-  <button class="lightbox-nav lb-next" id="lightbox-next" aria-label="Next">›</button>
-</div>
+</main>
 
 <!-- Footer -->
 <footer>
