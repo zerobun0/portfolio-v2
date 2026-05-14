@@ -254,6 +254,22 @@
   </div>
 </footer>
 
+<div id="yt-player-hidden" style="position:fixed;top:-200px;left:-200px;width:1px;height:1px;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
+<div class="music-widget" id="music-widget">
+  <div class="music-panel" id="music-panel">
+    <p class="music-panel-label">Now Playing</p>
+    <p class="music-panel-title" id="music-track-name">Lofi Hip Hop Radio</p>
+    <div class="music-bars"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="music-controls">
+      <button class="music-ctrl-btn" id="music-prev" aria-label="Previous track">⏮</button>
+      <button class="music-ctrl-btn music-ctrl-main" id="music-play-pause" aria-label="Play/Pause">▶</button>
+      <button class="music-ctrl-btn" id="music-next" aria-label="Next track">⏭</button>
+      <button class="music-ctrl-btn" id="music-mute" aria-label="Mute">🔊</button>
+    </div>
+  </div>
+  <button class="music-btn" id="music-btn" aria-label="Toggle lo-fi music">🎵</button>
+</div>
+
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>AOS.init({ duration: 580, once: true, easing: 'ease-out-cubic' });</script>
 <script src="js/main.js"></script>

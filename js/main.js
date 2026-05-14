@@ -47,6 +47,11 @@ document.querySelectorAll('.nav-mobile a').forEach(a => {
 
 // ── Page Transitions ──────────────────────────────────
 function goTo(url) {
+  /* Persist music state before navigating */
+  try {
+    const ms = JSON.parse(localStorage.getItem('ta_music_state') || '{}');
+    localStorage.setItem('ta_music_state', JSON.stringify(ms));
+  } catch (e) {}
   const ov = document.getElementById('page-overlay');
   if (!ov) { window.location.href = url; return; }
   ov.classList.add('entering');
@@ -93,19 +98,31 @@ window.addEventListener('load', () => {
     { id: '5qap5aO4i9A', name: 'Chillhop Radio'      },
   ];
 
-  let idx       = 0;
+  const MS_KEY = 'ta_music_state';
+
+  /* Restore last track index from localStorage */
+  let savedState = {};
+  try { savedState = JSON.parse(localStorage.getItem(MS_KEY) || '{}'); } catch (e) {}
+
+  let idx       = savedState.idx || 0;
   let isOpen    = false;
   let isPlaying = false;
   let isMuted   = false;
   let ytPlayer  = null;
   let ytReady   = false;
   let apiLoaded = false;
+  const wasPlaying = !!savedState.playing;
+
+  function saveState() {
+    try { localStorage.setItem(MS_KEY, JSON.stringify({ idx, playing: isPlaying })); } catch (e) {}
+  }
 
   function setActive(state) {
     isPlaying = state;
     if (widget) widget.classList.toggle('active', state);
     openBtn.classList.toggle('playing', state);
     if (playPause) playPause.textContent = state ? '⏸' : '▶';
+    saveState();
   }
 
   function updateName() {
@@ -153,6 +170,15 @@ window.addEventListener('load', () => {
     const t = setInterval(() => {
       if (window.YT && window.YT.Player) { clearInterval(t); fn(); }
     }, 100);
+  }
+
+  /* Auto-resume if music was playing on the previous page */
+  if (wasPlaying) {
+    updateName();
+    /* Show panel open + active state visually right away */
+    isOpen = true;
+    panel.classList.add('open');
+    whenReady(createPlayer); /* autoplay:1 handles the sound */
   }
 
   openBtn.addEventListener('click', () => {
