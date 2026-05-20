@@ -10,3 +10,8 @@ desktop.ini
 
 # OneDrive
 *.lnk
+
+# Local config
+.claude/
+.copilot/
+.cursor/
