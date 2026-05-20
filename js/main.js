@@ -122,6 +122,13 @@ window.addEventListener('load', () => {
     btn.textContent = '🎵';
     document.body.classList.remove('cursor-hover');
   });
+
+  // Attempt autoplay on page load (browser may block on first visit — user can click to start)
+  window.addEventListener('load', () => {
+    audio.play()
+      .then(() => setActive(true))
+      .catch(() => {});
+  });
 })();
 
 // ── Page View Counter ─────────────────────────────────
