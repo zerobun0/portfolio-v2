@@ -123,12 +123,15 @@ window.addEventListener('load', () => {
     document.body.classList.remove('cursor-hover');
   });
 
-  // Attempt autoplay on page load (browser may block on first visit — user can click to start)
-  window.addEventListener('load', () => {
+  // Start on first user gesture anywhere on the page — bypasses autoplay block
+  function startOnGesture() {
     audio.play()
       .then(() => setActive(true))
       .catch(() => {});
-  });
+  }
+  ['click', 'keydown', 'touchstart'].forEach(ev =>
+    document.addEventListener(ev, startOnGesture, { once: true, passive: true })
+  );
 })();
 
 // ── Page View Counter ─────────────────────────────────
