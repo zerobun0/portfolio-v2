@@ -88,10 +88,10 @@ window.addEventListener('load', () => {
   document.querySelectorAll('[data-aos]').forEach(el => io.observe(el));
 })();
 
-// ── Lo-fi Music Player (YouTube IFrame API) ──────────
+// ── Lo-fi Music Player ──────────────────────────────
 (function initMusicPlayer() {
-  const LOFI_ID = 'jfKfPfyJRdk';
-  const MS_KEY  = 'ta_music_state';
+  const LOFI_URL = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&disablekb=1&fs=0&modestbranding=1&playsinline=1&loop=1&playlist=jfKfPfyJRdk';
+  const MS_KEY   = 'ta_music_state';
 
   const widget    = document.getElementById('music-widget');
   const openBtn   = document.getElementById('music-btn');
@@ -101,12 +101,7 @@ window.addEventListener('load', () => {
 
   let isOpen    = false;
   let isPlaying = false;
-  let ytPlayer  = null;
-  let ytReady   = false;
-
-  let savedState = {};
-  try { savedState = JSON.parse(localStorage.getItem(MS_KEY) || '{}'); } catch (e) {}
-  const wasPlaying = !!savedState.playing;
+  let iframe    = null;
 
   function saveState() {
     try { localStorage.setItem(MS_KEY, JSON.stringify({ playing: isPlaying })); } catch (e) {}
@@ -120,57 +115,31 @@ window.addEventListener('load', () => {
     saveState();
   }
 
-  function createPlayer() {
-    if (ytPlayer) return;
-    const el = document.getElementById('yt-player-hidden');
-    if (!el) return;
-    ytPlayer = new YT.Player(el, {
-      height: '1', width: '1',
-      videoId: LOFI_ID,
-      playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1, loop: 1, playlist: LOFI_ID },
-      events: {
-        onReady()        { ytReady = true; },
-        onStateChange(e) {
-          if (e.data === YT.PlayerState.PLAYING) setActive(true);
-          if (e.data === YT.PlayerState.PAUSED)  setActive(false);
-          if (e.data === YT.PlayerState.ENDED)   ytPlayer.playVideo();
-        }
-      }
-    });
+  function play() {
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.style.cssText = 'position:fixed;top:-300px;left:-300px;width:2px;height:2px;pointer-events:none;border:none;';
+      iframe.allow = 'autoplay; encrypted-media';
+      iframe.setAttribute('allowfullscreen', '');
+      document.body.appendChild(iframe);
+    }
+    iframe.src = LOFI_URL;
+    setActive(true);
   }
 
-  // Proper global callback the YT API fires when ready
-  const prevCallback = window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady = function () {
-    if (typeof prevCallback === 'function') prevCallback();
-    if (wasPlaying || isOpen) createPlayer();
-  };
-
-  const s = document.createElement('script');
-  s.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(s);
-
-  if (wasPlaying) {
-    isOpen = true;
-    panel.classList.add('open');
+  function pause() {
+    if (iframe) iframe.src = '';
+    setActive(false);
   }
 
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     panel.classList.toggle('open', isOpen);
-    if (!isOpen) return;
-    if (!ytPlayer && window.YT && window.YT.Player) createPlayer();
-    else if (ytReady && !isPlaying) ytPlayer.playVideo();
   });
 
   if (playPause) playPause.addEventListener('click', () => {
-    if (!ytPlayer) {
-      if (window.YT && window.YT.Player) createPlayer();
-      return;
-    }
-    if (!ytReady) return;
-    if (isPlaying) ytPlayer.pauseVideo();
-    else           ytPlayer.playVideo();
+    if (isPlaying) pause();
+    else           play();
   });
 })();
 
