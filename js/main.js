@@ -90,73 +90,37 @@ window.addEventListener('load', () => {
 
 // ── Lo-fi Music Player ──────────────────────────────
 (function initMusicPlayer() {
-  // mute=1 so Chrome allows autoplay; enablejsapi=1 so we can unmute via postMessage
-  const LOFI_URL = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&modestbranding=1&playsinline=1&enablejsapi=1&loop=1&playlist=jfKfPfyJRdk';
-  const MS_KEY   = 'ta_music_state';
+  const widget = document.getElementById('music-widget');
+  const btn    = document.getElementById('music-btn');
+  if (!btn) return;
 
-  const widget    = document.getElementById('music-widget');
-  const openBtn   = document.getElementById('music-btn');
-  const panel     = document.getElementById('music-panel');
-  const playPause = document.getElementById('music-play-pause');
-  if (!openBtn || !panel) return;
-
-  let isOpen    = false;
-  let isPlaying = false;
-  let iframe    = null;
-
-  function saveState() {
-    try { localStorage.setItem(MS_KEY, JSON.stringify({ playing: isPlaying })); } catch (e) {}
-  }
+  const audio = new Audio('assets/audio/musicbg.m4a');
+  audio.loop  = true;
+  let playing  = false;
+  let hovered  = false;
 
   function setActive(state) {
-    isPlaying = state;
-    if (widget)    widget.classList.toggle('active', state);
-    openBtn.classList.toggle('playing', state);
-    if (playPause) playPause.textContent = state ? '⏸' : '▶';
-    saveState();
+    playing = state;
+    if (widget) widget.classList.toggle('active', state);
+    btn.setAttribute('data-state', state ? 'playing' : 'paused');
+    btn.setAttribute('aria-label', state ? 'Pause music' : 'Play lo-fi music');
+    if (hovered) btn.textContent = state ? '⏸' : '▶';
   }
 
-  function sendCmd(func, args) {
-    if (!iframe || !iframe.contentWindow) return;
-    try { iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: args || [] }), '*'); } catch(e) {}
-  }
-
-  function play() {
-    if (!iframe) {
-      iframe = document.createElement('iframe');
-      iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:320px;height:180px;pointer-events:none;border:none;';
-      iframe.allow = 'autoplay; encrypted-media';
-      iframe.setAttribute('allowfullscreen', '');
-      document.body.appendChild(iframe);
-    }
-    iframe.src = LOFI_URL;
-    setActive(true);
-    // Fallback: unmute after 3 s in case the onReady message is blocked by an extension
-    setTimeout(() => { if (isPlaying) { sendCmd('unMute'); sendCmd('setVolume', [100]); } }, 3000);
-  }
-
-  function pause() {
-    if (iframe) iframe.src = '';
-    setActive(false);
-  }
-
-  // Primary path: YouTube fires onReady via postMessage when enablejsapi=1
-  window.addEventListener('message', function(e) {
-    if (!iframe || !isPlaying) return;
-    try {
-      const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-      if (d.event === 'onReady') { sendCmd('unMute'); sendCmd('setVolume', [100]); }
-    } catch(ex) {}
+  btn.addEventListener('click', () => {
+    if (playing) { audio.pause(); setActive(false); }
+    else { audio.play().catch(() => {}); setActive(true); }
   });
 
-  openBtn.addEventListener('click', () => {
-    isOpen = !isOpen;
-    panel.classList.toggle('open', isOpen);
+  btn.addEventListener('mouseenter', () => {
+    hovered = true;
+    btn.textContent = playing ? '⏸' : '▶';
+    document.body.classList.add('cursor-hover');
   });
-
-  if (playPause) playPause.addEventListener('click', () => {
-    if (isPlaying) pause();
-    else           play();
+  btn.addEventListener('mouseleave', () => {
+    hovered = false;
+    btn.textContent = '🎵';
+    document.body.classList.remove('cursor-hover');
   });
 })();
 
