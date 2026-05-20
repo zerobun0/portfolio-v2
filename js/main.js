@@ -90,7 +90,8 @@ window.addEventListener('load', () => {
 
 // ── Lo-fi Music Player ──────────────────────────────
 (function initMusicPlayer() {
-  const LOFI_URL = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&disablekb=1&fs=0&modestbranding=1&playsinline=1&loop=1&playlist=jfKfPfyJRdk';
+  // mute=1 so Chrome allows autoplay; enablejsapi=1 so we can unmute via postMessage
+  const LOFI_URL = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&modestbranding=1&playsinline=1&enablejsapi=1&loop=1&playlist=jfKfPfyJRdk';
   const MS_KEY   = 'ta_music_state';
 
   const widget    = document.getElementById('music-widget');
@@ -115,6 +116,11 @@ window.addEventListener('load', () => {
     saveState();
   }
 
+  function sendCmd(func, args) {
+    if (!iframe || !iframe.contentWindow) return;
+    try { iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: args || [] }), '*'); } catch(e) {}
+  }
+
   function play() {
     if (!iframe) {
       iframe = document.createElement('iframe');
@@ -125,12 +131,23 @@ window.addEventListener('load', () => {
     }
     iframe.src = LOFI_URL;
     setActive(true);
+    // Fallback: unmute after 3 s in case the onReady message is blocked by an extension
+    setTimeout(() => { if (isPlaying) { sendCmd('unMute'); sendCmd('setVolume', [100]); } }, 3000);
   }
 
   function pause() {
     if (iframe) iframe.src = '';
     setActive(false);
   }
+
+  // Primary path: YouTube fires onReady via postMessage when enablejsapi=1
+  window.addEventListener('message', function(e) {
+    if (!iframe || !isPlaying) return;
+    try {
+      const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+      if (d.event === 'onReady') { sendCmd('unMute'); sendCmd('setVolume', [100]); }
+    } catch(ex) {}
+  });
 
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
