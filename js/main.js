@@ -118,7 +118,7 @@ window.addEventListener('load', () => {
   function play() {
     if (!iframe) {
       iframe = document.createElement('iframe');
-      iframe.style.cssText = 'position:fixed;top:-300px;left:-300px;width:2px;height:2px;pointer-events:none;border:none;';
+      iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:320px;height:180px;pointer-events:none;border:none;';
       iframe.allow = 'autoplay; encrypted-media';
       iframe.setAttribute('allowfullscreen', '');
       document.body.appendChild(iframe);
