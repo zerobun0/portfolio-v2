@@ -90,138 +90,88 @@ window.addEventListener('load', () => {
 
 // ── Lo-fi Music Player (YouTube IFrame API) ──────────
 (function initMusicPlayer() {
+  const LOFI_ID = 'jfKfPfyJRdk';
+  const MS_KEY  = 'ta_music_state';
+
   const widget    = document.getElementById('music-widget');
   const openBtn   = document.getElementById('music-btn');
   const panel     = document.getElementById('music-panel');
   const playPause = document.getElementById('music-play-pause');
-  const prevBtn   = document.getElementById('music-prev');
-  const nextBtn   = document.getElementById('music-next');
-  const muteBtn   = document.getElementById('music-mute');
-  const trackName = document.getElementById('music-track-name');
   if (!openBtn || !panel) return;
 
-  const TRACKS = [
-    { id: 'jfKfPfyJRdk', name: 'Lofi Hip Hop Radio' },
-    { id: 'rUxyKA_-grg', name: 'Sleep / Chill Beats' },
-    { id: '5qap5aO4i9A', name: 'Chillhop Radio'      },
-  ];
-
-  const MS_KEY = 'ta_music_state';
+  let isOpen    = false;
+  let isPlaying = false;
+  let ytPlayer  = null;
+  let ytReady   = false;
 
   let savedState = {};
   try { savedState = JSON.parse(localStorage.getItem(MS_KEY) || '{}'); } catch (e) {}
-
-  let idx       = savedState.idx || 0;
-  let isOpen    = false;
-  let isPlaying = false;
-  let isMuted   = false;
-  let ytPlayer  = null;
-  let ytReady   = false;
-  let apiLoaded = false;
   const wasPlaying = !!savedState.playing;
 
   function saveState() {
-    try { localStorage.setItem(MS_KEY, JSON.stringify({ idx, playing: isPlaying })); } catch (e) {}
+    try { localStorage.setItem(MS_KEY, JSON.stringify({ playing: isPlaying })); } catch (e) {}
   }
 
   function setActive(state) {
     isPlaying = state;
-    if (widget) widget.classList.toggle('active', state);
+    if (widget)    widget.classList.toggle('active', state);
     openBtn.classList.toggle('playing', state);
     if (playPause) playPause.textContent = state ? '⏸' : '▶';
     saveState();
   }
 
-  function updateName() {
-    if (trackName) trackName.textContent = TRACKS[idx].name;
-  }
-
   function createPlayer() {
     if (ytPlayer) return;
     const el = document.getElementById('yt-player-hidden');
-    if (!el || !window.YT || !window.YT.Player) return;
+    if (!el) return;
     ytPlayer = new YT.Player(el, {
       height: '1', width: '1',
-      videoId: TRACKS[idx].id,
-      playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1 },
+      videoId: LOFI_ID,
+      playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1, loop: 1, playlist: LOFI_ID },
       events: {
         onReady()        { ytReady = true; },
         onStateChange(e) {
-          if (e.data === 1) setActive(true);
-          if (e.data === 2) setActive(false);
-          if (e.data === 0) {
-            idx = (idx + 1) % TRACKS.length;
-            updateName();
-            ytPlayer.loadVideoById(TRACKS[idx].id);
-          }
+          if (e.data === YT.PlayerState.PLAYING) setActive(true);
+          if (e.data === YT.PlayerState.PAUSED)  setActive(false);
+          if (e.data === YT.PlayerState.ENDED)   ytPlayer.playVideo();
         }
       }
     });
   }
 
-  function loadYTScript() {
-    if (apiLoaded) return;
-    apiLoaded = true;
-    if (window.YT && window.YT.Player) return;
-    const s = document.createElement('script');
-    s.src = 'https://www.youtube.com/iframe_api';
-    document.head.appendChild(s);
-  }
-  loadYTScript();
+  // Proper global callback the YT API fires when ready
+  const prevCallback = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function () {
+    if (typeof prevCallback === 'function') prevCallback();
+    if (wasPlaying || isOpen) createPlayer();
+  };
 
-  function whenReady(fn) {
-    if (window.YT && window.YT.Player) { fn(); return; }
-    const t = setInterval(() => {
-      if (window.YT && window.YT.Player) { clearInterval(t); fn(); }
-    }, 100);
-  }
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
 
   if (wasPlaying) {
-    updateName();
     isOpen = true;
     panel.classList.add('open');
-    whenReady(createPlayer);
   }
 
   openBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     panel.classList.toggle('open', isOpen);
     if (!isOpen) return;
-    if (!ytPlayer) {
-      whenReady(createPlayer);
-    } else if (ytReady && !isPlaying) {
-      ytPlayer.loadVideoById(TRACKS[idx].id);
-    }
+    if (!ytPlayer && window.YT && window.YT.Player) createPlayer();
+    else if (ytReady && !isPlaying) ytPlayer.playVideo();
   });
 
   if (playPause) playPause.addEventListener('click', () => {
-    if (!ytPlayer || !ytReady) return;
+    if (!ytPlayer) {
+      if (window.YT && window.YT.Player) createPlayer();
+      return;
+    }
+    if (!ytReady) return;
     if (isPlaying) ytPlayer.pauseVideo();
-    else           ytPlayer.loadVideoById(TRACKS[idx].id);
+    else           ytPlayer.playVideo();
   });
-
-  if (nextBtn) nextBtn.addEventListener('click', () => {
-    if (!ytPlayer || !ytReady) return;
-    idx = (idx + 1) % TRACKS.length;
-    updateName();
-    ytPlayer.loadVideoById(TRACKS[idx].id);
-  });
-
-  if (prevBtn) prevBtn.addEventListener('click', () => {
-    if (!ytPlayer || !ytReady) return;
-    idx = (idx - 1 + TRACKS.length) % TRACKS.length;
-    updateName();
-    ytPlayer.loadVideoById(TRACKS[idx].id);
-  });
-
-  if (muteBtn) muteBtn.addEventListener('click', () => {
-    if (!ytPlayer || !ytReady) return;
-    isMuted = !isMuted;
-    if (isMuted) { ytPlayer.mute();   muteBtn.textContent = '🔇'; }
-    else         { ytPlayer.unMute(); muteBtn.textContent = '🔊'; }
-  });
-
-  updateName();
 })();
 
 // ── Page View Counter ─────────────────────────────────
