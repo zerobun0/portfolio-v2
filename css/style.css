@@ -2172,7 +2172,7 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--bg-2);
-  cursor: pointer;
+  cursor: none;
   font-family: var(--f-mono);
   font-size: 10.5px;
   color: var(--text);
@@ -2255,7 +2255,7 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
   gap: 8px;
   transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s;
   text-decoration: none;
-  cursor: pointer;
+  cursor: none;
   text-align: left;
   width: 100%;
   color: inherit;
@@ -2436,7 +2436,7 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
   background: var(--bg-3);
   color: var(--muted);
   font-size: 14px;
-  cursor: pointer;
+  cursor: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2664,3 +2664,17 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
 }
 .dp-pdf-frame-wrap:hover .dp-pdf-overlay-hint { opacity: 0; }
 [data-theme="dark"] .dp-pdf-frame-wrap { background: #2a2420; }
+
+/* ==================== DOC VIEWER — CURSOR HANDOFF ==================== */
+/* When the full-screen iframe is open the JS cursor can't track inside the
+   iframe (separate browsing context).  Restore the OS cursor for the whole
+   modal so the user always has a visible pointer. */
+body.dv-open { cursor: auto !important; }
+body.dv-open button,
+body.dv-open a { cursor: auto !important; }
+body.dv-open #cursor-dot,
+body.dv-open #cursor-ring {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.15s !important;
+}

@@ -93,8 +93,19 @@ tabs.forEach(tab => {
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     const f = tab.dataset.filter;
-    const show = el => el && el.classList.remove('hidden');
     const hide = el => el && el.classList.add('hidden');
+    const show = el => {
+      if (!el) return;
+      el.classList.remove('hidden');
+      // Re-trigger AOS for elements that weren't in view when the section was hidden
+      if (typeof AOS !== 'undefined') AOS.refresh();
+      // Belt-and-suspenders: force-animate anything AOS still missed after re-layout
+      setTimeout(() => {
+        el.querySelectorAll('[data-aos]:not(.aos-animate)').forEach(item => {
+          item.classList.add('aos-animate');
+        });
+      }, 60);
+    };
     if (f === 'all') {
       show(secAll); show(secCerts); show(secProjects); show(secUnits);
     } else if (f === 'certs') {
@@ -390,6 +401,7 @@ if (lb && lbImg) {
     dvOverlay.classList.add('open');
     dvModal.classList.add('open');
     dvModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('dv-open');
     document.body.style.overflow = 'hidden';
   }
 
@@ -397,6 +409,7 @@ if (lb && lbImg) {
     dvOverlay.classList.remove('open');
     dvModal.classList.remove('open');
     dvModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('dv-open');
     document.body.style.overflow = '';
     setTimeout(() => { dvFrame.src = ''; }, 350);
     if (dvNote) dvNote.classList.remove('show');
@@ -516,10 +529,10 @@ if (lb && lbImg) {
       peekNone.classList.remove('hidden');
     };
 
-    // Fallback: hide spinner after 10s even if onload doesn't fire
+    // Fallback: hide spinner after 4s so content behind it can show
     fallbackTimer = setTimeout(function () {
       peekLoad.classList.add('hidden');
-    }, 10000);
+    }, 4000);
   }
 
   // ── Show the peek for a given interactive element ────────────────
@@ -583,13 +596,21 @@ if (lb && lbImg) {
     const el = e.target.closest(SEL);
     if (!el) return;
     clearTimeout(hideTimer);
-    clearTimeout(showTimer);
-    showTimer = setTimeout(function(){ showPeek(el); }, 120);
+    // Only (re)start the show-timer when entering the interactive element from
+    // OUTSIDE it — not when the mouse simply moves between its child spans.
+    const from = e.relatedTarget;
+    if (!from || !el.contains(from)) {
+      clearTimeout(showTimer);
+      showTimer = setTimeout(function(){ showPeek(el); }, 120);
+    }
   }, true);
 
   document.addEventListener('mouseleave', function(e) {
     const el = e.target.closest(SEL);
     if (!el) return;
+    // Only hide when actually leaving the element — not when moving between children.
+    const to = e.relatedTarget;
+    if (to && el.contains(to)) return;
     clearTimeout(showTimer);
     hideTimer = setTimeout(hidePeek, 80);
   }, true);
