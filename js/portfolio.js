@@ -433,147 +433,168 @@ if (lb && lbImg) {
   const peekNone  = document.getElementById('task-peek-no-preview');
   if (!peek || !peekFrame) return;
 
-  const peekIcon      = peek.querySelector('.task-peek-icon');
-  const peekType      = peek.querySelector('.task-peek-type');
-  const peekLabel     = peek.querySelector('.task-peek-label');
-  const peekNoIcon    = peek.querySelector('.task-peek-no-icon');
-  const PAGES_BASE    = 'https://zerobun0.github.io/portfolio-v2/';
+  const peekIcon   = peek.querySelector('.task-peek-icon');
+  const peekType   = peek.querySelector('.task-peek-type');
+  const peekLabel  = peek.querySelector('.task-peek-label');
+  const peekNoIcon = peek.querySelector('.task-peek-no-icon');
+  const PAGES_BASE = 'https://zerobun0.github.io/portfolio-v2/';
 
-  // ── Preload cache: key = filePath, value = 'loading'|'loaded'|'error'
+  // Track state: null = not loaded, 'loading', 'loaded', 'error'
   const cache = Object.create(null);
-  let   loadTimer = null;
+  let currentFile = null;
+  let fallbackTimer = null;
+  let showTimer = null;
+  let hideTimer = null;
 
   function getSrc(file) {
-    if (!file) return '';
+    if (!file) return null;
     return file.toLowerCase().endsWith('.pdf')
       ? file
       : 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(PAGES_BASE + file);
   }
 
-  // ── Preload a file silently via a tiny hidden iframe ─────────────
-  let preloadEl = null;
-  function preloadFile(file) {
-    if (!file || cache[file]) return;
+  // ── Preload cert PDFs + PDF task files after page is idle ────────
+  (window.requestIdleCallback || function(cb){ setTimeout(cb, 1500); })(function () {
+    const seen = new Set();
+    Object.values(CERTS).forEach(c => { if (c.certPdf && !seen.has(c.certPdf)) { seen.add(c.certPdf); triggerPreload(c.certPdf); } });
+    document.querySelectorAll('[data-file]').forEach(el => {
+      const f = el.dataset.file;
+      if (f && f.endsWith('.pdf') && !seen.has(f)) { seen.add(f); triggerPreload(f); }
+    });
+  }, { timeout: 3000 });
+
+  function triggerPreload(file) {
+    if (cache[file]) return;
     cache[file] = 'loading';
-    if (!preloadEl) {
-      preloadEl = document.createElement('div');
-      preloadEl.setAttribute('aria-hidden', 'true');
-      preloadEl.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;top:0;left:0;opacity:0;pointer-events:none;';
-      document.body.appendChild(preloadEl);
-    }
-    const f = document.createElement('iframe');
-    f.style.cssText = 'width:1px;height:1px;border:none;';
-    f.src = getSrc(file);
-    f.onload  = () => { cache[file] = 'loaded'; };
-    f.onerror = () => { cache[file] = 'error';  };
-    preloadEl.appendChild(f);
+    const fi = document.createElement('iframe');
+    fi.setAttribute('aria-hidden', 'true');
+    fi.style.cssText = 'position:fixed;width:1px;height:1px;top:-2px;left:-2px;opacity:0;pointer-events:none;border:none;';
+    fi.onload  = () => { cache[file] = 'loaded'; fi.remove(); };
+    fi.onerror = () => { cache[file] = 'error';  fi.remove(); };
+    fi.src = file; // PDF: direct path; already a pdf guaranteed above
+    document.body.appendChild(fi);
   }
 
-  // Preload cert PDFs after page is idle (small files, loads fast)
-  (window.requestIdleCallback || setTimeout)(function () {
-    Object.values(CERTS).forEach(c => { if (c.certPdf) preloadFile(c.certPdf); });
-    // Also preload PDF task files
-    document.querySelectorAll('[data-file$=".pdf"]').forEach(el => {
-      if (el.dataset.file) preloadFile(el.dataset.file);
-    });
-  }, { timeout: 2000 });
-
-  // ── Positioning: above element, flip below if no room ───────────
-  let showTimer = null;
-  let hideTimer = null;
-  let currentFile = null;
-
+  // ── Position above the element; flip below if near top ──────────
   function positionPeek(el) {
     const rect = el.getBoundingClientRect();
-    const ph   = peek.offsetHeight || 220;
-    const pw   = 280;
+    const ph   = peek.offsetHeight || 228;
     let top  = rect.top - ph - 10;
     let left = rect.left;
     if (top < 8) top = rect.bottom + 8;
-    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    if (left + 280 > window.innerWidth - 8) left = window.innerWidth - 288;
     if (left < 8) left = 8;
     peek.style.top  = top  + 'px';
     peek.style.left = left + 'px';
   }
 
-  // ── Show the peek for a given interactive element ─────────────────
+  // ── Load a file into the peek iframe ────────────────────────────
+  function loadInPeek(file) {
+    const src = getSrc(file);
+    if (!src) return;
+
+    // Clear previous handlers + fallback timer
+    peekFrame.onload  = null;
+    peekFrame.onerror = null;
+    clearTimeout(fallbackTimer);
+
+    // Show spinner, hide no-preview
+    peekLoad.classList.remove('hidden');
+    peekNone.classList.add('hidden');
+
+    // If already loaded from preload cache → just set src (instant from browser cache)
+    peekFrame.src = src;
+    currentFile = file;
+
+    peekFrame.onload = function () {
+      cache[file] = 'loaded';
+      peekLoad.classList.add('hidden');
+    };
+    peekFrame.onerror = function () {
+      cache[file] = 'error';
+      peekLoad.classList.add('hidden');
+      peekNone.classList.remove('hidden');
+    };
+
+    // Fallback: hide spinner after 10s even if onload doesn't fire
+    fallbackTimer = setTimeout(function () {
+      peekLoad.classList.add('hidden');
+    }, 10000);
+  }
+
+  // ── Show the peek for a given interactive element ────────────────
   function showPeek(el) {
     clearTimeout(hideTimer);
-    const file    = el.dataset.file || '';
-    const isPdf   = file.toLowerCase().endsWith('.pdf');
-    const isCert  = el.classList.contains('extra-cert-card') || el.classList.contains('folder-card');
 
+    const file   = el.dataset.file || '';
+    const isPdf  = file.toLowerCase().endsWith('.pdf');
+    const isCert = el.classList.contains('extra-cert-card') ||
+                   el.classList.contains('folder-card');
+
+    // Footer labels
     peekIcon.textContent  = isCert ? '🏅' : (isPdf ? '📋' : '📄');
-    peekType.textContent  = isCert
-      ? (isPdf ? 'PDF Certificate' : 'Certificate')
-      : (isPdf ? 'PDF Document'   : 'Word Document');
-    peekLabel.textContent = el.dataset.title || '';
+    peekType.textContent  = isCert ? (isPdf ? 'PDF Certificate' : 'Certificate')
+                                   : (isPdf ? 'PDF Document' : 'Word Document');
+    peekLabel.textContent = el.dataset.title || el.getAttribute('data-title') || '';
 
+    // Preview content
     if (!file) {
-      // No file → show "no preview" state
+      // Cert badge with no PDF
       peekLoad.classList.add('hidden');
-      if (peekNoIcon) peekNoIcon.textContent = isCert ? '🏅' : '📄';
+      if (peekNoIcon) peekNoIcon.textContent = '🏅';
       peekNone.classList.remove('hidden');
-      if (currentFile) { peekFrame.src = ''; currentFile = null; }
     } else if (file !== currentFile) {
-      // New file → load it
-      currentFile = file;
-      peekNone.classList.add('hidden');
-      peekLoad.classList.remove('hidden');
-      peekFrame.src = '';          // reset first
-      clearTimeout(loadTimer);
-      // Small delay before setting src so peek can render first
-      loadTimer = setTimeout(() => {
-        peekFrame.src = getSrc(file);
-        peekFrame.onload  = () => { peekLoad.classList.add('hidden'); cache[file] = 'loaded'; };
-        peekFrame.onerror = () => { peekLoad.classList.add('hidden'); peekNone.classList.remove('hidden'); };
-        // Fallback hide spinner after 8s
-        clearTimeout(loadTimer);
-        loadTimer = setTimeout(() => peekLoad.classList.add('hidden'), 8000);
-      }, 60);
+      loadInPeek(file);
     } else {
-      // Same file — just update state
+      // Same file — restore correct overlay state
       peekNone.classList.add('hidden');
       if (cache[file] === 'loaded') {
         peekLoad.classList.add('hidden');
+      } else if (cache[file] === 'error') {
+        peekLoad.classList.add('hidden');
+        peekNone.classList.remove('hidden');
+      } else {
+        peekLoad.classList.remove('hidden');
       }
     }
 
-    // Invisible render → measure → position → reveal
-    peek.style.opacity = '0';
-    peek.style.pointerEvents = 'none';
+    // Render invisible first so offsetHeight is correct, then position + reveal
+    peek.style.transition = 'none';
+    peek.style.opacity    = '0';
     peek.classList.add('visible');
-    requestAnimationFrame(() => {
+    requestAnimationFrame(function () {
       positionPeek(el);
-      peek.style.opacity = '';
+      peek.style.transition = '';
+      peek.style.opacity    = '';
     });
   }
 
   function hidePeek() {
     clearTimeout(showTimer);
-    clearTimeout(loadTimer);
     peek.classList.remove('visible');
+    // NOTE: intentionally NOT clearing peekFrame.src — keeps content cached
+    //       for instant re-display on next hover of same file
   }
 
-  // ── Event delegation ────────────────────────────────────────────
+  // ── Delegated events ─────────────────────────────────────────────
   const SEL = '.task-row, .extra-cert-card[data-file], .folder-card[data-cert]';
 
-  document.addEventListener('mouseenter', e => {
+  document.addEventListener('mouseenter', function(e) {
     const el = e.target.closest(SEL);
     if (!el) return;
     clearTimeout(hideTimer);
     clearTimeout(showTimer);
-    showTimer = setTimeout(() => showPeek(el), 120);
+    showTimer = setTimeout(function(){ showPeek(el); }, 120);
   }, true);
 
-  document.addEventListener('mouseleave', e => {
+  document.addEventListener('mouseleave', function(e) {
     const el = e.target.closest(SEL);
     if (!el) return;
     clearTimeout(showTimer);
     hideTimer = setTimeout(hidePeek, 80);
   }, true);
 
-  document.addEventListener('click', e => {
+  document.addEventListener('click', function(e) {
     if (e.target.closest(SEL)) hidePeek();
   });
 
