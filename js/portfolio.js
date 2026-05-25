@@ -451,12 +451,11 @@ let _openDocViewer = null; // shared reference so initTaskPeek can call it
   const peekNone  = document.getElementById('task-peek-no-preview');
   if (!peek || !peekFrame) return;
 
-  const peekIcon     = peek.querySelector('.task-peek-icon');
-  const peekType     = peek.querySelector('.task-peek-type');
-  const peekLabel    = peek.querySelector('.task-peek-label');
-  const peekNoIcon   = peek.querySelector('.task-peek-no-icon');
-  const peekBadgeImg = document.getElementById('task-peek-badge-img');
-  const peekFooter   = peek.querySelector('.task-peek-footer');
+  const peekIcon   = peek.querySelector('.task-peek-icon');
+  const peekType   = peek.querySelector('.task-peek-type');
+  const peekLabel  = peek.querySelector('.task-peek-label');
+  const peekNoIcon = peek.querySelector('.task-peek-no-icon');
+  const peekFooter = peek.querySelector('.task-peek-footer');
   const PAGES_BASE = 'https://zerobun0.github.io/portfolio-v2/';
 
   // Track state: null = not loaded, 'loading', 'loaded', 'error'
@@ -553,53 +552,36 @@ let _openDocViewer = null; // shared reference so initTaskPeek can call it
   function showPeek(el) {
     clearTimeout(hideTimer);
 
-    const certKey      = el.dataset.cert || '';
-    const file         = el.dataset.file || '';
-    const isPdf        = file.toLowerCase().endsWith('.pdf');
-    const isFolderCard = el.classList.contains('folder-card');
-    const isCert       = el.classList.contains('extra-cert-card') || isFolderCard;
+    const file   = el.dataset.file || '';
+    const isPdf  = file.toLowerCase().endsWith('.pdf');
+    const isCert = el.classList.contains('extra-cert-card') ||
+                   el.classList.contains('folder-card');
 
     // Footer labels
     peekIcon.textContent  = isCert ? '🏅' : (isPdf ? '📋' : '📄');
-    peekType.textContent  = isCert ? (file ? 'PDF Certificate' : 'Certificate')
+    peekType.textContent  = isCert ? (isPdf ? 'PDF Certificate' : 'Certificate')
                                    : (isPdf ? 'PDF Document' : 'Word Document');
     peekLabel.textContent = el.dataset.title || el.getAttribute('data-title') || '';
     peekActiveEl = el; // remember for CTA click
 
-    if (isFolderCard && certKey && CERTS[certKey] && CERTS[certKey].badge) {
-      // ── Folder-card (Cisco cert badge): show PNG image instantly ──────
-      // No iframe — avoids slow/unreliable PDF loading and unblocks adjacent
-      // badge mouse events since we don't need pointer-events on the preview.
-      peekFrame.style.display = 'none';
-      if (peekBadgeImg) {
-        peekBadgeImg.src = CERTS[certKey].badge;
-        peekBadgeImg.classList.remove('hidden');
-      }
+    // Preview content — always use the PDF iframe
+    if (!file) {
+      // Cert with no PDF file attached
       peekLoad.classList.add('hidden');
-      peekNone.classList.add('hidden');
-      currentFile = file || null; // null when cert has no PDF (CTA guard handles it)
+      if (peekNoIcon) peekNoIcon.textContent = '🏅';
+      peekNone.classList.remove('hidden');
+    } else if (file !== currentFile) {
+      loadInPeek(file);
     } else {
-      // ── Regular flow: task rows and extra-cert-cards use iframe ───────
-      peekFrame.style.display = '';
-      if (peekBadgeImg) peekBadgeImg.classList.add('hidden');
-
-      if (!file) {
+      // Same file already in frame — restore correct overlay state
+      peekNone.classList.add('hidden');
+      if (cache[file] === 'loaded') {
         peekLoad.classList.add('hidden');
-        if (peekNoIcon) peekNoIcon.textContent = '🏅';
+      } else if (cache[file] === 'error') {
+        peekLoad.classList.add('hidden');
         peekNone.classList.remove('hidden');
-      } else if (file !== currentFile) {
-        loadInPeek(file);
       } else {
-        // Same file — restore correct overlay state
-        peekNone.classList.add('hidden');
-        if (cache[file] === 'loaded') {
-          peekLoad.classList.add('hidden');
-        } else if (cache[file] === 'error') {
-          peekLoad.classList.add('hidden');
-          peekNone.classList.remove('hidden');
-        } else {
-          peekLoad.classList.remove('hidden');
-        }
+        peekLoad.classList.remove('hidden');
       }
     }
 
@@ -617,11 +599,8 @@ let _openDocViewer = null; // shared reference so initTaskPeek can call it
   function hidePeek() {
     clearTimeout(showTimer);
     peek.classList.remove('visible');
-    // Reset badge-image mode so next hover starts clean
-    if (peekBadgeImg) peekBadgeImg.classList.add('hidden');
-    peekFrame.style.display = '';
-    // NOTE: intentionally NOT clearing peekFrame.src — keeps content cached
-    //       for instant re-display on next hover of same file
+    // NOTE: intentionally NOT clearing peekFrame.src — keeps PDF cached
+    //       for instant re-display on next hover of same cert
   }
 
   // ── Delegated events ─────────────────────────────────────────────
