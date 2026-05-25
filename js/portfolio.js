@@ -130,7 +130,20 @@ function openPanel(certKey) {
   if (fi) fi.textContent = c.icon;
   panel.querySelector('#dp-skills').innerHTML = c.skills.map(s => `<span class="detail-skill-tag">${s}</span>`).join('');
 
-  // Certificate PDF link
+  // Certificate PDF preview iframe
+  const pdfPreview = panel.querySelector('#dp-pdf-preview');
+  const pdfFrame   = panel.querySelector('#dp-pdf-frame');
+  if (pdfPreview && pdfFrame) {
+    if (c.certPdf) {
+      pdfFrame.src = c.certPdf;
+      pdfPreview.classList.add('show');
+    } else {
+      pdfFrame.src = '';
+      pdfPreview.classList.remove('show');
+    }
+  }
+
+  // Certificate PDF link (keep as download fallback)
   let pdfLink = panel.querySelector('#dp-cert-pdf');
   if (!pdfLink) {
     pdfLink = document.createElement('a');
@@ -149,7 +162,7 @@ function openPanel(certKey) {
   }
   if (c.certPdf) {
     pdfLink.href = c.certPdf;
-    pdfLink.textContent = '📄 View Certificate PDF';
+    pdfLink.textContent = '↗ Open Full Certificate';
     pdfLink.style.display = 'inline-flex';
   } else {
     pdfLink.style.display = 'none';
@@ -164,6 +177,11 @@ function closePanel() {
   if (panel) panel.classList.remove('open');
   if (overlay) overlay.classList.remove('open');
   document.body.style.overflow = '';
+  // Unload PDF iframe to stop background rendering
+  setTimeout(() => {
+    const pf = document.getElementById('dp-pdf-frame');
+    if (pf) pf.src = '';
+  }, 350);
 }
 
 document.querySelectorAll('.folder-card[data-cert]').forEach(card => {
@@ -313,6 +331,92 @@ if (lb && lbImg) {
   };
   document.addEventListener('keydown', window._lbKeyHandler);
 }
+
+// ── Document Viewer ────────────────────────────────────
+(function initDocViewer() {
+  const dvOverlay = document.getElementById('dv-overlay');
+  const dvModal   = document.getElementById('dv-modal');
+  const dvClose   = document.getElementById('dv-close');
+  const dvFrame   = document.getElementById('dv-frame');
+  const dvTitle   = document.getElementById('dv-title');
+  const dvUnit    = document.getElementById('dv-unit-label');
+  const dvDl      = document.getElementById('dv-download');
+  const dvLoad    = document.getElementById('dv-loading');
+  const dvNote    = document.getElementById('dv-note');
+  if (!dvModal || !dvFrame) return;
+
+  // GitHub Pages public base URL — adjust if repo name changes
+  const PAGES_BASE = 'https://zerobun0.github.io/portfolio-v2/';
+
+  function openDocViewer(filePath, title, unitLabel) {
+    dvTitle.textContent = title;
+    dvUnit.textContent  = unitLabel;
+    dvDl.href           = filePath;
+    dvDl.download       = filePath.split('/').pop();
+
+    // Show loading spinner
+    if (dvLoad) dvLoad.classList.remove('hidden');
+    if (dvNote) dvNote.classList.remove('show');
+    dvFrame.src = '';
+
+    const isPdf = filePath.toLowerCase().endsWith('.pdf');
+    const absUrl = PAGES_BASE + filePath;
+
+    if (isPdf) {
+      // Direct iframe embed for PDFs
+      dvFrame.src = filePath;
+    } else {
+      // Office Online Viewer for docx/pptx/xlsx (needs public URL)
+      dvFrame.src = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(absUrl);
+    }
+
+    // Hide spinner once iframe loads (or after 2.5s timeout)
+    const loadTimer = setTimeout(() => {
+      if (dvLoad) dvLoad.classList.add('hidden');
+      if (dvNote && !isPdf) dvNote.classList.add('show');
+    }, 2500);
+    dvFrame.onload = () => {
+      clearTimeout(loadTimer);
+      if (dvLoad) dvLoad.classList.add('hidden');
+      if (dvNote && !isPdf) dvNote.classList.add('show');
+    };
+
+    dvOverlay.classList.add('open');
+    dvModal.classList.add('open');
+    dvModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDocViewer() {
+    dvOverlay.classList.remove('open');
+    dvModal.classList.remove('open');
+    dvModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { dvFrame.src = ''; }, 350);
+    if (dvNote) dvNote.classList.remove('show');
+  }
+
+  // Attach listeners to all task-row buttons (including future ones)
+  document.addEventListener('click', e => {
+    const row = e.target.closest('.task-row');
+    if (!row) return;
+    e.stopPropagation();
+    openDocViewer(row.dataset.file, row.dataset.title, row.dataset.unit);
+  });
+
+  if (dvClose)   dvClose.addEventListener('click', closeDocViewer);
+  if (dvOverlay) dvOverlay.addEventListener('click', closeDocViewer);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && dvModal.classList.contains('open')) closeDocViewer();
+  });
+
+  // Cursor hover effect on task rows
+  document.querySelectorAll('.task-row').forEach(row => {
+    row.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    row.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+})();
 
 }; // end window.initPortfolio
 
