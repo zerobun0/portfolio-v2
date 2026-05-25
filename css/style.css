@@ -683,6 +683,35 @@ main { padding-top: var(--nav-h); }
   line-height: 1.65;
 }
 
+/* ── Timeline block labels (Education / Milestones) ── */
+.timeline-block-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 8px 0 22px 42px;   /* align with timeline-body left edge */
+}
+.tlbl-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.tlbl-text {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-2);
+}
+/* Extra top margin before the Milestones label to visually separate blocks */
+.timeline-block-label + .timeline-block-label,
+.timeline-item + .timeline-block-label {
+  margin-top: 36px;
+}
+
 /* ==================== PORTFOLIO PAGE ==================== */
 .portfolio-header {
   padding: 72px clamp(24px, 5vw, 60px) 0;
