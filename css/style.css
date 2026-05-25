@@ -2478,41 +2478,87 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
 .task-peek {
   position: fixed;
   z-index: 10500;
+  width: 280px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  border-radius: 14px;
+  overflow: hidden;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(8px) scale(0.95);
-  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1);
-  min-width: 190px;
-  max-width: 300px;
-  backdrop-filter: blur(8px);
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.18), 0 4px 14px rgba(0,0,0,0.1);
 }
 .task-peek.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
-.task-peek-icon {
-  font-size: 24px;
+/* ── Preview window (iframe scaled down) ── */
+.task-peek-preview {
+  width: 280px;
+  height: 168px;
+  position: relative;
+  overflow: hidden;
+  background: #f5f7fa;
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  line-height: 1;
 }
-.task-peek-info {
+.task-peek-frame {
+  /* 1120px × 0.25 = 280px; 672px × 0.25 = 168px */
+  width: 1120px;
+  height: 672px;
+  border: none;
+  display: block;
+  transform: scale(0.25);
+  transform-origin: top left;
+  pointer-events: none;
+  background: #fff;
+}
+/* Loading / no-preview overlays */
+.task-peek-loading,
+.task-peek-no-preview {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--bg-2);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--muted);
+  transition: opacity 0.25s;
+  z-index: 2;
+}
+.task-peek-loading.hidden,
+.task-peek-no-preview.hidden { opacity: 0; pointer-events: none; }
+.task-peek-no-icon { font-size: 28px; }
+.task-peek-spin {
+  width: 22px; height: 22px;
+  border: 2.5px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: peekSpin 0.72s linear infinite;
+}
+@keyframes peekSpin { to { transform: rotate(360deg); } }
+/* ── Footer: icon + label + CTA ── */
+.task-peek-footer {
+  padding: 9px 12px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-peek-icon { font-size: 16px; flex-shrink: 0; }
+.task-peek-info {
+  flex: 1; min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .task-peek-type {
   font-family: var(--f-mono);
-  font-size: 9px;
+  font-size: 8.5px;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -2531,12 +2577,13 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
   font-family: var(--f-mono);
   font-size: 10px;
   color: var(--accent);
-  opacity: 0.75;
+  font-weight: 700;
   flex-shrink: 0;
-  white-space: nowrap;
 }
+[data-theme="dark"] .task-peek-preview { background: #1a1d22; }
+[data-theme="dark"] .task-peek-frame   { background: #1a1d22; }
 [data-theme="dark"] .task-peek {
-  box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.5), 0 4px 14px rgba(0,0,0,0.25);
 }
 
 /* ==================== CERT PANEL PDF PREVIEW ==================== */

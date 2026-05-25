@@ -1305,12 +1305,25 @@
 
 <!-- ══════════ TASK HOVER PEEK TOOLTIP ══════════ -->
 <div id="task-peek" class="task-peek" aria-hidden="true">
-  <span class="task-peek-icon"></span>
-  <div class="task-peek-info">
-    <span class="task-peek-type"></span>
-    <span class="task-peek-label"></span>
+  <div class="task-peek-preview">
+    <iframe id="task-peek-frame" class="task-peek-frame" title="Document preview" tabindex="-1" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+    <div class="task-peek-loading" id="task-peek-loading">
+      <div class="task-peek-spin"></div>
+      <span>Loading preview…</span>
+    </div>
+    <div class="task-peek-no-preview" id="task-peek-no-preview">
+      <span class="task-peek-no-icon"></span>
+      <span>No preview available</span>
+    </div>
   </div>
-  <span class="task-peek-cta">Click to view →</span>
+  <div class="task-peek-footer">
+    <span class="task-peek-icon"></span>
+    <div class="task-peek-info">
+      <span class="task-peek-type"></span>
+      <span class="task-peek-label"></span>
+    </div>
+    <span class="task-peek-cta">Open ↗</span>
+  </div>
 </div>
 
 <!-- ══════════ DOCUMENT VIEWER MODAL ══════════ -->
