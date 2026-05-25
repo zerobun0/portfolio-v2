@@ -603,34 +603,24 @@ let _openDocViewer = null; // shared reference so initTaskPeek can call it
     //       for instant re-display on next hover of same cert
   }
 
-  // ── Delegated events ─────────────────────────────────────────────
+  // ── Direct listeners on each interactive element ─────────────────
+  // Using direct mouseenter/mouseleave (not capture-phase delegation) so events
+  // only fire for the element itself — not for every nested child.  This removes
+  // the timing race where child mouseleave events fired after an adjacent badge's
+  // mouseenter and cancelled its showTimer (causing the "every other badge" miss).
   const SEL = '.task-row, .extra-cert-card[data-file], .folder-card[data-cert]';
 
-  document.addEventListener('mouseenter', function(e) {
-    const el = e.target.closest(SEL);
-    if (!el) return;
-    clearTimeout(hideTimer);
-    // Only (re)start the show-timer when entering the interactive element from
-    // OUTSIDE it — not when the mouse simply moves between its child spans.
-    const from = e.relatedTarget;
-    if (!from || !el.contains(from)) {
+  document.querySelectorAll(SEL).forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      clearTimeout(hideTimer);
       clearTimeout(showTimer);
-      showTimer = setTimeout(function(){ showPeek(el); }, 120);
-    }
-  }, true);
-
-  document.addEventListener('mouseleave', function(e) {
-    const el = e.target.closest(SEL);
-    if (!el) return;
-    // Only hide when actually leaving the element — not when moving between children.
-    const to = e.relatedTarget;
-    if (to && el.contains(to)) return;
-    clearTimeout(showTimer);
-    hideTimer = setTimeout(hidePeek, 80);
-  }, true);
-
-  document.addEventListener('click', function(e) {
-    if (e.target.closest(SEL)) hidePeek();
+      showTimer = setTimeout(function() { showPeek(el); }, 100);
+    });
+    el.addEventListener('mouseleave', function() {
+      clearTimeout(showTimer);
+      hideTimer = setTimeout(hidePeek, 150);
+    });
+    el.addEventListener('click', hidePeek);
   });
 
   window.addEventListener('scroll', hidePeek, { passive: true });
