@@ -350,6 +350,8 @@ if (lb && lbImg) {
 }
 
 // ── Document Viewer ────────────────────────────────────
+let _openDocViewer = null; // shared reference so initTaskPeek can call it
+
 (function initDocViewer() {
   const dvOverlay = document.getElementById('dv-overlay');
   const dvModal   = document.getElementById('dv-modal');
@@ -424,6 +426,9 @@ if (lb && lbImg) {
     openDocViewer(row.dataset.file, row.dataset.title, row.dataset.unit || 'Certificate');
   });
 
+  // Expose openDocViewer so initTaskPeek's CTA button can call it
+  _openDocViewer = openDocViewer;
+
   if (dvClose)   dvClose.addEventListener('click', closeDocViewer);
   if (dvOverlay) dvOverlay.addEventListener('click', closeDocViewer);
 
@@ -454,7 +459,8 @@ if (lb && lbImg) {
 
   // Track state: null = not loaded, 'loading', 'loaded', 'error'
   const cache = Object.create(null);
-  let currentFile = null;
+  let currentFile  = null;
+  let peekActiveEl = null; // last element that triggered a peek (used by CTA)
   let fallbackTimer = null;
   let showTimer = null;
   let hideTimer = null;
@@ -506,16 +512,20 @@ if (lb && lbImg) {
     const src = getSrc(file);
     if (!src) return;
 
-    // Clear previous handlers + fallback timer
     peekFrame.onload  = null;
     peekFrame.onerror = null;
     clearTimeout(fallbackTimer);
 
-    // Show spinner, hide no-preview
-    peekLoad.classList.remove('hidden');
+    // If preloaded/previously seen → skip spinner so content shows without delay.
+    // If brand-new file → show spinner so layout doesn't look empty.
+    const wasCached = cache[file] === 'loaded';
+    if (wasCached) {
+      peekLoad.classList.add('hidden');
+    } else {
+      peekLoad.classList.remove('hidden');
+    }
     peekNone.classList.add('hidden');
 
-    // If already loaded from preload cache → just set src (instant from browser cache)
     peekFrame.src = src;
     currentFile = file;
 
@@ -529,10 +539,12 @@ if (lb && lbImg) {
       peekNone.classList.remove('hidden');
     };
 
-    // Fallback: hide spinner after 4s so content behind it can show
-    fallbackTimer = setTimeout(function () {
-      peekLoad.classList.add('hidden');
-    }, 4000);
+    // Fallback: only needed for uncached files — hides spinner after 4s
+    if (!wasCached) {
+      fallbackTimer = setTimeout(function () {
+        peekLoad.classList.add('hidden');
+      }, 4000);
+    }
   }
 
   // ── Show the peek for a given interactive element ────────────────
@@ -549,6 +561,7 @@ if (lb && lbImg) {
     peekType.textContent  = isCert ? (isPdf ? 'PDF Certificate' : 'Certificate')
                                    : (isPdf ? 'PDF Document' : 'Word Document');
     peekLabel.textContent = el.dataset.title || el.getAttribute('data-title') || '';
+    peekActiveEl = el; // remember for CTA click
 
     // Preview content
     if (!file) {
@@ -620,6 +633,33 @@ if (lb && lbImg) {
   });
 
   window.addEventListener('scroll', hidePeek, { passive: true });
+
+  // ── Peek element interactivity ───────────────────────────────────
+  // Allow mouse to move INTO the peek without hiding it, and make the
+  // "Open ↗" CTA button actually clickable.
+  peek.addEventListener('mouseenter', function () {
+    clearTimeout(hideTimer);
+    document.body.classList.add('cursor-hover');
+  });
+  peek.addEventListener('mouseleave', function () {
+    document.body.classList.remove('cursor-hover');
+    hideTimer = setTimeout(hidePeek, 80);
+  });
+
+  // CTA "Open ↗" — opens the full doc viewer for the current peek file
+  const peekCta = peek.querySelector('.task-peek-cta');
+  if (peekCta) {
+    peekCta.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (_openDocViewer && currentFile && peekActiveEl) {
+        const title = peekActiveEl.dataset.title || peekLabel.textContent || currentFile.split('/').pop();
+        const unit  = peekActiveEl.dataset.unit  ||
+                      (peekType.textContent.toLowerCase().includes('cert') ? 'Certificate' : '');
+        hidePeek();
+        _openDocViewer(currentFile, title, unit);
+      }
+    });
+  }
 })();
 
 }; // end window.initPortfolio
