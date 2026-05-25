@@ -396,12 +396,13 @@ if (lb && lbImg) {
     if (dvNote) dvNote.classList.remove('show');
   }
 
-  // Attach listeners to all task-row buttons (including future ones)
+  // Attach listeners to all task-row + extra-cert-card buttons (event delegation)
   document.addEventListener('click', e => {
-    const row = e.target.closest('.task-row');
+    const row = e.target.closest('.task-row, .extra-cert-card[data-file]');
     if (!row) return;
+    e.preventDefault();
     e.stopPropagation();
-    openDocViewer(row.dataset.file, row.dataset.title, row.dataset.unit);
+    openDocViewer(row.dataset.file, row.dataset.title, row.dataset.unit || 'Certificate');
   });
 
   if (dvClose)   dvClose.addEventListener('click', closeDocViewer);
@@ -411,11 +412,88 @@ if (lb && lbImg) {
     if (e.key === 'Escape' && dvModal.classList.contains('open')) closeDocViewer();
   });
 
-  // Cursor hover effect on task rows
-  document.querySelectorAll('.task-row').forEach(row => {
-    row.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-    row.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  // Cursor hover effect on task rows + extra cert cards
+  document.querySelectorAll('.task-row, .extra-cert-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
   });
+})();
+
+// ── Task / Cert Hover Peek Tooltip ─────────────────────
+(function initTaskPeek() {
+  const peek      = document.getElementById('task-peek');
+  if (!peek) return;
+  const peekIcon  = peek.querySelector('.task-peek-icon');
+  const peekType  = peek.querySelector('.task-peek-type');
+  const peekLabel = peek.querySelector('.task-peek-label');
+
+  let showTimer = null;
+  let hideTimer = null;
+
+  function positionPeek(targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const ph   = peek.offsetHeight || 56;
+    const pw   = peek.offsetWidth  || 230;
+
+    let top  = rect.top - ph - 10;
+    let left = rect.left;
+
+    // If no room above, place below
+    if (top < 8) top = rect.bottom + 8;
+    // Clamp to viewport width
+    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    if (left < 8) left = 8;
+
+    peek.style.top  = top  + 'px';
+    peek.style.left = left + 'px';
+  }
+
+  function showPeek(targetEl) {
+    clearTimeout(hideTimer);
+    const file = targetEl.dataset.file || '';
+    const isPdf = file.toLowerCase().endsWith('.pdf');
+    const isCert = targetEl.classList.contains('extra-cert-card');
+
+    peekIcon.textContent  = isCert ? '🏅' : (isPdf ? '📋' : '📄');
+    peekType.textContent  = isCert ? 'PDF Certificate' : (isPdf ? 'PDF Document' : 'Word Document');
+    peekLabel.textContent = targetEl.dataset.title || '';
+
+    // First show invisible to measure size, then position
+    peek.style.opacity = '0';
+    peek.classList.add('visible');
+    requestAnimationFrame(() => {
+      positionPeek(targetEl);
+      peek.style.opacity = '';
+    });
+  }
+
+  function hidePeek() {
+    clearTimeout(showTimer);
+    peek.classList.remove('visible');
+  }
+
+  document.addEventListener('mouseenter', e => {
+    const el = e.target.closest('.task-row, .extra-cert-card[data-file]');
+    if (!el) return;
+    clearTimeout(hideTimer);
+    clearTimeout(showTimer);
+    showTimer = setTimeout(() => showPeek(el), 130);
+  }, true);
+
+  document.addEventListener('mouseleave', e => {
+    const el = e.target.closest('.task-row, .extra-cert-card[data-file]');
+    if (!el) return;
+    clearTimeout(showTimer);
+    hideTimer = setTimeout(hidePeek, 80);
+  }, true);
+
+  // Hide immediately when clicked
+  document.addEventListener('click', e => {
+    if (e.target.closest('.task-row, .extra-cert-card[data-file]')) hidePeek();
+  });
+
+  // Hide on scroll
+  window.addEventListener('scroll', hidePeek, { passive: true });
 })();
 
 }; // end window.initPortfolio
