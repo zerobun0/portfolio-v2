@@ -2521,7 +2521,11 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
 .task-peek.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
-  pointer-events: auto;         /* visible → interactive (CTA is clickable) */
+  /* pointer-events stays none on the whole tooltip — only footer is interactive.
+     This prevents the peek from blocking mouse events to adjacent badges. */
+}
+.task-peek.visible .task-peek-footer {
+  pointer-events: auto;         /* footer (including CTA) is clickable */
 }
 /* CTA "Open ↗" — make it feel clickable */
 .task-peek-cta {
@@ -2545,6 +2549,20 @@ body, .nav, .detail-panel, .detail-panel-header, footer,
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
+/* Badge image (used instead of iframe for Cisco cert cards) */
+.task-peek-badge-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 22px 32px;
+  box-sizing: border-box;
+  background: var(--bg-card);
+  z-index: 1;
+}
+.task-peek-badge-img.hidden { display: none; }
+
 .task-peek-frame {
   /* 1120px × 0.25 = 280px; 672px × 0.25 = 168px */
   width: 1120px;
