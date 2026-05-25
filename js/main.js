@@ -134,6 +134,35 @@ window.addEventListener('load', () => {
   );
 })();
 
+// ── Dark Mode Toggle ──────────────────────────────────
+(function initDarkMode() {
+  const root = document.documentElement;
+  const btn  = document.getElementById('dm-toggle-btn');
+
+  // Apply saved preference immediately (before paint)
+  const saved = localStorage.getItem('ta_theme');
+  if (saved === 'dark') root.setAttribute('data-theme', 'dark');
+
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      root.removeAttribute('data-theme');
+      localStorage.setItem('ta_theme', 'light');
+      btn.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      localStorage.setItem('ta_theme', 'dark');
+      btn.setAttribute('aria-label', 'Switch to light mode');
+    }
+  });
+
+  // Cursor hover effect
+  btn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  btn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+})();
+
 // ── Page View Counter ─────────────────────────────────
 (function () {
   const el = document.getElementById('view-count');

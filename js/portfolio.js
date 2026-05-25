@@ -11,6 +11,7 @@ const CERTS = {
     name:'IT Essentials', issuer:'Cisco Networking Academy',
     category:'Hardware & Software', level:'Foundational', icon:'💻', color:'#4A90D9',
     badge:'assets/images/cisco/it-essentials.png',
+    certPdf: null,
     desc:'Covers fundamental computer hardware and software skills, including installation, configuration, and troubleshooting of personal computers and mobile devices.',
     skills:['Computer Hardware','Windows OS','Mobile Devices','Troubleshooting','Preventive Maintenance'],
   },
@@ -18,6 +19,7 @@ const CERTS = {
     name:'Hardware and Upgrade Support', issuer:'Cisco Networking Academy',
     category:'Hardware', level:'Foundational', icon:'🔧', color:'#7B5EA7',
     badge:'assets/images/cisco/hardware-upgrade.png',
+    certPdf:'assets/certs/cisco/hardware-upgrade-support.pdf',
     desc:'Focuses on diagnosing, upgrading, and maintaining PC hardware components, including CPUs, RAM, storage, and peripheral devices.',
     skills:['Component Identification','System Upgrades','Peripheral Setup','BIOS / UEFI','Storage Management'],
   },
@@ -25,6 +27,7 @@ const CERTS = {
     name:'Operating Systems Support', issuer:'Cisco Networking Academy',
     category:'Software', level:'Foundational', icon:'🖥️', color:'#2E9E6B',
     badge:'assets/images/cisco/os-support.png',
+    certPdf:'assets/certs/cisco/os-support.pdf',
     desc:'Covers installation, configuration, and troubleshooting of multiple operating systems, including Windows 10/11 and basic Linux environments.',
     skills:['Windows Administration','Linux Basics','File Systems','User Accounts','CLI Tools'],
   },
@@ -32,6 +35,7 @@ const CERTS = {
     name:'Security & Connectivity Support', issuer:'Cisco Networking Academy',
     category:'Security & Networking', level:'Intermediate', icon:'🔐', color:'#D97B4A',
     badge:'assets/images/cisco/security-connectivity.png',
+    certPdf:'assets/certs/cisco/security-connectivity-support.pdf',
     desc:'Introduces network security principles and hands-on skills for protecting systems, configuring firewalls, and securing wireless connections.',
     skills:['Network Security','Firewall Config','VPN Basics','Wireless Security','Password Policies'],
   },
@@ -39,6 +43,7 @@ const CERTS = {
     name:'IT Customer Support Basics', issuer:'Cisco Networking Academy',
     category:'Customer Service', level:'Foundational', icon:'🎧', color:'#D4547A',
     badge:'assets/images/cisco/customer-support.png',
+    certPdf:'assets/certs/cisco/it-customer-support-basics.pdf',
     desc:'Develops professional IT support skills including communication, documentation, ticketing systems, and customer-facing problem resolution techniques.',
     skills:['Help Desk Skills','Communication','Ticketing Systems','Documentation','Problem Resolution'],
   },
@@ -46,6 +51,7 @@ const CERTS = {
     name:'JavaScript Essentials 1', issuer:'Cisco Networking Academy',
     category:'Programming', level:'Foundational', icon:'⚡', color:'#C9A227', dk:true,
     badge:'assets/images/cisco/js-essentials.png',
+    certPdf:'assets/certs/cisco/javascript-essentials-1.pdf',
     desc:'Introduces JavaScript programming fundamentals including variables, functions, control structures, DOM manipulation, and browser-based scripting.',
     skills:['JS Syntax','DOM Manipulation','Functions','Control Flow','Data Types'],
   },
@@ -53,6 +59,7 @@ const CERTS = {
     name:'Introduction to IoT', issuer:'Cisco Networking Academy',
     category:'IoT & Emerging Tech', level:'Awareness', icon:'📡', color:'#3BAA8A',
     badge:'assets/images/cisco/iot-intro.png',
+    certPdf:'assets/certs/cisco/introduction-to-iot.pdf',
     desc:'Explores the Internet of Things ecosystem — connected devices, sensors, data analytics, and the impact of IoT across industries.',
     skills:['IoT Concepts','Sensors & Actuators','Data Analytics','Smart Systems','Connectivity Protocols'],
   },
@@ -60,6 +67,7 @@ const CERTS = {
     name:'Network Technician Career Path', issuer:'Cisco Networking Academy',
     category:'Networking', level:'Career Path', icon:'🌐', color:'#3476C0',
     badge:'assets/images/cisco/network-tech.png',
+    certPdf:'assets/certs/cisco/network-technician-career-path.pdf',
     desc:'A comprehensive career pathway covering essential networking skills, TCP/IP protocols, routing, switching, and hands-on Cisco device configuration.',
     skills:['TCP/IP','Routing & Switching','Network Design','Cisco IOS','Troubleshooting'],
   },
@@ -67,6 +75,7 @@ const CERTS = {
     name:'Junior Cybersecurity Analyst', issuer:'Cisco Networking Academy',
     category:'Cybersecurity', level:'Career Path', icon:'🛡️', color:'#5B3FA0',
     badge:'assets/images/cisco/cybersecurity.png',
+    certPdf:'assets/certs/cisco/junior-cybersecurity-analyst.pdf',
     desc:'Prepares students for entry-level cybersecurity analyst roles with hands-on training in threat detection, security operations, and incident response.',
     skills:['Threat Analysis','SIEM Tools','Incident Response','Security Monitoring','Network Forensics'],
   },
@@ -77,6 +86,7 @@ const tabs        = document.querySelectorAll('.filter-tab');
 const secAll      = document.getElementById('section-all');
 const secCerts    = document.getElementById('section-certs');
 const secProjects = document.getElementById('section-projects');
+const secUnits    = document.getElementById('section-units');
 
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
@@ -85,9 +95,15 @@ tabs.forEach(tab => {
     const f = tab.dataset.filter;
     const show = el => el && el.classList.remove('hidden');
     const hide = el => el && el.classList.add('hidden');
-    if (f === 'all')      { show(secAll); show(secCerts); show(secProjects); }
-    else if (f === 'certs')    { hide(secAll); show(secCerts); hide(secProjects); }
-    else if (f === 'projects') { hide(secAll); hide(secCerts); show(secProjects); }
+    if (f === 'all') {
+      show(secAll); show(secCerts); show(secProjects); show(secUnits);
+    } else if (f === 'certs') {
+      hide(secAll); show(secCerts); hide(secProjects); hide(secUnits);
+    } else if (f === 'projects') {
+      hide(secAll); hide(secCerts); show(secProjects); hide(secUnits);
+    } else if (f === 'units') {
+      hide(secAll); hide(secCerts); hide(secProjects); show(secUnits);
+    }
   });
 });
 
@@ -113,6 +129,32 @@ function openPanel(certKey) {
   if (fb) fb.style.background = c.color;
   if (fi) fi.textContent = c.icon;
   panel.querySelector('#dp-skills').innerHTML = c.skills.map(s => `<span class="detail-skill-tag">${s}</span>`).join('');
+
+  // Certificate PDF link
+  let pdfLink = panel.querySelector('#dp-cert-pdf');
+  if (!pdfLink) {
+    pdfLink = document.createElement('a');
+    pdfLink.id = 'dp-cert-pdf';
+    pdfLink.style.cssText = [
+      'display:inline-flex','align-items:center','gap:6px',
+      'font-family:var(--f-mono)','font-size:12px','font-weight:600',
+      'padding:8px 16px','border-radius:7px','margin-top:16px',
+      'background:rgba(216,108,61,0.1)','border:1.5px solid var(--accent)',
+      'color:var(--accent)','text-decoration:none',
+      'transition:background .2s,color .2s'
+    ].join(';');
+    pdfLink.target = '_blank';
+    pdfLink.rel = 'noopener';
+    panel.querySelector('.detail-panel-body').appendChild(pdfLink);
+  }
+  if (c.certPdf) {
+    pdfLink.href = c.certPdf;
+    pdfLink.textContent = '📄 View Certificate PDF';
+    pdfLink.style.display = 'inline-flex';
+  } else {
+    pdfLink.style.display = 'none';
+  }
+
   panel.classList.add('open');
   if (overlay) overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
