@@ -273,20 +273,43 @@ window.addEventListener('load', () => {
   btn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 })();
 
-// ── Page View Counter ─────────────────────────────────
-(function () {
-  const el = document.getElementById('view-count');
-  if (!el) return;
+// ── Global Page View Counter ──────────────────────────
+(function initViewCounter() {
+  const els = [...document.querySelectorAll('#view-count')];
+  if (!els.length) return;
 
-  const KEY = 'ta_site_visits';
-  let count = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
-  localStorage.setItem(KEY, count);
-  el.textContent = count.toLocaleString();
+  els.forEach(el => el.textContent = '···');
 
-  fetch('https://api.counterapi.dev/v1/zerobun0-portfolio/visits/up')
-    .then(r => r.ok ? r.json() : null)
-    .then(d => { if (d && d.count) el.textContent = d.count.toLocaleString(); })
-    .catch(() => {});
+  /* sessionStorage flag — only count once per browser session.
+     Refreshing or visiting multiple pages won't inflate the count. */
+  const SESSION_KEY = '_ta_pv';
+  const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
+
+  /* counterapi.dev auto-creates the namespace on first hit.
+     /up increments + returns count.  /get just reads it. */
+  const NS  = 'zerobun0';
+  const KEY = 'portfolio-v2';
+  const url = alreadyCounted
+    ? `https://api.counterapi.dev/v1/${NS}/${KEY}/get`
+    : `https://api.counterapi.dev/v1/${NS}/${KEY}/up`;
+
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error(`counterapi ${r.status}`);
+      return r.json();
+    })
+    .then(data => {
+      /* counterapi.dev returns { count: Number } */
+      if (typeof data.count !== 'number') {
+        throw new Error('unexpected shape: ' + JSON.stringify(data));
+      }
+      if (!alreadyCounted) sessionStorage.setItem(SESSION_KEY, '1');
+      els.forEach(el => el.textContent = data.count.toLocaleString());
+    })
+    .catch(err => {
+      console.warn('[portfolio] view counter failed —', err.message);
+      els.forEach(el => el.textContent = '—');
+    });
 })();
 
 // ── Ripped Note → Portfolio section ──────────────────
