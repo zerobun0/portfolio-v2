@@ -285,17 +285,14 @@ window.addEventListener('load', () => {
   const SESSION_KEY = '_ta_pv';
   const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
 
-  /* counterapi.dev v2 — authenticated with user token.
+  /* counterapi.dev v1 — public, CORS-enabled, designed for browser calls.
+     v2 requires server-side use (CORS blocked from browsers).
      /up  → increment + return new count
      /get → read current count without incrementing            */
-  const SLUG   = 'Page-views';
   const ACTION = alreadyCounted ? 'get' : 'up';
-  const URL    = `https://api.counterapi.dev/v2/${SLUG}/${ACTION}`;
-  const TOKEN  = 'ut_8LbzlyJNWzbu9paxwiCP8BQYLGNmdQ0TUY8sfCud';
+  const URL    = `https://api.counterapi.dev/v1/zerobun0/portfolio-v2/${ACTION}`;
 
-  fetch(URL, {
-    headers: { 'Authorization': `Bearer ${TOKEN}` }
-  })
+  fetch(URL)
     .then(r => {
       if (!r.ok) throw new Error(`HTTP ${r.status} — ${r.statusText}`);
       return r.json();
