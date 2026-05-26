@@ -280,30 +280,18 @@ window.addEventListener('load', () => {
 
   els.forEach(el => el.textContent = '···');
 
-  /* sessionStorage flag — only increment once per browser session.
-     Refreshes and multi-page navigation don't inflate the count. */
-  const SESSION_KEY = '_ta_pv';
-  const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
-
-  /* counterapi.dev v1 — public, CORS-enabled, designed for browser calls.
-     v2 requires server-side use (CORS blocked from browsers).
-     /up  → increment + return new count
-     /get → read current count without incrementing            */
-  const ACTION = alreadyCounted ? 'get' : 'up';
-  const URL    = `https://api.counterapi.dev/v1/zerobun0/portfolio-v2/${ACTION}`;
-
-  fetch(URL)
+  /* GoatCounter public counter API — CORS-enabled, no auth needed to read.
+     Returns total visits across the whole site via the root path.
+     Tracking (incrementing) is handled by the GoatCounter script tag.    */
+  fetch('https://zerobun.goatcounter.com/counter/%2F.json')
     .then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status} — ${r.statusText}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
     })
     .then(data => {
-      /* v2 returns { count: Number } */
-      if (typeof data.count !== 'number') {
-        throw new Error('unexpected response shape: ' + JSON.stringify(data));
-      }
-      if (!alreadyCounted) sessionStorage.setItem(SESSION_KEY, '1');
-      els.forEach(el => el.textContent = data.count.toLocaleString());
+      /* GoatCounter returns { count: "1,234" } — already formatted string */
+      if (!data.count) throw new Error('unexpected shape: ' + JSON.stringify(data));
+      els.forEach(el => el.textContent = data.count);
     })
     .catch(err => {
       console.warn('[portfolio] view counter —', err.message);
