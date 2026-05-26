@@ -280,34 +280,36 @@ window.addEventListener('load', () => {
 
   els.forEach(el => el.textContent = '···');
 
-  /* sessionStorage flag — only count once per browser session.
-     Refreshing or visiting multiple pages won't inflate the count. */
+  /* sessionStorage flag — only increment once per browser session.
+     Refreshes and multi-page navigation don't inflate the count. */
   const SESSION_KEY = '_ta_pv';
   const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
 
-  /* counterapi.dev auto-creates the namespace on first hit.
-     /up increments + returns count.  /get just reads it. */
-  const NS  = 'zerobun0';
-  const KEY = 'portfolio-v2';
-  const url = alreadyCounted
-    ? `https://api.counterapi.dev/v1/${NS}/${KEY}/get`
-    : `https://api.counterapi.dev/v1/${NS}/${KEY}/up`;
+  /* counterapi.dev v2 — authenticated with user token.
+     /up  → increment + return new count
+     /get → read current count without incrementing            */
+  const SLUG   = 'Page-views';
+  const ACTION = alreadyCounted ? 'get' : 'up';
+  const URL    = `https://api.counterapi.dev/v2/${SLUG}/${ACTION}`;
+  const TOKEN  = 'ut_8LbzlyJNWzbu9paxwiCP8BQYLGNmdQ0TUY8sfCud';
 
-  fetch(url)
+  fetch(URL, {
+    headers: { 'Authorization': `Bearer ${TOKEN}` }
+  })
     .then(r => {
-      if (!r.ok) throw new Error(`counterapi ${r.status}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status} — ${r.statusText}`);
       return r.json();
     })
     .then(data => {
-      /* counterapi.dev returns { count: Number } */
+      /* v2 returns { count: Number } */
       if (typeof data.count !== 'number') {
-        throw new Error('unexpected shape: ' + JSON.stringify(data));
+        throw new Error('unexpected response shape: ' + JSON.stringify(data));
       }
       if (!alreadyCounted) sessionStorage.setItem(SESSION_KEY, '1');
       els.forEach(el => el.textContent = data.count.toLocaleString());
     })
     .catch(err => {
-      console.warn('[portfolio] view counter failed —', err.message);
+      console.warn('[portfolio] view counter —', err.message);
       els.forEach(el => el.textContent = '—');
     });
 })();
