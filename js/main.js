@@ -455,3 +455,34 @@ window.addEventListener('load', () => {
     body.addEventListener('click', () => inp.focus());
   }
 })();
+
+// ── Credits Modal ─────────────────────────────────────
+(function initCredits() {
+  const creditsBtn   = document.getElementById('credits-btn');
+  const creditsModal = document.getElementById('credits-modal');
+  const creditsClose = document.getElementById('credits-close');
+  if (!creditsBtn || !creditsModal || !creditsClose) return;
+
+  function openCredits() {
+    creditsModal.classList.add('open');
+    creditsModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCredits() {
+    creditsModal.classList.remove('open');
+    creditsModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  creditsBtn.addEventListener('click', openCredits);
+  creditsClose.addEventListener('click', closeCredits);
+  creditsModal.addEventListener('click', e => { if (e.target === creditsModal) closeCredits(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && creditsModal.classList.contains('open')) closeCredits();
+  });
+
+  creditsBtn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  creditsBtn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  creditsClose.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  creditsClose.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+})();
