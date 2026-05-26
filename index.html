@@ -11,6 +11,40 @@
 </head>
 <body>
 
+<!-- ══════════ SPLASH / ENTRY SCREEN ══════════ -->
+<div id="splash-screen" role="dialog" aria-label="Portfolio entry" aria-modal="true">
+  <!-- Layered background -->
+  <div class="sp-grid"></div>
+  <div class="sp-orb sp-orb-1"></div>
+  <div class="sp-orb sp-orb-2"></div>
+  <div class="sp-orb sp-orb-3"></div>
+  <canvas class="sp-canvas" id="sp-canvas"></canvas>
+  <div class="sp-scanlines"></div>
+  <!-- Corner bracket decorations -->
+  <div class="sp-corner sp-tl"></div>
+  <div class="sp-corner sp-tr"></div>
+  <div class="sp-corner sp-bl"></div>
+  <div class="sp-corner sp-br"></div>
+  <!-- Main content -->
+  <div class="sp-content">
+    <div class="sp-eyebrow">— digital portfolio —</div>
+    <h1 class="sp-title" aria-label="Welcome">
+      <span class="sp-l" style="--i:0">W</span><span class="sp-l" style="--i:1">E</span><span class="sp-l" style="--i:2">L</span><span class="sp-l" style="--i:3">C</span><span class="sp-l" style="--i:4">O</span><span class="sp-l" style="--i:5">M</span><span class="sp-l" style="--i:6">E</span>
+    </h1>
+    <p class="sp-name">Tarek Ahmed Umar</p>
+    <div class="sp-rule"></div>
+    <button class="sp-enter" id="sp-enter" aria-label="Enter portfolio">
+      <span class="sp-enter__label">Enter</span>
+      <span class="sp-enter__arrow">→</span>
+      <span class="sp-enter__shine"></span>
+    </button>
+    <p class="sp-audio-note">
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/></svg>
+      lo-fi music plays on entry
+    </p>
+  </div>
+</div>
+
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 <div id="page-overlay"></div>
@@ -1407,7 +1441,11 @@
 
 <!-- ══════════ SCRIPTS ══════════ -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>AOS.init({ duration: 580, once: true, easing: 'ease-out-cubic' });</script>
+<script>
+  /* AOS init is deferred until the splash screen exits,
+     so scroll-reveal animations fire when the user first sees content. */
+  window.__aosConfig = { duration: 580, once: true, easing: 'ease-out-cubic' };
+</script>
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
 <script>
   new Typed('#typed-text', {

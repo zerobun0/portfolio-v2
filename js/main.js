@@ -2,6 +2,116 @@
    main.js — custom cursor, nav, smooth scroll, music
 ====================================================== */
 
+// ── Splash Screen ─────────────────────────────────────
+(function initSplash() {
+  const splash   = document.getElementById('splash-screen');
+  const enterBtn = document.getElementById('sp-enter');
+  const title    = document.querySelector('.sp-title');
+  const canvas   = document.getElementById('sp-canvas');
+  if (!splash || !enterBtn) return;
+
+  /* Lock scroll while splash is showing */
+  document.body.style.overflow = 'hidden';
+
+  /* particleRafId lives in outer scope so cleanup() can cancel it */
+  let particleRafId = null;
+
+  /* ── Floating particle canvas ── */
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width  = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    const C = [216, 108, 61]; // accent RGB
+
+    const pts = Array.from({ length: 32 }, () => ({
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      r:  Math.random() * 1.6 + 0.4,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: -(Math.random() * 0.35 + 0.08),
+      a:  Math.random() * 0.5 + 0.1,
+      da: (Math.random() - 0.5) * 0.008,
+    }));
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => {
+        /* Core dot */
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${C[0]},${C[1]},${C[2]},${p.a.toFixed(3)})`;
+        ctx.fill();
+        /* Soft bloom on larger dots */
+        if (p.r > 1.2) {
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+          g.addColorStop(0, `rgba(${C[0]},${C[1]},${C[2]},${(p.a * 0.28).toFixed(3)})`);
+          g.addColorStop(1, 'transparent');
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.fillStyle = g;
+          ctx.fill();
+        }
+        p.x += p.vx; p.y += p.vy;
+        p.a += p.da;
+        if (p.a > 0.72 || p.a < 0.06) p.da *= -1;
+        if (p.y < -8)  { p.y = H + 8; p.x = Math.random() * W; }
+        if (p.x < -8)  p.x = W + 8;
+        if (p.x > W+8) p.x = -8;
+      });
+      particleRafId = requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    window.addEventListener('resize', () => {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+  }
+
+  /* ── Glow the title after all letters have animated in ── */
+  /* Last letter: delay=0.62s + 6×0.072s = 1.052s, duration=0.65s → done ≈1.70s */
+  setTimeout(() => { if (title) title.classList.add('sp-glow'); }, 1750);
+
+  /* ── One-shot cleanup: cancel particles, reveal site, init AOS ── */
+  function cleanup() {
+    if (splash.classList.contains('sp-gone')) return; // guard against double-call
+    if (particleRafId) { cancelAnimationFrame(particleRafId); particleRafId = null; }
+    splash.classList.add('sp-gone');
+    splash.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (typeof AOS !== 'undefined') {
+      AOS.init(window.__aosConfig || { duration: 580, once: true, easing: 'ease-out-cubic' });
+    }
+  }
+
+  /* ── Enter button ── */
+  enterBtn.addEventListener('click', () => {
+    enterBtn.classList.add('sp-flash'); // warm glow burst on click
+
+    /* Small delay lets the flash be visible, then begin iris-collapse */
+    setTimeout(() => {
+      splash.classList.add('sp-exit');
+
+      /* Listen for the clip-path transition specifically.
+         The button's own transition events also bubble here, so we MUST
+         filter by propertyName — otherwise cleanup fires too early. */
+      function onSplashClose(e) {
+        if (e.propertyName !== 'clip-path') return;
+        splash.removeEventListener('transitionend', onSplashClose);
+        cleanup();
+      }
+      splash.addEventListener('transitionend', onSplashClose);
+
+      /* Hard fallback: if transitionend never fires (rare), clean up anyway */
+      setTimeout(cleanup, 1200);
+    }, 200);
+  });
+
+  /* Custom cursor hover state */
+  enterBtn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  enterBtn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+})();
+
 // ── Custom Cursor ─────────────────────────────────────
 const dot  = document.getElementById('cursor-dot');
 const ring = document.getElementById('cursor-ring');
